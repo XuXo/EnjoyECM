@@ -4,7 +4,14 @@
 //ofVec2f mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());
 
 void testApp::setup(){
+    logo.loadFont("froufrou.ttf", 32);
+    author.loadFont("froufrou.ttf", 15);
+    //font.loadFont("sans-serif", 30);
+    font.loadFont("type/verdana.ttf", 10, true, false, true, 0.4, 72);
     
+    mouse =false;
+    
+    enlarge = 100;
     nextpageleft = false;
     nextpageright = false;
     
@@ -12,6 +19,7 @@ void testApp::setup(){
     numberflipsright = 0;
     
     totalflips = 0;
+    page = 0;
     
     timeelapsed = 0;
     timeexit = 0;
@@ -115,86 +123,82 @@ void testApp::setup(){
      
      cover[59] is same as cover[40]
      */
-    ofLogoImage.loadImage("eick.jpg");
-    ofLogoImage2.loadImage("purcor.jpg");
+    
+    //blurry and smooth
+    ofLogoImage.loadImage("leipzig.jpg");
+    ofLogoImage2.loadImage("melos.jpg");
     ofLogoImage3.loadImage("gustavsen.jpg");
-    ofLogoImage4.loadImage("alaoui.jpg");
-    ofLogoImage5.loadImage("ronin.jpg");
+    ofLogoImage4.loadImage("canopee.jpg");
+    ofLogoImage5.loadImage("bartsch.jpg");
     
-    ofLogoImage6.loadImage("silvestrov.jpg");
-    ofLogoImage7.loadImage("scala.jpg");
-    ofLogoImage8.loadImage("fort.jpg");
-    ofLogoImage9.loadImage("mtoto.jpg");
-    ofLogoImage10.loadImage("stronen.jpg")
+    ofLogoImage6.loadImage("january.jpg");
+    ofLogoImage7.loadImage("colour.jpg");
+    ofLogoImage8.loadImage("formanek.jpg");
+    ofLogoImage9.loadImage("farside.jpg");
+    ofLogoImage10.loadImage("seim.jpg")
     ;
-    ofLogoImage11.loadImage("vitous.jpg");
-    ofLogoImage12.loadImage("rypdal.jpg");
-    ofLogoImage13.loadImage("wasilewski.jpg");
-    ofLogoImage14.loadImage("strata.jpg");
-    ofLogoImage15.loadImage("sheppard.jpg");
+    ofLogoImage11.loadImage("play.jpg");
+    ofLogoImage12.loadImage("velocities.jpg");
+    ofLogoImage13.loadImage("darkeyes.jpg");
+    ofLogoImage14.loadImage("letmego.jpg");
+    ofLogoImage15.loadImage("purcor.jpg");
     
-    ofLogoImage16.loadImage("fresu.jpg");
-    ofLogoImage17.loadImage("balke.jpg");
-    ofLogoImage18.loadImage("stenson.jpg");
-    ofLogoImage19.loadImage("mazur.jpg");
-    ofLogoImage20.loadImage("source.jpg");
+    //red
+    ofLogoImage16.loadImage("schubert.jpg");
+    ofLogoImage17.loadImage("monk.jpg");
+    ofLogoImage18.loadImage("eleni.jpg");
+    ofLogoImage19.loadImage("gesualdo.jpg");
+    ofLogoImage20.loadImage("anyder.jpg");
     
-    ofLogoImage21.loadImage("fresu.jpg");
-    ofLogoImage22.loadImage("balke.jpg");
-    ofLogoImage23.loadImage("stenson.jpg");
-    ofLogoImage24.loadImage("mazur.jpg");
-    ofLogoImage25.loadImage("source.jpg");
+    ofLogoImage21.loadImage("micus.jpg");
+    ofLogoImage22.loadImage("romaria.jpg");
+    ofLogoImage23.loadImage("hollinger.jpg");
+    ofLogoImage24.loadImage("andras.jpg");
+    ofLogoImage25.loadImage("trovesi.jpg");
     
-	ofLogoImage26.loadImage("fresu.jpg");
-    ofLogoImage27.loadImage("balke.jpg");
-    ofLogoImage28.loadImage("stenson.jpg");
-    ofLogoImage29.loadImage("mazur.jpg");
-    ofLogoImage30.loadImage("source.jpg");
+	ofLogoImage26.loadImage("yannatou.jpg");
+    ofLogoImage27.loadImage("williams.jpg");
+    ofLogoImage28.loadImage("condori.jpg");
+    ofLogoImage29.loadImage("sclavis.jpg");
+    ofLogoImage30.loadImage("perenyi.jpg");
     
-	ofLogoImage31.loadImage("fresu.jpg");
-    ofLogoImage32.loadImage("balke.jpg");
-    ofLogoImage33.loadImage("stenson.jpg");
-    ofLogoImage34.loadImage("mazur.jpg");
-    ofLogoImage35.loadImage("source.jpg");
+    //black and white
+	ofLogoImage31.loadImage("smith.jpg");
+    ofLogoImage32.loadImage("clavier.jpg");
+    ofLogoImage33.loadImage("rio.jpg");
+    ofLogoImage34.loadImage("negros.jpg");
+    ofLogoImage35.loadImage("dresden.jpg");
     
-	ofLogoImage36.loadImage("fresu.jpg");
-    ofLogoImage37.loadImage("balke.jpg");
-    ofLogoImage38.loadImage("stenson.jpg");
-    ofLogoImage39.loadImage("mazur.jpg");
-    ofLogoImage40.loadImage("source.jpg");
+	ofLogoImage36.loadImage("stubss.jpg");
+    ofLogoImage37.loadImage("sleeper.jpg");
+    ofLogoImage38.loadImage("sunrise.jpg");
+    ofLogoImage39.loadImage("katuche.jpg");
+    ofLogoImage40.loadImage("janacek.jpg");
     
-	ofLogoImage41.loadImage("fresu.jpg");
-    ofLogoImage42.loadImage("balke.jpg");
-    ofLogoImage43.loadImage("stenson.jpg");
-    ofLogoImage44.loadImage("mazur.jpg");
-    ofLogoImage45.loadImage("source.jpg");
+	ofLogoImage41.loadImage("testament.jpg");
+    ofLogoImage42.loadImage("mediaval.jpg");
+    ofLogoImage43.loadImage("lascala.jpg");
+    ofLogoImage44.loadImage("metamusik.jpg");
+    ofLogoImage45.loadImage("rypdal.jpg");
     
-	ofLogoImage46.loadImage("fresu.jpg");
-    ofLogoImage47.loadImage("balke.jpg");
-    ofLogoImage48.loadImage("stenson.jpg");
-    ofLogoImage49.loadImage("mazur.jpg");
-    ofLogoImage50.loadImage("source.jpg");
+    //grainy
+	ofLogoImage46.loadImage("libero.jpg");
+    ofLogoImage47.loadImage("vitous.jpg");
+    ofLogoImage48.loadImage("diminuito.jpg");
+    ofLogoImage49.loadImage("food.jpg");
+    ofLogoImage50.loadImage("bittova.jpg");
     
-	ofLogoImage51.loadImage("fresu.jpg");
-    ofLogoImage52.loadImage("balke.jpg");
-    ofLogoImage53.loadImage("stenson.jpg");
-    ofLogoImage54.loadImage("mazur.jpg");
-    ofLogoImage55.loadImage("source.jpg");
+	ofLogoImage51.loadImage("imprint.jpg");
+    ofLogoImage52.loadImage("indicum.jpg");
+    ofLogoImage53.loadImage("vanel.jpg");
+    ofLogoImage54.loadImage("batagraf.jpg");
+    ofLogoImage55.loadImage("magnetic.jpg");
     
-	ofLogoImage56.loadImage("fresu.jpg");
-    ofLogoImage57.loadImage("balke.jpg");
-    ofLogoImage58.loadImage("stenson.jpg");
-    ofLogoImage59.loadImage("mazur.jpg");
-    ofLogoImage60.loadImage("source.jpg");
-    
-	ofLogoImage61.loadImage("fresu.jpg");
-    ofLogoImage62.loadImage("balke.jpg");
-    ofLogoImage63.loadImage("stenson.jpg");
-    
-    ofLogoImage64.loadImage("mazur.jpg");
-    ofLogoImage65.loadImage("source.jpg");
-	ofLogoImage66.loadImage("source.jpg");
-    
+	ofLogoImage56.loadImage("young.jpg");
+    ofLogoImage57.loadImage("classtrip.jpg");
+    ofLogoImage58.loadImage("giger.jpg");
+    ofLogoImage59.loadImage("bach.jpg");
+    ofLogoImage60.loadImage("berg.jpg");
     
     
     ecmcovers.push_back(ofLogoImage);
@@ -280,7 +284,7 @@ void testApp::update() {
     ofVec2f mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());
     x = mouse.x;
     y = mouse.y;
-    int page;
+    
     
     
     //this is if the user leaves the cursor on the current album and goes to a next page, the rotation would linger unless we trigger a cleanup, this is called whenever we hit 'i' or 'u', the effects are only felt on the edges since there are infact 2 cubes, well actually that's not the real reason, real reason is that's the only part of the previous page visible to us..
@@ -360,19 +364,45 @@ void testApp::update() {
     
     
     
+    //turning page with swiping, this is a little buggy so I'm gonna leave it out for now
+    /*if(mousedrag.size() >= 2){
+     float x1 = mousedrag[0];
+     float x2 = mousedrag[1];
+     if (x1- x2 < 0){
+     nextpageleft = true;
+     numberflipsleft++;
+     resetrotate = true;
+     }
+     else{
+     nextpageright = true;
+     numberflipsright++;
+     resetrotate = true;
+     }
+     mousedrag.clear();
+     
+     }*/
 }
 
 //deperecated since "pushing forward" out of the screen is relative to orientation, not necessarily just changing the z component
 void testApp::emerge(){
-    ofTranslate(0,0,50);
+    ofTranslate(0,0,enlarge);
 }
 //--------------------------------------------------------------
 void testApp::draw(){
+    
+    
+    
+    //ofSetColor(255,0,0);
+    logo.drawString(" Enjoy ECM ", 390,50);
+    author.drawString(" (by Tian Xu)", 500,68);
+    ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
     // enable lighting //
     //ofEnableLighting();
     // enable the material, so that it applies to all 3D objects before material.end() call //
 	material.begin();
     
+    
+    //cout<<"we are currently on page # "<<page<<endl;
     // activate the lights //
 	//if (bPointLight) pointLight.enable();
 	//if (bSpotLight) spotLight.enable();
@@ -389,6 +419,7 @@ void testApp::draw(){
     
     //move canvas to center of screen, this will serve as axis of rotation
     ofTranslate(500,00,00);
+    
     
 	//I can't remember what this is used for...
     if (axisrotate){
@@ -409,7 +440,7 @@ void testApp::draw(){
     if(nextpageleft){
         //cout<<"totalflips is"<<totalflips<<endl;
         stayonpage = false;
-        startpage += .05;											//speed of rotation
+        startpage += .1;											//speed of rotation
         if(startpage <=1)
             //ofRotate((90*(numberflipsleft-1)) + startpage * 90, 0, 1, 0);
             ofRotate(90*(totalflips) + startpage*90, 0,1,0);		//90*totalflip will give us current position from which we rotate another 90 degrees per page turn
@@ -427,7 +458,7 @@ void testApp::draw(){
     if(nextpageright){
         //cout<<"totalflips is"<<totalflips<<endl;
         stayonpage = false;
-        startpage += .05;
+        startpage += .1;
         if(startpage <=1)
             //ofRotate((-90*(numberflipsright-1)) + startpage * -90, 0, 1, 0);
             ofRotate(90*(totalflips) + startpage*(-90), 0,1,0);
@@ -455,52 +486,66 @@ void testApp::draw(){
     // this will apply the texture to all drawing (vertex) calls before unbind() //
 	
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(-200 + i*100, 300, 200);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-			ofTranslate(0,0,50);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[i].getTextureReference().unbind();
+        if( (page != 1) || (i != 0) ){
+            if( (page != 3) || (i != 4) ){
+                if(bUseTexture) ecmcovers[i].getTextureReference().bind();
+                ofPushMatrix();
+                ofTranslate(-200 + i*100, 300, 200);
+                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+                if(rotate[i]){
+                    //ofTranslate(0,0,50);
+                    //emerge();
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+                    ofTranslate(0,0,enlarge);
+                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                }
+                ofSetColor(255,255,255,255);    //turn on transparency
+                ofDrawBox(0, 0, 0, 100);
+                ofSetColor(255,255,255);        //turn off transparency
+                ofPopMatrix();
+                if(bUseTexture) ecmcovers[i].getTextureReference().unbind();
+            }
+        }
 	}
     
     for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(-200 + i*100, 400, 200);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[5+i]){
-			//emerge();
-			//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-			ofTranslate(0,0,50);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[5+i].getTextureReference().unbind();
+        if( (page != 1) || (i != 0) ){
+            if( (page != 3) || (i != 4) ){
+                if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
+                ofPushMatrix();
+                ofTranslate(-200 + i*100, 400, 200);
+                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+                if(rotate[5+i]){
+                    //emerge();
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+                    ofTranslate(0,0,enlarge);
+                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                }
+                ofDrawBox(0, 0, 0, 100);
+                ofPopMatrix();
+                if(bUseTexture) ecmcovers[5+i].getTextureReference().unbind();
+            }
+        }
 	}
     
     for( int i = 0; i < 5; i++) {
-		if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(-200 + i*100, 500, 200);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[10+i]){
-			//emerge();
-			//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-			ofTranslate(0,0,50);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
+        if( (page != 1) || (i != 0) ){
+            if( (page != 3) || (i != 4) ){
+                if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
+                ofPushMatrix();
+                ofTranslate(-200 + i*100, 500, 200);
+                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+                if(rotate[10+i]){
+                    //emerge();
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+                    ofTranslate(0,0,enlarge);
+                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                }
+                ofDrawBox(0, 0, 0, 100);
+                ofPopMatrix();
+                if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
+            }
+        }
 	}
 	
     
@@ -512,58 +557,64 @@ void testApp::draw(){
 	//so last cube is actually the first of our front wall, ie cover[19] is same as cover[0]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(-200, 300, -200+ i*100);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[15+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-            ofTranslate(-50,0,0);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[15+i].getTextureReference().unbind();
+        if( (page != 2) || (i != 0) ){
+            if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(-200, 300, -200+ i*100);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[15+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                ofTranslate(-enlarge,0,0);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[15+i].getTextureReference().unbind();
+        }
 	}
     
 	//cover[24] is same as cover[5]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(-200, 400, -200+ i*100);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[20+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-            ofTranslate(-50,0,0);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[20+i].getTextureReference().unbind();
+        if( (page != 2) || (i != 0) ){
+            if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(-200, 400, -200+ i*100);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[20+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                ofTranslate(-enlarge,0,0);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[20+i].getTextureReference().unbind();
+        }
 	}
     
 	//cover[29] is same as cover[10]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(-200, 500, -200+ i*100);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[25+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-            ofTranslate(-50,0,0);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[25+i].getTextureReference().unbind();
+        if( (page != 2) || (i != 0) ){
+            if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(-200, 500, -200+ i*100);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[25+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                ofTranslate(-enlarge,0,0);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[25+i].getTextureReference().unbind();
+        }
 	}
     
 	
@@ -573,59 +624,66 @@ void testApp::draw(){
 	//so really its right to left top to bottom here
 	//cover[34] is same as cover[15]
 	//make sure you load the same image..
+    
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(200 - i*100, 300, -200);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[30+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
-            ofTranslate(0,0,-50);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[30+i].getTextureReference().unbind();
+        if( (page != 3) || (i != 0) ){
+            if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(200 - i*100, 300, -200);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[30+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                ofTranslate(0,0,-enlarge);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[30+i].getTextureReference().unbind();
+        }
 	}
     
 	//cover[39] is same as cover[20]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(200 - i*100, 400, -200);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[35+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
-            ofTranslate(0,0,-50);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[35+i].getTextureReference().unbind();
+        if( (page != 3) || (i != 0) ){
+            if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(200 - i*100, 400, -200);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[35+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                ofTranslate(0,0,-enlarge);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[35+i].getTextureReference().unbind();
+        }
 	}
     
 	//cover[44] is same as cover[25]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(200 - i*100, 500, -200);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[40+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
-            ofTranslate(0,0,-50);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[40+i].getTextureReference().unbind();
+        if( (page != 3) || (i != 0) ){
+            if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(200 - i*100, 500, -200);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[40+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                ofTranslate(0,0,-enlarge);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[40+i].getTextureReference().unbind();
+        }
 	}
     
     
@@ -636,58 +694,64 @@ void testApp::draw(){
 	//cover[49] is same as cover[30]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(200, 300, 200 - i*100);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[45+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//originally face "east"...same idea
-            ofTranslate(50,0,0);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[45+i].getTextureReference().unbind();
+        //if( (page != 0) || (i != 0) ){
+        if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
+        ofPushMatrix();
+        ofTranslate(200, 300, 200 - i*100);
+        //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+        if(rotate[45+i]){
+            //ofTranslate(0,0,enlarge);
+            //emerge();
+            //originally face "east"...same idea
+            ofTranslate(enlarge,0,0);
+            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+        }
+        ofDrawBox(0, 0, 0, 100);
+        ofPopMatrix();
+        if(bUseTexture) ecmcovers[45+i].getTextureReference().unbind();
+        //}
 	}
     
 	//cover[54] is same as cover[35]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(200, 400, 200 - i*100);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[50+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//originally face "east"...same idea
-            ofTranslate(50,0,0);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[50+i].getTextureReference().unbind();
+        //if( (page != 0) || (i != 0) ){
+        if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
+        ofPushMatrix();
+        ofTranslate(200, 400, 200 - i*100);
+        //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+        if(rotate[50+i]){
+            //ofTranslate(0,0,enlarge);
+            //emerge();
+            //originally face "east"...same idea
+            ofTranslate(enlarge,0,0);
+            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+        }
+        ofDrawBox(0, 0, 0, 100);
+        ofPopMatrix();
+        if(bUseTexture) ecmcovers[50+i].getTextureReference().unbind();
+        //}
 	}
     
 	//cover[59] is same as cover[40]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
-		if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
-		ofPushMatrix();
-		ofTranslate(200, 500, 200 - i*100);
-		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-		if(rotate[55+i]){
-            //ofTranslate(0,0,50);
-			//emerge();
-			//originally face "east"...same idea
-            ofTranslate(50,0,0);
-			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-		}
-		ofDrawBox(0, 0, 0, 100);
-		ofPopMatrix();
-		if(bUseTexture) ecmcovers[55+i].getTextureReference().unbind();
+        //if( (page != 0) || (i != 0) ){
+        if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
+        ofPushMatrix();
+        ofTranslate(200, 500, 200 - i*100);
+        //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+        if(rotate[55+i]){
+            //ofTranslate(0,0,enlarge);
+            //emerge();
+            //originally face "east"...same idea
+            ofTranslate(enlarge,0,0);
+            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+        }
+        ofDrawBox(0, 0, 0, 100);
+        ofPopMatrix();
+        if(bUseTexture) ecmcovers[55+i].getTextureReference().unbind();
+        //}
 	}
     
     
@@ -717,16 +781,79 @@ void testApp::draw(){
 	ofSetColor( spotLight.getDiffuseColor() );
 	if(bSpotLight) spotLight.draw();
 	
+    ofPopMatrix();
 	ofSetColor(255, 255, 255);
-	ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
-					   "Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
-					   "Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
-					   "Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
-                       "Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
-                       "Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
-                       "Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
-                       "Textured (t) : "+ofToString(bUseTexture,0),
-					   20, 20);
+    
+	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
+     "Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
+     "Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
+     "Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
+     "Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
+     "Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
+     "Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
+     "Textured (t) : "+ofToString(bUseTexture,0),
+     20, 20);*/
+    
+    
+    
+    
+    ofTranslate(-50, 350, 450);
+    for(int i = 0; i< 10; i++){
+        if(i%2 == 1){
+            ofSetColor(176,196,222,100);
+            ofRect(0,width*i,100,10);
+            ofSetColor(255,255,255);
+            ofDrawBitmapString("Track " + ofToString(i)+". testing", 5, i*width+6);
+            ofDrawBitmapString("Track " + ofToString(i)+". testing", 5.25, i*width+6);     //crude bolding effect
+            
+            //font.drawString(" testing", 10, i*10);
+            
+            
+        }
+        else{
+            ofSetColor(119,136,153,100);
+            ofRect(0,width*i,100,10);
+            ofSetColor(255,255,255,150);
+            ofDrawBitmapString("Track " + ofToString(i)+". testing", 5, i*width+6);
+            ofDrawBitmapString("Track " + ofToString(i)+". testing", 5.25, i*width+6);     //again..
+        }
+        
+    }
+    
+    /*
+     ofTranslate(-50, 350, 450);
+     ofSetColor(176,196,222,100);
+     ofRect(0,0,100,10);
+     
+     ofSetColor(119,136,153,100);
+     ofRect(0,10,100,10);
+     
+     ofSetColor(176,196,222,100);
+     ofRect(0,20,100,10);
+     
+     ofSetColor(119,136,153,100);
+     ofRect(0,30,100,10);
+     
+     ofSetColor(176,196,222,100);
+     ofRect(0,40,100,10);
+     
+     ofSetColor(119,136,153,100);
+     ofRect(0,50,100,10);
+     
+     ofSetColor(176,196,222,100);
+     ofRect(0,60,100,10);
+     
+     ofSetColor(119,136,153,100);
+     ofRect(0,70,100,10);
+     
+     ofSetColor(176,196,222,100);
+     ofRect(0,80,100,10);
+     
+     ofSetColor(119,136,153,100);
+     ofRect(0,90,100,10);
+     */
+    
+    ofSetColor(255,255,255);
 }
 
 //--------------------------------------------------------------
@@ -752,12 +879,12 @@ void testApp::keyPressed(int key){
         case 'p':
             axisrotate = false;
             break;
-        case 'u':
+        case 'n':
             nextpageleft = true;
             numberflipsleft++;
             resetrotate = true;
             break;
-        case 'i':
+        case 'm':
             nextpageright = true;
             numberflipsright++;
             resetrotate = true;
@@ -803,17 +930,22 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-    
+    /*cout<<"dragging at location x = "<<x<<" and y = "<<y<<endl;
+     mousedrag.push_back(x);
+     */
 }
-
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-    
+    /*cout<<"pressed at location x = "<<x<<" and y = "<<y<<endl;
+     mouse = true;
+     mousedrag.push_back(x);*/
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-    
+    /*cout<<"released at location x = "<<x<<" and y = "<<y<<endl;
+     //mousedrag.clear();
+     mouse = false;*/
 }
 
 //--------------------------------------------------------------
