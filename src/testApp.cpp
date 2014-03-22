@@ -4,10 +4,12 @@
 //ofVec2f mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());
 
 void testApp::setup(){
-    logo.loadFont("froufrou.ttf", 32);
-    author.loadFont("froufrou.ttf", 15);
+    //logo.loadFont("froufrou.ttf", 32);
+    logo.loadFont("type/verdana.ttf", 25, true, false, true, 0.1, 102);
+    //author.loadFont("froufrou.ttf", 15);
+    //author.loadFont("type/verdana.ttf", 15, true, false, true, 0.1, 102);
     //font.loadFont("sans-serif", 30);
-    font.loadFont("type/verdana.ttf", 10, true, false, true, 0.4, 72);
+    font.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
     
     mouse =false;
     
@@ -273,6 +275,7 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update() {
+    //ofBackground(185,184,174);            website color
     pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x,
 						   sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y,
 						   -cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
@@ -392,14 +395,23 @@ void testApp::draw(){
     
     
     
-    //ofSetColor(255,0,0);
-    logo.drawString(" Enjoy ECM ", 390,50);
+    //ofSetColor(0,0,0);
+    logo.drawString(" Enjoy ECM ", 370,50);
     author.drawString(" (by Tian Xu)", 500,68);
     ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
     // enable lighting //
     //ofEnableLighting();
     // enable the material, so that it applies to all 3D objects before material.end() call //
 	material.begin();
+    
+    
+    
+    /*ofPushMatrix();
+     ofTranslate(0, 0, 500);
+     //font.drawString("test", ofGetWidth()/2 - 20, ofGetHeight()/2);
+     font.drawStringAsShapes("what is wrong with this track", ofGetWidth()/2 + 20, ofGetHeight()/2);
+     ofPopMatrix();*/
+    
     
     
     //cout<<"we are currently on page # "<<page<<endl;
@@ -796,30 +808,53 @@ void testApp::draw(){
     
     
     
+    int rows = 10;
+    int last = 0;
+    
+    
     
     ofTranslate(-50, 350, 450);
-    for(int i = 0; i< 10; i++){
+    
+    
+    
+    
+    for(int i = 0; i< rows-1; i++){
         if(i%2 == 1){
             ofSetColor(176,196,222,100);
-            ofRect(0,width*i,100,10);
+            ofRect(0,width*i,100,width);
+            
+            
             ofSetColor(255,255,255);
-            ofDrawBitmapString("Track " + ofToString(i)+". testing", 5, i*width+6);
-            ofDrawBitmapString("Track " + ofToString(i)+". testing", 5.25, i*width+6);     //crude bolding effect
+            //ofDrawBitmapString("Track " + ofToString(i)+". testing", 5, i*width+6);
+            //ofDrawBitmapString("Track " + ofToString(i)+". testing", 5.25, i*width+6);     //crude bolding effect
+            ofTranslate(0,0,1);
+            ofSetColor(51, 102, 183);
+            font.drawStringAsShapes("Track " + ofToString(i)+". testing", 10, i*width+5);
             
-            //font.drawString(" testing", 10, i*10);
-            
-            
+            ofTranslate(0,0,-1);
         }
         else{
-            ofSetColor(119,136,153,100);
-            ofRect(0,width*i,100,10);
-            ofSetColor(255,255,255,150);
-            ofDrawBitmapString("Track " + ofToString(i)+". testing", 5, i*width+6);
-            ofDrawBitmapString("Track " + ofToString(i)+". testing", 5.25, i*width+6);     //again..
+            if(i != 0){
+                ofSetColor(112,128,144,100);
+                ofRect(0,width*i,100,width);
+                ofSetColor(255,255,255,255);
+                ofTranslate(0,0,1);
+                ofSetColor(51, 102, 183);
+                font.drawStringAsShapes("Track " + ofToString(i)+". testing", 10, i*width+5);
+                ofTranslate(0,0,-1);
+                //ofDrawBitmapString("Track " + ofToString(i)+". testing", 5, i*width+6);
+                //ofDrawBitmapString("Track " + ofToString(i)+". testing", 5.25, i*width+6);     //again..
+            }
         }
-        
     }
     
+    ofSetColor(176,196,222,100);
+    ofRectangle myRect;
+    myRect.x = 0;
+    myRect.y = 0;
+    myRect.width = 100;
+    myRect.height = width*rows;
+    ofRectRounded( myRect, 2 );
     /*
      ofTranslate(-50, 350, 450);
      ofSetColor(176,196,222,100);
