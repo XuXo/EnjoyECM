@@ -92,18 +92,41 @@ void testApp::setup(){
     // tex coords for 3D objects in OF are from 0 -> 1, not 0 -> image.width
     // so we must disable the arb rectangle call to allow 0 -> 1
     ofDisableArbTex();
-    // load an image to use as the texture //
-    //ofLogoImage.loadImage("of.png");
+    // load album covers to use as the texture //
+    
+	/*
+     construction dictates that we have
+     
+     cover[19] is same as cover[0]
+     
+     cover[24] is same as cover[5]
+     
+     cover[29] is same as cover[10]
+     
+     cover[34] is same as cover[15]
+     
+     cover[39] is same as cover[20]
+     
+     cover[44] is same as cover[25]
+     
+     cover[49] is same as cover[30]
+     
+     cover[54] is same as cover[35]
+     
+     cover[59] is same as cover[40]
+     */
     ofLogoImage.loadImage("eick.jpg");
     ofLogoImage2.loadImage("purcor.jpg");
     ofLogoImage3.loadImage("gustavsen.jpg");
     ofLogoImage4.loadImage("alaoui.jpg");
     ofLogoImage5.loadImage("ronin.jpg");
+    
     ofLogoImage6.loadImage("silvestrov.jpg");
     ofLogoImage7.loadImage("scala.jpg");
     ofLogoImage8.loadImage("fort.jpg");
     ofLogoImage9.loadImage("mtoto.jpg");
-    ofLogoImage10.loadImage("stronen.jpg");
+    ofLogoImage10.loadImage("stronen.jpg")
+    ;
     ofLogoImage11.loadImage("vitous.jpg");
     ofLogoImage12.loadImage("rypdal.jpg");
     ofLogoImage13.loadImage("wasilewski.jpg");
@@ -171,6 +194,8 @@ void testApp::setup(){
     ofLogoImage64.loadImage("mazur.jpg");
     ofLogoImage65.loadImage("source.jpg");
 	ofLogoImage66.loadImage("source.jpg");
+    
+    
     
     ecmcovers.push_back(ofLogoImage);
 	ecmcovers.push_back(ofLogoImage2);
@@ -261,7 +286,7 @@ void testApp::update() {
     //this is if the user leaves the cursor on the current album and goes to a next page, the rotation would linger unless we trigger a cleanup, this is called whenever we hit 'i' or 'u', the effects are only felt on the edges since there are infact 2 cubes, well actually that's not the real reason, real reason is that's the only part of the previous page visible to us..
     
     if(resetrotate){
-        cout<<"resetting!!"<<endl;
+        //cout<<"resetting!!"<<endl;
         for(int i = 0; i < rotate.size(); i++)
             rotate[i] = false;
         //I'm not sure why it doesn't work with the following in place I would think you only need to do this once before it's reactivated on the next page swipe, probably an issue with the application framerate and how update is called after a keyboard event..
@@ -337,6 +362,7 @@ void testApp::update() {
     
 }
 
+//deperecated since "pushing forward" out of the screen is relative to orientation, not necessarily just changing the z component
 void testApp::emerge(){
     ofTranslate(0,0,50);
 }
@@ -361,8 +387,10 @@ void testApp::draw(){
      ofPopMatrix();*/
 	
     
-    //ofDrawBox(300, 100, 0, 100);
+    //move canvas to center of screen, this will serve as axis of rotation
     ofTranslate(500,00,00);
+    
+	//I can't remember what this is used for...
     if (axisrotate){
         ofRotate((ofGetElapsedTimef())*.8 * RAD_TO_DEG, 0, 1, 0);
         timeelapsed = ofGetElapsedTimef();
@@ -375,19 +403,19 @@ void testApp::draw(){
         //cout<<"timeexit is "<<timeexit<<endl;
     }
     
-    //ofRotate(30*.8 * RAD_TO_DEG, 0, 1, 0);
     
-    //totalflips = numberflipsleft - numberflipsright;
+    
+    //totalflips = numberflipsleft - numberflipsright;				//this doesn't seem to be working
     if(nextpageleft){
         //cout<<"totalflips is"<<totalflips<<endl;
         stayonpage = false;
-        startpage += .05;
+        startpage += .05;											//speed of rotation
         if(startpage <=1)
             //ofRotate((90*(numberflipsleft-1)) + startpage * 90, 0, 1, 0);
-            ofRotate(90*(totalflips) + startpage*90, 0,1,0);
+            ofRotate(90*(totalflips) + startpage*90, 0,1,0);		//90*totalflip will give us current position from which we rotate another 90 degrees per page turn
         else {
             startpage = 0;
-            nextpageleft = false;
+            nextpageleft = false;									//deactivate as to only turn when called upon
             stayonpage = true;
             //ofRotate(90, 0, 1, 0);
         }
@@ -414,6 +442,7 @@ void testApp::draw(){
     
     //totalflips = numberflipsleft - numberflipsright;
     
+	//triggered by both left and right page turns, should stay true as long as we are not in the motion of turning, this if might be redundant
     if(stayonpage){
         totalflips = numberflipsleft - numberflipsright;
         ofRotate(90*totalflips, 0, 1, 0);
@@ -432,7 +461,9 @@ void testApp::draw(){
 		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
 		if(rotate[i]){
             //ofTranslate(0,0,50);
-			emerge();
+			//emerge();
+			//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+			ofTranslate(0,0,50);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
 		ofDrawBox(0, 0, 0, 100);
@@ -446,7 +477,9 @@ void testApp::draw(){
 		ofTranslate(-200 + i*100, 400, 200);
 		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
 		if(rotate[5+i]){
-			emerge();
+			//emerge();
+			//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+			ofTranslate(0,0,50);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
 		ofDrawBox(0, 0, 0, 100);
@@ -460,13 +493,16 @@ void testApp::draw(){
 		ofTranslate(-200 + i*100, 500, 200);
 		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
 		if(rotate[10+i]){
-			emerge();
+			//emerge();
+			//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+			ofTranslate(0,0,50);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
 		ofDrawBox(0, 0, 0, 100);
 		ofPopMatrix();
 		if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
 	}
+	
     
     
     
@@ -483,6 +519,7 @@ void testApp::draw(){
 		if(rotate[15+i]){
             //ofTranslate(0,0,50);
 			//emerge();
+			//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
             ofTranslate(-50,0,0);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
@@ -500,8 +537,9 @@ void testApp::draw(){
 		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
 		if(rotate[20+i]){
             //ofTranslate(0,0,50);
-            ofTranslate(-50,0,0);
 			//emerge();
+			//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+            ofTranslate(-50,0,0);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
 		ofDrawBox(0, 0, 0, 100);
@@ -518,8 +556,9 @@ void testApp::draw(){
 		//ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
 		if(rotate[25+i]){
             //ofTranslate(0,0,50);
-            ofTranslate(-50,0,0);
 			//emerge();
+			//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+            ofTranslate(-50,0,0);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
 		ofDrawBox(0, 0, 0, 100);
@@ -542,6 +581,7 @@ void testApp::draw(){
 		if(rotate[30+i]){
             //ofTranslate(0,0,50);
 			//emerge();
+			//aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
             ofTranslate(0,0,-50);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
@@ -560,6 +600,7 @@ void testApp::draw(){
 		if(rotate[35+i]){
             //ofTranslate(0,0,50);
 			//emerge();
+			//aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
             ofTranslate(0,0,-50);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
@@ -578,6 +619,7 @@ void testApp::draw(){
 		if(rotate[40+i]){
             //ofTranslate(0,0,50);
 			//emerge();
+			//aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
             ofTranslate(0,0,-50);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
@@ -601,6 +643,7 @@ void testApp::draw(){
 		if(rotate[45+i]){
             //ofTranslate(0,0,50);
 			//emerge();
+			//originally face "east"...same idea
             ofTranslate(50,0,0);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
@@ -619,6 +662,7 @@ void testApp::draw(){
 		if(rotate[50+i]){
             //ofTranslate(0,0,50);
 			//emerge();
+			//originally face "east"...same idea
             ofTranslate(50,0,0);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
@@ -637,6 +681,7 @@ void testApp::draw(){
 		if(rotate[55+i]){
             //ofTranslate(0,0,50);
 			//emerge();
+			//originally face "east"...same idea
             ofTranslate(50,0,0);
 			ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 		}
