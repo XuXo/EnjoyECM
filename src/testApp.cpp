@@ -4,17 +4,66 @@
 //ofVec2f mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());
 
 void testApp::setup(){
+    
+    ofSetWindowShape(1600,800);
+    
+    heat.loadImage("images/scene4.png");
+    /*unsigned char * pix = heat.getPixels();
+     int brightness = 100;
+     //for a 3 channel rgb image
+     for(int i = 0; i < heat.width * heat.height * 3; i++){
+     pix[i] += MIN(brightness, 255-pix[i]); //this makes sure it doesn't go over 255 as it will wrap to 0 otherwise.
+     }
+     heat.update();
+     */
+    
     //logo.loadFont("froufrou.ttf", 32);
     logo.loadFont("type/verdana.ttf", 25, true, false, true, 0.1, 102);
     //author.loadFont("froufrou.ttf", 15);
     //author.loadFont("type/verdana.ttf", 15, true, false, true, 0.1, 102);
     //font.loadFont("sans-serif", 30);
-    font.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
-    font2.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
-    font3.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
-    font4.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
-    font5.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
-    font6.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
+    font.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font2.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font3.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font4.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font5.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font6.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font7.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font8.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font9.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font10.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    
+    songs.push_back(font);
+    songs.push_back(font2);
+    songs.push_back(font3);
+    songs.push_back(font4);
+    songs.push_back(font5);
+    songs.push_back(font6);
+    songs.push_back(font7);
+    songs.push_back(font8);
+    songs.push_back(font9);
+    songs.push_back(font10);
+    
+    
+    
+    /*
+     font.drawString("01. hi",0,0);
+     font2.drawString("02. yo",0,0);
+     font3.drawString("03. whats up",0,0);
+     font4.drawString("04. terrible",0,0);
+     font5.drawString("05. day",0,0);
+     font6.drawString("06. gay",0,0);
+     */
+    tracks.push_back("01. eick");
+    tracks.push_back("02. matheny");
+    tracks.push_back("03. gustavsen");
+    tracks.push_back("04. holland");
+    tracks.push_back("05. motian");
+    tracks.push_back("06. rypdal");
+    tracks.push_back("07. negros");
+    tracks.push_back("08. condori");
+    tracks.push_back("09. micus");
+    tracks.push_back("10. sclavis");
     
     mouse =false;
     
@@ -398,19 +447,16 @@ void testApp::emerge(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    
-    /*
-     font.drawString("01. hi",0,0);
-     font2.drawString("02. yo",0,0);
-     font3.drawString("03. whats up",0,0);
-     font4.drawString("04. terrible",0,0);
-     font5.drawString("05. day",0,0);
-     font6.drawString("06. gay",0,0);
-     */
-    
+    ofSetColor(255,255,255,255);
+    heat.draw(0,0);
+    ofSetColor(255,255,255);
     //ofSetColor(0,0,0);
+    
     logo.drawString(" Enjoy ECM ", 370,50);
     author.drawString(" (by Tian Xu)", 500,68);
+    
+    
+    
     ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
     // enable lighting //
     //ofEnableLighting();
@@ -418,33 +464,45 @@ void testApp::draw(){
 	material.begin();
     
     
-    int r  = 100;
-    
-    
+    float deg;
+    int height;
+    height = -60;
     ofPushMatrix();
     ofTranslate(500, 580, 100);
     
-    
     //cout<<"angle is"<<(ofGetElapsedTimef()*6 * RAD_TO_DEG)<<endl;
     ofPushMatrix();
-    
+    //ofRotate(-60, 1,0,0);
     ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
     ecmcovers[35].getTextureReference().bind();
-    ofDrawBox(0,0,0,r);
+    ofDrawBox(0,0,0,100);
     ecmcovers[35].getTextureReference().unbind();
     
-    
-    ofPushMatrix();
-    ofTranslate(50,-50,-50);
-    //float deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
-    //deg = deg * pi / 180;
-    //cout<<pi<<endl;
-    //ofTranslate(50*sqrt(2)*cos(deg), 0, 50*sqrt(2)*sin(deg));
-    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-    ofSetColor(51, 102, 183);
-    logo.drawString("hi",0,0);
+    float translatex, translatez;
+    for(int i = 0; i<tracks.size(); i++){
+        ofPushMatrix();
+        
+        //deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
+        //deg = deg * pi / 180;
+        deg = 360/tracks.size();
+        deg *= i;
+        deg = deg * pi / 180;
+        //cout<<"angle is"<<deg;
+        //cout<<" and x is"<<50*sqrt(2)*cos(deg)<<"and y is"<<-50*sqrt(2)*sin(deg)<<endl;
+        
+        translatex = 60*sqrt(2)*cos(deg);
+        translatez = -60*sqrt(2)*sin(deg);
+        
+        ofTranslate(translatex,height + 40*sqrt(2)*cos(deg),translatez);
+        ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+        ofSetColor(51, 102, 183);
+        //songs[i].drawString(tracks[i],0,0);
+        songs[i].drawStringAsShapes(tracks[i], 0,0);
+        ofPopMatrix();
+        
+    }
     ofPopMatrix();
-    ofPopMatrix();
+    cout<<"\n\n\n\n\n\n"<<endl;
     /*
      ofPushMatrix();
      ofTranslate(400, 400, 200);
