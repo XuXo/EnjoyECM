@@ -103,6 +103,8 @@ public:
     ofImage ofLogoImage66;
     vector<ofImage> ecmcovers;
     
+    bool swipe;
+    
     float enlarge;
     
     float timeelapsed;
