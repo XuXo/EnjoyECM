@@ -9,7 +9,12 @@ void testApp::setup(){
     //author.loadFont("froufrou.ttf", 15);
     //author.loadFont("type/verdana.ttf", 15, true, false, true, 0.1, 102);
     //font.loadFont("sans-serif", 30);
-    font.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    font.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
+    font2.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
+    font3.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
+    font4.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
+    font5.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
+    font6.loadFont("type/verdana.ttf", 2, true, true, true, 0.05, 182);
     
     mouse =false;
     
@@ -394,6 +399,14 @@ void testApp::emerge(){
 void testApp::draw(){
     
     
+    /*
+     font.drawString("01. hi",0,0);
+     font2.drawString("02. yo",0,0);
+     font3.drawString("03. whats up",0,0);
+     font4.drawString("04. terrible",0,0);
+     font5.drawString("05. day",0,0);
+     font6.drawString("06. gay",0,0);
+     */
     
     //ofSetColor(0,0,0);
     logo.drawString(" Enjoy ECM ", 370,50);
@@ -409,33 +422,29 @@ void testApp::draw(){
     
     
     ofPushMatrix();
-    ofTranslate(400, 400, 200);
+    ofTranslate(500, 580, 100);
     
     
     //cout<<"angle is"<<(ofGetElapsedTimef()*6 * RAD_TO_DEG)<<endl;
     ofPushMatrix();
     
-    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 0, 1);         //this is 180/pi
+    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
     ecmcovers[35].getTextureReference().bind();
-    
     ofDrawBox(0,0,0,r);
     ecmcovers[35].getTextureReference().unbind();
-    //ofPopMatrix();
-    
-    //ofPushMatrix();
     
     
-    //ofPushMatrix();
-    //ofTranslate(0,-2,0);
-    //ofPopMatrix();
-    float deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
-    deg = deg * pi / 180;
-    
-    //ofTranslate(50*sqrt(2)*cos(deg), 50*sqrt(2)*sin(deg),0);
-    ofTranslate(50,-50+ofGetElapsedTimef()*20,0);
+    ofPushMatrix();
+    ofTranslate(50,-50,-50);
+    //float deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
+    //deg = deg * pi / 180;
+    //cout<<pi<<endl;
+    //ofTranslate(50*sqrt(2)*cos(deg), 0, 50*sqrt(2)*sin(deg));
+    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+    ofSetColor(51, 102, 183);
     logo.drawString("hi",0,0);
     ofPopMatrix();
-    
+    ofPopMatrix();
     /*
      ofPushMatrix();
      ofTranslate(400, 400, 200);
