@@ -5,33 +5,27 @@
 
 void testApp::setup(){
     
-    ofSetWindowShape(1600,800);
+    trans = 255;
     
-    heat.loadImage("images/scene4.png");
-    /*unsigned char * pix = heat.getPixels();
-     int brightness = 100;
-     //for a 3 channel rgb image
-     for(int i = 0; i < heat.width * heat.height * 3; i++){
-     pix[i] += MIN(brightness, 255-pix[i]); //this makes sure it doesn't go over 255 as it will wrap to 0 otherwise.
-     }
-     heat.update();
-     */
+    ofSetWindowShape(1400,1000);
     
     //logo.loadFont("froufrou.ttf", 32);
     logo.loadFont("type/verdana.ttf", 25, true, false, true, 0.1, 102);
     //author.loadFont("froufrou.ttf", 15);
-    //author.loadFont("type/verdana.ttf", 15, true, false, true, 0.1, 102);
+    author.loadFont("type/verdana.ttf", 8, true, false, true, 0.1, 102);
     //font.loadFont("sans-serif", 30);
-    font.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font2.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font3.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font4.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font5.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font6.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font7.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font8.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font9.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
-    font10.loadFont("type/verdana.ttf", 5, true, true, true, 0.05, 182);
+    
+    fontsize = 4;
+    font.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font2.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font3.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font4.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font5.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font6.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font7.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font8.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font9.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+    font10.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
     
     songs.push_back(font);
     songs.push_back(font2);
@@ -45,15 +39,6 @@ void testApp::setup(){
     songs.push_back(font10);
     
     
-    
-    /*
-     font.drawString("01. hi",0,0);
-     font2.drawString("02. yo",0,0);
-     font3.drawString("03. whats up",0,0);
-     font4.drawString("04. terrible",0,0);
-     font5.drawString("05. day",0,0);
-     font6.drawString("06. gay",0,0);
-     */
     tracks.push_back("01. eick");
     tracks.push_back("02. matheny");
     tracks.push_back("03. gustavsen");
@@ -64,6 +49,8 @@ void testApp::setup(){
     tracks.push_back("08. condori");
     tracks.push_back("09. micus");
     tracks.push_back("10. sclavis");
+    
+    
     
     mouse =false;
     
@@ -387,7 +374,9 @@ void testApp::update() {
              */
 			//these are the coordinates on screen after being projected forward from depth of z=200
 			//found by trial and error...
-			if((x > 95+ (i*160)) && (x< 95+(i+1)*160)&& (y > 172+(j*160)) && (y < 172+ (j+1)*160)){
+            
+            //this needs to be fixed, we shifted 230 before projecting forward, so it's not really 230...
+			if((x > 95+230+ (i*160)) && (x< 95+230+(i+1)*160)&& (y > 172+(j*160)) && (y < 172+ (j+1)*160)){
 				if(page == 0){
 					rotate[(j*5)+i] = true;
                 }
@@ -447,16 +436,12 @@ void testApp::emerge(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    ofSetColor(255,255,255,255);
-    heat.draw(0,0);
+    ofTranslate(230,0,0);
+    
+    ofSetColor(255,0,0);
+    logo.drawStringAsShapes(" Enjoy ECM ", 393,50);
     ofSetColor(255,255,255);
-    //ofSetColor(0,0,0);
-    
-    logo.drawString(" Enjoy ECM ", 370,50);
-    author.drawString(" (by Tian Xu)", 500,68);
-    
-    
-    
+    author.drawStringAsShapes(" (by Tian Xu)", 500,68);
     ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
     // enable lighting //
     //ofEnableLighting();
@@ -464,58 +449,12 @@ void testApp::draw(){
 	material.begin();
     
     
-    float deg;
-    int height;
-    height = -60;
-    ofPushMatrix();
-    ofTranslate(500, 580, 100);
     
-    //cout<<"angle is"<<(ofGetElapsedTimef()*6 * RAD_TO_DEG)<<endl;
-    ofPushMatrix();
-    //ofRotate(-60, 1,0,0);
-    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
-    ecmcovers[35].getTextureReference().bind();
-    ofDrawBox(0,0,0,100);
-    ecmcovers[35].getTextureReference().unbind();
-    
-    float translatex, translatez;
-    for(int i = 0; i<tracks.size(); i++){
-        ofPushMatrix();
-        
-        //deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
-        //deg = deg * pi / 180;
-        deg = 360/tracks.size();
-        deg *= i;
-        deg = deg * pi / 180;
-        //cout<<"angle is"<<deg;
-        //cout<<" and x is"<<50*sqrt(2)*cos(deg)<<"and y is"<<-50*sqrt(2)*sin(deg)<<endl;
-        
-        translatex = 60*sqrt(2)*cos(deg);
-        translatez = -60*sqrt(2)*sin(deg);
-        
-        ofTranslate(translatex,height + 40*sqrt(2)*cos(deg),translatez);
-        ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-        ofSetColor(51, 102, 183);
-        //songs[i].drawString(tracks[i],0,0);
-        songs[i].drawStringAsShapes(tracks[i], 0,0);
-        ofPopMatrix();
-        
-    }
-    ofPopMatrix();
-    cout<<"\n\n\n\n\n\n"<<endl;
-    /*
-     ofPushMatrix();
-     ofTranslate(400, 400, 200);
-     ofTranslate(r*sqrt(2)*sin(ofGetElapsedTimef()*.01 * RAD_TO_DEG), 0,r*sqrt(2)*sin(ofGetElapsedTimef()*.01 * RAD_TO_DEG));
-     font.drawStringAsShapes("what is wrong with this track", 0,0);
-     ofPopMatrix();
-     */
-    
-    
-    
-    
-    
-    
+    /*ofPushMatrix();
+     ofTranslate(0, 0, 500);
+     //font.drawString("test", ofGetWidth()/2 - 20, ofGetHeight()/2);
+     font.drawStringAsShapes("what is wrong with this track", ofGetWidth()/2 + 20, ofGetHeight()/2);
+     ofPopMatrix();*/
     
     
     
@@ -526,13 +465,13 @@ void testApp::draw(){
 	//if (bDirLight) directionalLight.enable();
     
     
-    /*
-     ofSetColor(255, 255, 255, 255);
+	/*ofSetColor(255, 255, 255, 255);
      ofPushMatrix();
      ofTranslate(center.x, center.y, center.z-300);
      ofRotate(ofGetElapsedTimef() * 1* RAD_TO_DEG, 0, 1, 0);
      ofDrawSphere( 0,0,0, radius);
      ofPopMatrix();*/
+	
     
     //move canvas to center of screen, this will serve as axis of rotation
     ofTranslate(500,00,00);
@@ -596,281 +535,338 @@ void testApp::draw(){
         ofRotate(90*totalflips, 0, 1, 0);
     }
     
-    /*
-     //building the first face
-     
-     // grab the texture reference and bind it //
-     // this will apply the texture to all drawing (vertex) calls before unbind() //
-     
-     for( int i = 0; i<5; i++){
-     if( (page != 1) || (i != 0) ){
-     if( (page != 3) || (i != 4) ){
-     if(bUseTexture) ecmcovers[i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(-200 + i*100, 300, 200);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[i]){
-     //ofTranslate(0,0,50);
-     //emerge();
-     //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-     ofTranslate(0,0,enlarge);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofSetColor(255,255,255,255);    //turn on transparency
-     ofDrawBox(0, 0, 0, 100);
-     ofSetColor(255,255,255);        //turn off transparency
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[i].getTextureReference().unbind();
-     }
-     }
-     }
-     
-     for( int i = 0; i<5; i++){
-     if( (page != 1) || (i != 0) ){
-     if( (page != 3) || (i != 4) ){
-     if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(-200 + i*100, 400, 200);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[5+i]){
-     //emerge();
-     //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-     ofTranslate(0,0,enlarge);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[5+i].getTextureReference().unbind();
-     }
-     }
-     }
-     
-     for( int i = 0; i < 5; i++) {
-     if( (page != 1) || (i != 0) ){
-     if( (page != 3) || (i != 4) ){
-     if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(-200 + i*100, 500, 200);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[10+i]){
-     //emerge();
-     //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-     ofTranslate(0,0,enlarge);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
-     }
-     }
-     }
-     
-     
-     
-     
-     
-     
-     //building the second face (left wall) from back to front, top to bottom like you did the front face had you rotate it
-     //so last cube is actually the first of our front wall, ie cover[19] is same as cover[0]
-     //make sure you load the same image..
-     for( int i = 0; i<5; i++){
-     if( (page != 2) || (i != 0) ){
-     if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(-200, 300, -200+ i*100);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[15+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-     ofTranslate(-enlarge,0,0);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[15+i].getTextureReference().unbind();
-     }
-     }
-     
-     //cover[24] is same as cover[5]
-     //make sure you load the same image..
-     for( int i = 0; i<5; i++){
-     if( (page != 2) || (i != 0) ){
-     if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(-200, 400, -200+ i*100);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[20+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-     ofTranslate(-enlarge,0,0);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[20+i].getTextureReference().unbind();
-     }
-     }
-     
-     //cover[29] is same as cover[10]
-     //make sure you load the same image..
-     for( int i = 0; i<5; i++){
-     if( (page != 2) || (i != 0) ){
-     if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(-200, 500, -200+ i*100);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[25+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-     ofTranslate(-enlarge,0,0);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[25+i].getTextureReference().unbind();
-     }
-     }
-     
-     
-     
-     
-     //building the back wall such that had you rotate it, it'd be left to right top to bottom same construction
-     //so really its right to left top to bottom here
-     //cover[34] is same as cover[15]
-     //make sure you load the same image..
-     
-     for( int i = 0; i<5; i++){
-     if( (page != 3) || (i != 0) ){
-     if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(200 - i*100, 300, -200);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[30+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
-     ofTranslate(0,0,-enlarge);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[30+i].getTextureReference().unbind();
-     }
-     }
-     
-     //cover[39] is same as cover[20]
-     //make sure you load the same image..
-     for( int i = 0; i<5; i++){
-     if( (page != 3) || (i != 0) ){
-     if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(200 - i*100, 400, -200);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[35+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
-     ofTranslate(0,0,-enlarge);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[35+i].getTextureReference().unbind();
-     }
-     }
-     
-     //cover[44] is same as cover[25]
-     //make sure you load the same image..
-     for( int i = 0; i<5; i++){
-     if( (page != 3) || (i != 0) ){
-     if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(200 - i*100, 500, -200);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[40+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
-     ofTranslate(0,0,-enlarge);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[40+i].getTextureReference().unbind();
-     }
-     }
-     
-     
-     
-     
-     
-     //building the final right wall from front to back top to bottom
-     //cover[49] is same as cover[30]
-     //make sure you load the same image..
-     for( int i = 0; i<5; i++){
-     //if( (page != 0) || (i != 0) ){
-     if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(200, 300, 200 - i*100);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[45+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //originally face "east"...same idea
-     ofTranslate(enlarge,0,0);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[45+i].getTextureReference().unbind();
-     //}
-     }
-     
-     //cover[54] is same as cover[35]
-     //make sure you load the same image..
-     for( int i = 0; i<5; i++){
-     //if( (page != 0) || (i != 0) ){
-     if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(200, 400, 200 - i*100);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[50+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //originally face "east"...same idea
-     ofTranslate(enlarge,0,0);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[50+i].getTextureReference().unbind();
-     //}
-     }
-     
-     //cover[59] is same as cover[40]
-     //make sure you load the same image..
-     for( int i = 0; i<5; i++){
-     //if( (page != 0) || (i != 0) ){
-     if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
-     ofPushMatrix();
-     ofTranslate(200, 500, 200 - i*100);
-     //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-     if(rotate[55+i]){
-     //ofTranslate(0,0,enlarge);
-     //emerge();
-     //originally face "east"...same idea
-     ofTranslate(enlarge,0,0);
-     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-     }
-     ofDrawBox(0, 0, 0, 100);
-     ofPopMatrix();
-     if(bUseTexture) ecmcovers[55+i].getTextureReference().unbind();
-     //}
-     }
-     */
+    
+    //building the first face
+    
+    // grab the texture reference and bind it //
+    // this will apply the texture to all drawing (vertex) calls before unbind() //
+	
+    
+    float deg;
+    int height;
+    height = -100;
+    
+    
+	for( int i = 0; i<5; i++){
+        if( (page != 1) || (i != 0) ){
+            if( (page != 3) || (i != 4) ){
+                if(bUseTexture) ecmcovers[i].getTextureReference().bind();
+                ofPushMatrix();
+                ofTranslate(-200 + i*100, 300, 200);
+                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+                if(rotate[i]){
+                    //ofTranslate(0,0,50);
+                    //emerge();
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+                    ofTranslate(0,0,enlarge);
+                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                }
+                ofSetColor(255,255,255,trans);    //turn on transparency
+                ofDrawBox(0, 0, 0, 100);
+                ofSetColor(255,255,255);        //turn off transparency
+                ofPopMatrix();
+                if(bUseTexture) ecmcovers[i].getTextureReference().unbind();
+            }
+        }
+	}
+    
+    for( int i = 0; i<5; i++){
+        if( (page != 1) || (i != 0) ){
+            if( (page != 3) || (i != 4) ){
+                if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
+                ofPushMatrix();
+                ofTranslate(-200 + i*100, 400, 200);
+                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+                if(rotate[5+i]){
+                    //emerge();
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+                    ofTranslate(0,0,enlarge);
+                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                }
+                ofSetColor(255,255,255,trans);    //turn on transparency
+                ofDrawBox(0, 0, 0, 100);
+                ofSetColor(255,255,255);        //turn off transparency
+                ofPopMatrix();
+                if(bUseTexture) ecmcovers[5+i].getTextureReference().unbind();
+            }
+        }
+	}
+    
+    
+    float translatex, translatez;
+    
+    ofColor blue = ofColor(51, 102, 183);
+    for( int i = 0; i < 5; i++) {
+        if( (page != 1) || (i != 0) ){
+            if( (page != 3) || (i != 4) ){
+                if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
+                ofPushMatrix();
+                ofTranslate(-200 + i*100, 500, 200);
+                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+                if(rotate[10+i]){
+                    
+                    trans = 100;
+                    //emerge();
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+                    ofTranslate(0,0,enlarge);
+                    
+                    
+                    ofPushMatrix();
+                    //ofRotate(-60, 1,0,0);
+                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
+                    
+                    
+                    //ofSetColor(51, 102, 183);
+                    for(int i = 0; i<tracks.size(); i++){
+                        ofPushMatrix();
+                        
+                        //deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
+                        //deg = deg * pi / 180;
+                        deg = 360/tracks.size();
+                        deg *= i;
+                        deg = deg * pi / 180;
+                        //cout<<"angle is"<<deg;
+                        //cout<<" and x is"<<50*sqrt(2)*cos(deg)<<"and y is"<<-50*sqrt(2)*sin(deg)<<endl;
+                        
+                        translatex = 20*sqrt(2)*cos(deg);
+                        translatez = -20*sqrt(2)*sin(deg);
+                        
+                        
+                        ofTranslate(translatex,height + 30*sqrt(2)*cos(deg/2),translatez);
+                        ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                        
+                        
+                        //ofSetColor(255,255,255);
+                        //ofSetColor(51, 102, 183);
+                        //ofSetColor(0,255,0);
+                        songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+                        
+                        ofSetColor(255,255,255);
+                        ofPopMatrix();
+                        
+                        trans = 100;
+                    }
+                    ofPopMatrix();
+                    
+                    
+                    trans = 255;
+                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                }
+                //ofSetColor(255,255,255);
+                ofDrawBox(0, 0, 0, 100);
+                ofPopMatrix();
+                if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
+            }
+        }
+	}
+	
+    
+    
+    
+    
+    
+	//building the second face (left wall) from back to front, top to bottom like you did the front face had you rotate it
+	//so last cube is actually the first of our front wall, ie cover[19] is same as cover[0]
+	//make sure you load the same image..
+	for( int i = 0; i<5; i++){
+        if( (page != 2) || (i != 0) ){
+            if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(-200, 300, -200+ i*100);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[15+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                ofTranslate(-enlarge,0,0);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[15+i].getTextureReference().unbind();
+        }
+	}
+    
+	//cover[24] is same as cover[5]
+	//make sure you load the same image..
+	for( int i = 0; i<5; i++){
+        if( (page != 2) || (i != 0) ){
+            if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(-200, 400, -200+ i*100);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[20+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                ofTranslate(-enlarge,0,0);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[20+i].getTextureReference().unbind();
+        }
+	}
+    
+	//cover[29] is same as cover[10]
+	//make sure you load the same image..
+	for( int i = 0; i<5; i++){
+        if( (page != 2) || (i != 0) ){
+            if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(-200, 500, -200+ i*100);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[25+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                ofTranslate(-enlarge,0,0);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[25+i].getTextureReference().unbind();
+        }
+	}
+    
+	
+    
+    
+	//building the back wall such that had you rotate it, it'd be left to right top to bottom same construction
+	//so really its right to left top to bottom here
+	//cover[34] is same as cover[15]
+	//make sure you load the same image..
+    
+	for( int i = 0; i<5; i++){
+        if( (page != 3) || (i != 0) ){
+            if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(200 - i*100, 300, -200);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[30+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                ofTranslate(0,0,-enlarge);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[30+i].getTextureReference().unbind();
+        }
+	}
+    
+	//cover[39] is same as cover[20]
+	//make sure you load the same image..
+	for( int i = 0; i<5; i++){
+        if( (page != 3) || (i != 0) ){
+            if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(200 - i*100, 400, -200);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[35+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                ofTranslate(0,0,-enlarge);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[35+i].getTextureReference().unbind();
+        }
+	}
+    
+	//cover[44] is same as cover[25]
+	//make sure you load the same image..
+	for( int i = 0; i<5; i++){
+        if( (page != 3) || (i != 0) ){
+            if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
+            ofPushMatrix();
+            ofTranslate(200 - i*100, 500, -200);
+            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+            if(rotate[40+i]){
+                //ofTranslate(0,0,enlarge);
+                //emerge();
+                //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                ofTranslate(0,0,-enlarge);
+                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            }
+            ofDrawBox(0, 0, 0, 100);
+            ofPopMatrix();
+            if(bUseTexture) ecmcovers[40+i].getTextureReference().unbind();
+        }
+	}
+    
+    
+    
+    
+    
+	//building the final right wall from front to back top to bottom
+	//cover[49] is same as cover[30]
+	//make sure you load the same image..
+	for( int i = 0; i<5; i++){
+        //if( (page != 0) || (i != 0) ){
+        if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
+        ofPushMatrix();
+        ofTranslate(200, 300, 200 - i*100);
+        //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+        if(rotate[45+i]){
+            //ofTranslate(0,0,enlarge);
+            //emerge();
+            //originally face "east"...same idea
+            ofTranslate(enlarge,0,0);
+            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+        }
+        ofDrawBox(0, 0, 0, 100);
+        ofPopMatrix();
+        if(bUseTexture) ecmcovers[45+i].getTextureReference().unbind();
+        //}
+	}
+    
+	//cover[54] is same as cover[35]
+	//make sure you load the same image..
+	for( int i = 0; i<5; i++){
+        //if( (page != 0) || (i != 0) ){
+        if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
+        ofPushMatrix();
+        ofTranslate(200, 400, 200 - i*100);
+        //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+        if(rotate[50+i]){
+            //ofTranslate(0,0,enlarge);
+            //emerge();
+            //originally face "east"...same idea
+            ofTranslate(enlarge,0,0);
+            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+        }
+        ofDrawBox(0, 0, 0, 100);
+        ofPopMatrix();
+        if(bUseTexture) ecmcovers[50+i].getTextureReference().unbind();
+        //}
+	}
+    
+	//cover[59] is same as cover[40]
+	//make sure you load the same image..
+	for( int i = 0; i<5; i++){
+        //if( (page != 0) || (i != 0) ){
+        if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
+        ofPushMatrix();
+        ofTranslate(200, 500, 200 - i*100);
+        //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+        if(rotate[55+i]){
+            //ofTranslate(0,0,enlarge);
+            //emerge();
+            //originally face "east"...same idea
+            ofTranslate(enlarge,0,0);
+            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+        }
+        ofDrawBox(0, 0, 0, 100);
+        ofPopMatrix();
+        if(bUseTexture) ecmcovers[55+i].getTextureReference().unbind();
+        //}
+	}
+    
     
     
     
@@ -913,15 +909,12 @@ void testApp::draw(){
     
     
     
-    int rows = 10;
-    int last = 0;
-    
-    
-    
-    ofTranslate(-50, 350, 450);
-    
-    
+    //drawing panel, deprecated as I opted for the helical track display
     /*
+     int rows = 10;
+     int last = 0;
+     
+     ofTranslate(-50, 350, 450);
      
      for(int i = 0; i< rows-1; i++){
      if(i%2 == 1){
@@ -961,6 +954,8 @@ void testApp::draw(){
      myRect.height = width*rows;
      ofRectRounded( myRect, 2 );
      */
+    
+    
     
     
     /*
