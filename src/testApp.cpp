@@ -1,3 +1,6 @@
+
+
+
 #include "testApp.h"
 //#include <boost/lambda/lambda.hpp>
 //--------------------------------------------------------------
@@ -5,8 +8,10 @@
 
 void testApp::setup(){
     
-    trans = 255;
     
+    trans = 255;
+    togglecaption = false;
+    captionindex = 0;
     ofSetWindowShape(1400,1000);
     
     //logo.loadFont("froufrou.ttf", 32);
@@ -14,6 +19,13 @@ void testApp::setup(){
     //author.loadFont("froufrou.ttf", 15);
     author.loadFont("type/verdana.ttf", 8, true, false, true, 0.1, 102);
     //font.loadFont("sans-serif", 30);
+    //caption.loadFont("type/verdana.ttf", 8, true, false, true, 0.1, 102);
+    caption.loadFont("verdana.ttf", 10, true, true);
+	caption.setLineHeight(14.0f);
+	caption.setLetterSpacing(1.035);
+    
+    
+    
     
     fontsize = 4;
     font.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
@@ -50,6 +62,40 @@ void testApp::setup(){
     tracks.push_back("09. micus");
     tracks.push_back("10. sclavis");
     
+    
+    descriptions.push_back("Trygve Seim\nAndreas Utnem\nPurcor\n\nTrygve Seim tenor and soprano saxophones\nAndreas Utnem piano, harmonium");
+    descriptions.push_back("Roscoe Mitchell\nThe Note Factory\nFar Side\n\nRoscoe Mitchell saxophones, flutes\nCorey Wilkes trumpet, flugelhorn\nCraig Taborn piano\nVijay Iyer piano\nHarrison Bankhead cello, double-bass\nJaribu Shahid double-bass\nTanni Tabbal drums\nVincent Davis drums");
+    
+    descriptions.push_back("Vassilis Tsabropoulos\nAnja Lechner\nU. T. Gandhi\nMelos\n\nVassilis Tsabropoulos piano\nAnja Lechner violoncello\nU. T. Gandhi percussion");
+    
+    descriptions.push_back("Tord Gustavsen Trio\nBeing There\n\nTord Gustavsen piano\nHarald Johnsen double-bass\nJarle Vespestad drums");
+    
+    descriptions.push_back("Marcin Wasilewski Trio\nJanuary\n\nMarcin Wasilewski piano\nSlawomir Kurkiewicz double-bass\nMichal Miskiewicz drums");
+    
+    descriptions.push_back("Andy Sheppard\nMovements in Colour\n\nAndy Sheppard soprano and tenor saxophones\nJohn Parricelli acoustic and electric guitars\nEivind Aarset guitar, electronics\nArild Andersen double-bass, electronics\nKuljit Bhamra tabla, percussion");
+    
+    descriptions.push_back("Michael Formanek\nSmall Places\n\nTim Berne alto saxophone\nCraig Taborn piano\nMichael Formanek double-bass\nGerald Cleaver drums, shruti bo");
+    
+    descriptions.push_back("Trygve Seim\nFrode Haltli\nYeraz\n\nTrygve Seim soprano and tenor saxophones\nFrode Haltli accordion ");
+    
+    descriptions.push_back("Jon Balke\nBook of Velocities\n\nJon Balke piano");
+    
+    descriptions.push_back("Keith Jarrett\nGary Peacock\nJack DeJohnette\nAlways Let Me Go\n\nKeith Jarrett piano\nGary Peacock double-bass\nJack DeJohnette drums");
+    
+    descriptions.push_back("Andy Sheppard\nMichel Benita\nSebastian Rochford\nTrio Libero\n\nAndy Sheppard tenor and soprano saxophones\nMichel Benita double-bass\nSebastian Rochford drums");
+    
+    descriptions.push_back("Miroslav Vitous\nUniversal Syncopations II\n\nBob Mintzer tenor saxophone, bass clarinet\nGary Campbell soprano and tenor saxophones\nBob Malach tenor saxophone\nRandy Brecker trumpet\nDaniele di Bonaventura bandoneon\nVesna Vasko-Caceres voice\nGerald Cleaver drums\nAdam Nussbaum drums\nMiroslav Vitous double-bass");
+    
+    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, vihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, vihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjørn Kjellemyr colascione\nDavid Mayoral percussion");
+    
+    descriptions.push_back("Food\nQuiet Inlet\nThomas Strønen drums, live-electronics\nIain Ballamy tenor- and soprano saxophones\nNils Petter Molvær trumpet, electronics\nChristian Fennesz guitar, electronics\nSebastian Rochford drums");
+    
+    descriptions.push_back("Iva Bittová\n\nIva Bittová voilin, voice, kalimba");
+    
+    descriptions.push_back("Julia Hülsmann Trio\nImprint\nJulia Hülsmann piano\nMarc Muellbauer double-bass\nHeinrich Köbberling drums");
+    descriptions.push_back("Bobo Stenson Trio\nIndicum\nBobo Stenson piano\nAnders Jormin double-bass\nJon Fält drums");
+    descriptions.push_back("Jon Balke\nBatagraf\nSay And Play\nJon Balke piano, keyboards, electronics, tungoné, darbouka, percussion\nHelge Andreas Norbakken sabar, gorong, djembe, talking drum, shakers, percussion\nEmilie Stoesen Christensen vocals\nErland Dahlen drums\nTorgeir Rebolledo Pedersen poetry reading");
+    descriptions.push_back("John Abercrombie\nClass Trip\nJohn Abercrombie guitar\nMark Feldman violin\nMarc Johnson double-bass\nJoey Baron drums");
     
     
     mouse =false;
@@ -436,12 +482,28 @@ void testApp::emerge(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
+    
+    if(togglecaption){
+        
+        ofSetColor(51, 102, 133);
+        //ofSetColor(255,0,0);
+        //caption.drawString(descriptions[0],20, 170);
+        
+        ofDrawBitmapString(descriptions[captionindex], 20,170);        //seems to look much better also does not get eclipsed by anything
+        togglecaption = false;
+    }
+    
     ofTranslate(230,0,0);
     
     ofSetColor(255,0,0);
     logo.drawStringAsShapes(" Enjoy ECM ", 393,50);
     ofSetColor(255,255,255);
     author.drawStringAsShapes(" (by Tian Xu)", 500,68);
+    
+    
+    
+    
+    
     ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
     // enable lighting //
     //ofEnableLighting();
@@ -603,7 +665,12 @@ void testApp::draw(){
                 ofPushMatrix();
                 ofTranslate(-200 + i*100, 500, 200);
                 //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+                
+                
                 if(rotate[10+i]){
+                    
+                    togglecaption = true;
+                    captionindex = 10+i;
                     
                     trans = 100;
                     //emerge();
@@ -653,10 +720,14 @@ void testApp::draw(){
                     trans = 255;
                     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
                 }
+                
+                
+                
                 //ofSetColor(255,255,255);
                 ofDrawBox(0, 0, 0, 100);
                 ofPopMatrix();
                 if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
+                //togglecaption = false;
             }
         }
 	}
