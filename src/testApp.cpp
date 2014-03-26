@@ -24,6 +24,7 @@ void testApp::setup(){
 	caption.setLineHeight(14.0f);
 	caption.setLetterSpacing(1.035);
     
+    rownumber = 1;
     
     
     
@@ -496,8 +497,10 @@ void testApp::draw(){
     ofTranslate(230,0,0);
     
     ofSetColor(255,0,0);
+    //logo.setLetterSpacing(1.2);
     logo.drawStringAsShapes(" Enjoy ECM ", 393,50);
-    ofSetColor(255,255,255);
+    //ofSetColor(255,255,255);
+    ofSetColor(176,196,222);
     author.drawStringAsShapes(" (by Tian Xu)", 500,68);
     
     
@@ -606,13 +609,19 @@ void testApp::draw(){
     
     float deg;
     int height;
-    height = -100;
-    
+    if(rownumber == 1)
+        height = -100;
+    else if (rownumber == 2)
+        height = -100;
+    else
+        height = 125;
+    ofColor textcolor(176,196,222);
+    float translatex, translatez;
     
 	for( int i = 0; i<5; i++){
         if( (page != 1) || (i != 0) ){
             if( (page != 3) || (i != 4) ){
-                if(bUseTexture) ecmcovers[i].getTextureReference().bind();
+                
                 ofPushMatrix();
                 ofTranslate(-200 + i*100, 300, 200);
                 //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
@@ -620,12 +629,55 @@ void testApp::draw(){
                     //ofTranslate(0,0,50);
                     //emerge();
                     //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+                    togglecaption = true;
+                    captionindex = 10+i;
+                    
+                    trans = 100;
+                    //emerge();
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     ofTranslate(0,0,enlarge);
+                    
+                    
+                    ofPushMatrix();
+                    //ofRotate(-60, 1,0,0);
+                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
+                    
+                    
+                    //ofSetColor(51, 102, 183);
+                    for(int i = 0; i<tracks.size(); i++){
+                        ofPushMatrix();
+                        
+                        //deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
+                        //deg = deg * pi / 180;
+                        deg = 360/tracks.size();
+                        deg *= i;
+                        deg = deg * pi / 180;
+                        //cout<<"angle is"<<deg;
+                        //cout<<" and x is"<<50*sqrt(2)*cos(deg)<<"and y is"<<-50*sqrt(2)*sin(deg)<<endl;
+                        
+                        translatex = 20*sqrt(2)*cos(deg);
+                        translatez = -20*sqrt(2)*sin(deg);
+                        
+                        
+                        ofTranslate(translatex,125 + 35*sqrt(2)*cos(deg/2),translatez);
+                        ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                        
+                        ofSetColor(textcolor);
+                        songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+                        ofSetColor(255,255,255);
+                        ofPopMatrix();
+                        
+                        trans = 100;
+                    }
+                    ofPopMatrix();
+                    
+                    trans = 255;
                     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
                 }
                 ofSetColor(255,255,255,trans);    //turn on transparency
+                if(bUseTexture) ecmcovers[i].getTextureReference().bind();
                 ofDrawBox(0, 0, 0, 100);
-                ofSetColor(255,255,255);        //turn off transparency
                 ofPopMatrix();
                 if(bUseTexture) ecmcovers[i].getTextureReference().unbind();
             }
@@ -635,33 +687,81 @@ void testApp::draw(){
     for( int i = 0; i<5; i++){
         if( (page != 1) || (i != 0) ){
             if( (page != 3) || (i != 4) ){
-                if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
+                
                 ofPushMatrix();
                 ofTranslate(-200 + i*100, 400, 200);
                 //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
                 if(rotate[5+i]){
                     //emerge();
                     //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+                    //ofTranslate(0,0,enlarge);
+                    //ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                    
+                    togglecaption = true;
+                    captionindex = 10+i;
+                    
+                    trans = 100;
+                    //emerge();
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     ofTranslate(0,0,enlarge);
+                    
+                    
+                    ofPushMatrix();
+                    //ofRotate(-60, 1,0,0);
+                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
+                    
+                    
+                    //ofSetColor(51, 102, 183);
+                    for(int i = 0; i<tracks.size(); i++){
+                        ofPushMatrix();
+                        
+                        //deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
+                        //deg = deg * pi / 180;
+                        deg = 360/tracks.size();
+                        deg *= i;
+                        deg = deg * pi / 180;
+                        //cout<<"angle is"<<deg;
+                        //cout<<" and x is"<<50*sqrt(2)*cos(deg)<<"and y is"<<-50*sqrt(2)*sin(deg)<<endl;
+                        
+                        translatex = 20*sqrt(2)*cos(deg);
+                        translatez = -20*sqrt(2)*sin(deg);
+                        
+                        
+                        ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                        ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                        
+                        ofSetColor(textcolor);
+                        songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+                        ofSetColor(255,255,255);
+                        ofPopMatrix();
+                        
+                        trans = 100;
+                    }
+                    ofPopMatrix();
+                    
+                    trans = 255;
                     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                    
                 }
                 ofSetColor(255,255,255,trans);    //turn on transparency
+                
+                if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
                 ofDrawBox(0, 0, 0, 100);
-                ofSetColor(255,255,255);        //turn off transparency
-                ofPopMatrix();
                 if(bUseTexture) ecmcovers[5+i].getTextureReference().unbind();
+                ofPopMatrix();
             }
         }
 	}
     
     
-    float translatex, translatez;
+    
     
     ofColor blue = ofColor(51, 102, 183);
     for( int i = 0; i < 5; i++) {
         if( (page != 1) || (i != 0) ){
             if( (page != 3) || (i != 4) ){
-                if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
+                
                 ofPushMatrix();
                 ofTranslate(-200 + i*100, 500, 200);
                 //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
@@ -699,15 +799,11 @@ void testApp::draw(){
                         translatez = -20*sqrt(2)*sin(deg);
                         
                         
-                        ofTranslate(translatex,height + 30*sqrt(2)*cos(deg/2),translatez);
+                        ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                         ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                         
-                        
-                        //ofSetColor(255,255,255);
-                        //ofSetColor(51, 102, 183);
-                        //ofSetColor(0,255,0);
+                        ofSetColor(textcolor);
                         songs[i].drawStringAsShapes(tracks[i], 0,0);
-                        
                         
                         ofSetColor(255,255,255);
                         ofPopMatrix();
@@ -716,17 +812,16 @@ void testApp::draw(){
                     }
                     ofPopMatrix();
                     
-                    
                     trans = 255;
                     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
                 }
                 
-                
-                
                 //ofSetColor(255,255,255);
+                if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
                 ofDrawBox(0, 0, 0, 100);
-                ofPopMatrix();
+                
                 if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
+                ofPopMatrix();
                 //togglecaption = false;
             }
         }

@@ -140,6 +140,8 @@ public:
     vector<bool> rotate;
     vector<bool> freeze;
     bool scrollcubes;
+    bool scrolltracks;
+    bool playsong;
     int cube;
     
     bool resetrotate;
@@ -178,4 +180,11 @@ public:
     ofImage heat;
     
     ofColor songcolor;
+    
+    vector<ofColor>trackcolors1;
+	vector<ofColor>trackcolors2;
+    vector<ofColor>trackcolors;			//this will assume one of the above 3 depending on the current page
+
+    vector<vector<ofColor> > albumcolors;
+    vector<ofColor> pagecolors;
 };
