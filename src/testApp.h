@@ -187,4 +187,5 @@ public:
 
     vector<vector<ofColor> > albumcolors;
     vector<ofColor> pagecolors;
+    vector<ofColor> highlightcolors;
 };

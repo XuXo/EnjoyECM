@@ -16,15 +16,20 @@ void testApp::setup(){
     
     //logo.loadFont("froufrou.ttf", 32);
     logo.loadFont("type/verdana.ttf", 25, true, false, true, 0.1, 102);
+    
+    logo2.loadFont("type/verdana.ttf", 7, true, false, true, 0.1, 102);
     //author.loadFont("froufrou.ttf", 15);
-    author.loadFont("type/verdana.ttf", 8, true, false, true, 0.1, 102);
+    author.loadFont("type/verdana.ttf", 5.8, true, false, true, 0.1, 102);
+    
+    date.setLetterSpacing(1.3);
+    date.loadFont("type/dinen.ttf", 10, true, false, true, 0.1, 102);
     //font.loadFont("sans-serif", 30);
     //caption.loadFont("type/verdana.ttf", 8, true, false, true, 0.1, 102);
-    caption.loadFont("verdana.ttf", 10, true, true);
+    caption.loadFont("verdana.ttf", 8, true, true);
 	caption.setLineHeight(14.0f);
 	caption.setLetterSpacing(1.035);
     
-    rownumber = 1;
+    rownumber = 0;
     
     
     
@@ -63,25 +68,9 @@ void testApp::setup(){
     tracks.push_back("09. micus");
     tracks.push_back("10. sclavis");
     
-    
-    descriptions.push_back("Trygve Seim\nAndreas Utnem\nPurcor\n\nTrygve Seim tenor and soprano saxophones\nAndreas Utnem piano, harmonium");
-    descriptions.push_back("Roscoe Mitchell\nThe Note Factory\nFar Side\n\nRoscoe Mitchell saxophones, flutes\nCorey Wilkes trumpet, flugelhorn\nCraig Taborn piano\nVijay Iyer piano\nHarrison Bankhead cello, double-bass\nJaribu Shahid double-bass\nTanni Tabbal drums\nVincent Davis drums");
-    
-    descriptions.push_back("Vassilis Tsabropoulos\nAnja Lechner\nU. T. Gandhi\nMelos\n\nVassilis Tsabropoulos piano\nAnja Lechner violoncello\nU. T. Gandhi percussion");
-    
-    descriptions.push_back("Tord Gustavsen Trio\nBeing There\n\nTord Gustavsen piano\nHarald Johnsen double-bass\nJarle Vespestad drums");
-    
-    descriptions.push_back("Marcin Wasilewski Trio\nJanuary\n\nMarcin Wasilewski piano\nSlawomir Kurkiewicz double-bass\nMichal Miskiewicz drums");
-    
-    descriptions.push_back("Andy Sheppard\nMovements in Colour\n\nAndy Sheppard soprano and tenor saxophones\nJohn Parricelli acoustic and electric guitars\nEivind Aarset guitar, electronics\nArild Andersen double-bass, electronics\nKuljit Bhamra tabla, percussion");
-    
-    descriptions.push_back("Michael Formanek\nSmall Places\n\nTim Berne alto saxophone\nCraig Taborn piano\nMichael Formanek double-bass\nGerald Cleaver drums, shruti bo");
-    
-    descriptions.push_back("Trygve Seim\nFrode Haltli\nYeraz\n\nTrygve Seim soprano and tenor saxophones\nFrode Haltli accordion ");
-    
-    descriptions.push_back("Jon Balke\nBook of Velocities\n\nJon Balke piano");
-    
-    descriptions.push_back("Keith Jarrett\nGary Peacock\nJack DeJohnette\nAlways Let Me Go\n\nKeith Jarrett piano\nGary Peacock double-bass\nJack DeJohnette drums");
+    /*******************
+     page 1
+     *******************/
     
     descriptions.push_back("Andy Sheppard\nMichel Benita\nSebastian Rochford\nTrio Libero\n\nAndy Sheppard tenor and soprano saxophones\nMichel Benita double-bass\nSebastian Rochford drums");
     
@@ -91,12 +80,142 @@ void testApp::setup(){
     
     descriptions.push_back("Food\nQuiet Inlet\nThomas Str¯nen drums, live-electronics\nIain Ballamy tenor- and soprano saxophones\nNils Petter MolvÊr trumpet, electronics\nChristian Fennesz guitar, electronics\nSebastian Rochford drums");
     
-    descriptions.push_back("Iva Bittov·\n\nIva Bittov· voilin, voice, kalimba");
+    descriptions.push_back("Iva Bittova\n\nIva Bittova voilin, voice, kalimba");
     
     descriptions.push_back("Julia H¸lsmann Trio\nImprint\nJulia H¸lsmann piano\nMarc Muellbauer double-bass\nHeinrich Kˆbberling drums");
+    
     descriptions.push_back("Bobo Stenson Trio\nIndicum\nBobo Stenson piano\nAnders Jormin double-bass\nJon F‰lt drums");
-    descriptions.push_back("Jon Balke\nBatagraf\nSay And Play\nJon Balke piano, keyboards, electronics, tungonÈ, darbouka, percussion\nHelge Andreas Norbakken sabar, gorong, djembe, talking drum, shakers, percussion\nEmilie Stoesen Christensen vocals\nErland Dahlen drums\nTorgeir Rebolledo Pedersen poetry reading");
+    
+    descriptions.push_back("Louis Sclavis\nDans La Nuit, Music for the Silent Movie by Charles Vanel\n\nLouis Sclavis clarinets\nJean Louis Matinier accordion\nDominique Pifarély violin\nVincent Courtois cello\nFrançois Merville percussion, marimba");
+    
+    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, sound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N´Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
+    
+    descriptions.push_back("Jon Balke\nMagnetic Works 1993-2001\n\nJon Balke piano, keyboards, percussion, electronics\nJens Petter Antonsen trumpet\nPer Jørgensen trumpet, vocals\nArve Henriksen trumpet, vocals\nMorten Halle alto saxophone, flute\nTore Brunborg tenor and soprano saxophones\nGertrud Økland violin\nHenrik Hannisdal violin\nOdd Hannisdal violin\nTrond Villa viola\nMarek Konstantynowicz viola\nJonas Franke-Blom violoncello\nSvante Henryson violoncello\nMorten Hannisdal violoncello\nAnders Jormin double-bass\nMarilyn Mazur percussion\nAudun Kleive drums");
+    
+    descriptions.push_back("Jacob Young\nEvening Falls\n\nJacob Young guitar\nMathias Eick trumpet\nVidar Johansen bass clarinet\nMats Eilertsen double-bass\nJon Christensen drums");
+    
     descriptions.push_back("John Abercrombie\nClass Trip\nJohn Abercrombie guitar\nMark Feldman violin\nMarc Johnson double-bass\nJoey Baron drums");
+    
+    descriptions.push_back("Paul Giger\nRobert Dick\nSatoshi Takeishi\nVindonissa\n\nPaul Giger violin, violino d’amore, viola d'amore, footbells\nRobert Dick c-flute, glissando flute, bass flute in c, bass flute in f, contrabass flute\nSatoshi Takeishi percussion");
+    
+    descriptions.push_back("Johann Sebastian Bach\nJohn Holloway\nThe Sonatas and Partitas\nfor violin solo\n\nJohn Holloway violin");
+    
+    descriptions.push_back("Dénes Várjon\nPrecipitando\n\nDénes Várjon piano");
+    
+    
+    /*******************
+     page 2
+     *******************/
+    
+    
+    
+    descriptions.push_back("Ketil Bjørnstad\nTerje Rypdal\nLife in Leipzig\n\nKetil Bjørnstad piano\nTerje Rypdal guitar");
+    
+    descriptions.push_back("Vassilis Tsabropoulos\nAnja Lechner\nU. T. Gandhi\nMelos\n\nVassilis Tsabropoulos piano\nAnja Lechner violoncello\nU. T. Gandhi percussion");
+    
+    descriptions.push_back("Tord Gustavsen Trio\nBeing There\n\nTord Gustavsen piano\nHarald Johnsen double-bass\nJarle Vespestad drums");
+    
+    descriptions.push_back("Dans les arbres\nCanopée\n\nXavier Charles clarinet, harmonica\nIvar Grydeland acoustic guitar, banjo, scruti box\nChristian Wallumrød prepared piano, harmonium\nIngar Zach gran cassa, percussion");
+    
+    descriptions.push_back("Nik Bärtsch´s Ronin\nStoa\n\nNik Bärtsch piano\nSha contrabass and bass clarinets\nBjörn Meyer bass\nKaspar Rast drums\nAndi Pupato percussion");
+    
+    descriptions.push_back("Marcin Wasilewski Trio\nJanuary\n\nMarcin Wasilewski piano\nSlawomir Kurkiewicz double-bass\nMichal Miskiewicz drums");
+    
+    descriptions.push_back("Andy Sheppard\nMovements in Colour\n\nAndy Sheppard soprano and tenor saxophones\nJohn Parricelli acoustic and electric guitars\nEivind Aarset guitar, electronics\nArild Andersen double-bass, electronics\nKuljit Bhamra tabla, percussion");
+    
+    descriptions.push_back("Michael Formanek\nSmall Places\n\nTim Berne alto saxophone\nCraig Taborn piano\nMichael Formanek double-bass\nGerald Cleaver drums, shruti box");
+    
+    descriptions.push_back("Roscoe Mitchell\nThe Note Factory\nFar Side\n\nRoscoe Mitchell saxophones, flutes\nCorey Wilkes trumpet, flugelhorn\nCraig Taborn piano\nVijay Iyer piano\nHarrison Bankhead cello, double-bass\nJaribu Shahid double-bass\nTanni Tabbal drums\nVincent Davis drums");
+    
+    descriptions.push_back("Trygve Seim\nFrode Haltli\nYeraz\n\nTrygve Seim soprano and tenor saxophones\nFrode Haltli accordion ");
+    
+    descriptions.push_back("Jon Balke\nBatagraf\nSay And Play\nJon Balke piano, keyboards, electronics, tungonÈ, darbouka, percussion\nHelge Andreas Norbakken sabar, gorong, djembe, talking drum, shakers, percussion\nEmilie Stoesen Christensen vocals\nErland Dahlen drums\nTorgeir Rebolledo Pedersen poetry reading");
+    
+    descriptions.push_back("Jon Balke\nBook of Velocities\n\nJon Balke piano");
+    
+    descriptions.push_back("Tomasz Stanko Quintet\nDark Eyes\n\nTomasz Stanko trumpet\nAlexi Tuomarila piano\nJakob Bro guitar\nAnders Christensen bass\nOlavi Louhivuori drums");
+    
+    descriptions.push_back("Keith Jarrett\nGary Peacock\nJack DeJohnette\nAlways Let Me Go\n\nKeith Jarrett piano\nGary Peacock double-bass\nJack DeJohnette drums");
+    
+    descriptions.push_back("Trygve Seim\nAndreas Utnem\nPurcor\n\nTrygve Seim tenor and soprano saxophones\nAndreas Utnem piano, harmonium");
+    
+    
+    
+    /*******************
+     page 3
+     *******************/
+    
+    
+    
+    descriptions.push_back("Wadada Leo Smith\nKulture Jazz\n\nWadada Leo Smith trumpet, fluegelhorn, \nkoto, mbira, harmonica, bamboo notch flute, \npercussion, vocal");
+    
+    descriptions.push_back("Johann Sebastian Bach\nDas Wohltemperierte Clavier\n\nAndrás Schiff piano");
+    
+    descriptions.push_back("Keith Jarrett\nRio\n\nKeith Jarrett piano");
+    
+    descriptions.push_back("Dino Saluzzi\nAnja Lechner\nOjos Negros\n\nDino Saluzzi bandoneon\nAnja Lechner violoncello");
+    
+    descriptions.push_back("Jan Garbarek Group\nDresden - In Concert\n\nJan Garbarek soprano and tenor saxophone\nRainer Brüninghaus piano, keyboards\nYuri Daniel bass\nManu Katché drums");
+    
+    descriptions.push_back("Stephen Stubbs\nTeatro Lirico\n\nMilos Valent violin, viola\nErin Headley viola da gamba, lirone\nMaxine Eilander Spanish and Italian harps\nStephen Stubbs chitarrone, baroque guitar");
+    
+    descriptions.push_back("Keith Jarrett\nSleeper\n\nKeith Jarrett piano\nJan Garbarek tenor and soprano saxophones, flute, percussion\nPalle Danielsson double-bass\nJon Christensen drums, percussion");
+    
+    descriptions.push_back("Masabumi Kikuchi Trio\nSunrise\n\nMasabumi Kikuchi piano\nThomas Morgan double bass\nPaul Motian drums");
+    
+    descriptions.push_back("Manu Katché\nManu Katché\n\nJim Watson piano, Hammond B3 organ\nNils Petter Molvær trumpet, loops\nTore Brunborg tenor and soprano saxophones\nManu Katché drums, piano solo on Dusk On Carnon");
+    
+    descriptions.push_back("András Schiff\nLeos Janacek\nA Recollection\n\nAndrás Schiff piano");
+    
+    descriptions.push_back("Keith Jarrett\nParis/London - Testament\n\nKeith Jarrett piano");
+    
+    descriptions.push_back("Trio Mediaeval\nFolk Songs\n\nAnna Maria Friman\nLinn Andrea Fuglseth\nTorunn Østrem Ossum\nBirger Mistereggen percussion and jew's harp");
+    
+    descriptions.push_back("Keith Jarrett\nLa Scala\n\nKeith Jarrett piano");
+    
+    descriptions.push_back("Valentin Silvestrov\nMetamusik\nPostludium\n\nAlexei Lubimov piano\nValentin Silvestrov\nDennis Russell Davies conductor");
+    
+    descriptions.push_back("Terje Rypdal\nCrime Scene\n\nTerje Rypdal electric guitar\nPalle Mikkelborg trumpet\nStåle Storløkken Hammond B-3 organ\nPaolo Vinaccia drums, sampling\nBergen Big Band\nOlav Dale conductor");
+    
+    
+    
+    
+    /*******************
+     page 4
+     *******************/
+    
+    
+    descriptions.push_back("Franz Schubert\nFantasie C-Dur\nRondo h-Moll\nSonata A-Dur\n\nCarolin Widmann violin\nAlexander Lonquich piano");
+    
+    descriptions.push_back("Meredith Monk\nSongs of Ascension\n\nMeredith Monk and Vocal Ensemble voices\nTodd Reynolds Quartet string quartet\nThe M6 voices\nMontclair State University Singers ");
+    
+    descriptions.push_back("Eleni Karaindrou\nTrojan Women\n\nSocratis Sinopoulos Constantinople lyra, laouto\nChristos Tsiamoulis ney, suling, outi\nPanos Dimitrakopoulos kanonaki\nAndreas Katsiyiannis santouri\nMaria Bildea harp\nAndreas Papas bendir, daouli\nVeronika Iliopoulou soprano\nEleni Karaindrou\nAntonis Kontogeorgiou chorus director");
+    
+    descriptions.push_back("Carlo Gesualdo\nQuinto Libro di Madrigali\n\nThe Hilliard Ensemble\nMonika Mauch soprano\nDavid James countertenor\nDavid Gould countertenor\nRogers Covey-Crump tenor\nSteven Harrold tenor\nGordon Jones baritone");
+    
+    descriptions.push_back("Stefano Battaglia Trio\nThe River of Anyder\n\nStefano Battaglia piano\nSalvatore Maiore double-bass\nRoberto Dani drums");
+    
+    descriptions.push_back("Stephan Micus\nBold As Light\n\nStephan Micus raj nplaim, bass zither, chord zither, \nbavarian zither, nohkan, sho, \nvoice, kalimba, shakuhachi, sinding");
+    
+    descriptions.push_back("The Dowland Project\nRomaria\n\nJohn Potter tenor \nMilos Valent violin, viola\nJohn Surman soprano saxophone, \nbass clarinet, tenor and bass recorders\nStephen Stubbs baroque guitar, vihuela");
+    
+    descriptions.push_back("Heinz Holliger\nLauds and Lamentations\nMusic of Elliott Carter\nand Isang Yun\n\nHeinz Holliger oboe, English horn\nThomas Zehetmair violin\nRuth Killius viola\nThomas Demenga cello");
+    
+    descriptions.push_back("Andras Schiff\nIn Concert - Robert Schumann\n\nAndras Schiff piano");
+    
+    descriptions.push_back("Gianluigi Trovesi\nGianni Coscia\nFrère Jacques - Round about Offenbach\n\nGianluigi Trovesi piccolo and alto clarinets\nGianni Coscia accordion");
+    
+    descriptions.push_back("Savina Yannatou\nPrimavera en Salonico\nSumiglia\n\nSavina Yannatou voice\nPrimavera en Salonico\nKostas Vomvolos accordion, qanun, kalimba\nYannis Alexandris tamboura, oud, guitar\nMichalis Siganidis double-bass\nKyriakos Gouventas violin, viola\nHarris Lambrakis ney\nKostas Theodorou percussion");
+    
+    descriptions.push_back("Robin Williamson\nThe Iron Stone\n\nRobin Williamson vocals, Celtic harp, Mohan vina, Chinese flute, whistles, tabwrdd drum\nMat Maneri viola, Hardanger fiddle\nBarre Phillips double-bass\nAle Möller mandola, accordion, clarino, shawm, natural flutes, drone flutes, whistles, jaw harps");
+    
+    descriptions.push_back("Dino Saluzzi Group\nJuan Condori\n\nDino Saluzzi bandoneon\nFelix ´Cuchara´ Saluzzi tenor and soprano saxophones, clarinet\nJosé Maria Saluzzi acoustic and electric guitars\nMatias Saluzzi double-bass, bass guitar\nU. T. Gandhi drums, percussion");
+    
+    descriptions.push_back("Louis Sclavis\nLost on the Way\n\nLouis Sclavis clarinets, soprano saxophone\nMatthias Metzger soprano and alto saxophones\nMaxime Delpierre guitar\nOlivier Lété bass\nFrançois Merville drums");
+    
+    descriptions.push_back("Miklós Perényi\nBritten Bach Ligeti\n\nMiklós Perényi violoncello");
+    
+    
     
     
     mouse =false;
@@ -406,7 +525,7 @@ void testApp::update() {
         for(int i = 0; i < 5; i++){
             //depending on what 'page' we are on, we access different cubes, we can get the page based on the total number flips
 			/*
-             ______3______
+             _______3_______
              |		       |
              |			   |
              2|			   |4
@@ -424,7 +543,8 @@ void testApp::update() {
             
             //this needs to be fixed, we shifted 230 before projecting forward, so it's not really 230...
 			if((x > 95+230+ (i*160)) && (x< 95+230+(i+1)*160)&& (y > 172+(j*160)) && (y < 172+ (j+1)*160)){
-				if(page == 0){
+				rownumber = j+1;
+                if(page == 0){
 					rotate[(j*5)+i] = true;
                 }
 				else if(page == 1){
@@ -487,24 +607,40 @@ void testApp::draw(){
     if(togglecaption){
         
         ofSetColor(51, 102, 133);
+        //ofSetColor(205,92,92);
         //ofSetColor(255,0,0);
-        //caption.drawString(descriptions[0],20, 170);
+        caption.drawString(descriptions[captionindex],20, 170);
         
-        ofDrawBitmapString(descriptions[captionindex], 20,170);        //seems to look much better also does not get eclipsed by anything
+        //ofDrawBitmapString(descriptions[captionindex], 20,170);        //seems to look much better also does not get eclipsed by anything
         togglecaption = false;
     }
     
     ofTranslate(230,0,0);
     
-    ofSetColor(255,0,0);
-    //logo.setLetterSpacing(1.2);
-    logo.drawStringAsShapes(" Enjoy ECM ", 393,50);
-    //ofSetColor(255,255,255);
+    
+    
+    //title and logo
     ofSetColor(176,196,222);
-    author.drawStringAsShapes(" (by Tian Xu)", 500,68);
+	logo2.drawStringAsShapes("ELATION              INTROSPECTION",400,20);
+    ofSetColor(51, 102, 133);
+    ofRect(400, 30, 240, 45);
+    ofTranslate(0,0,1);
+    ofSetColor(255,255,255);
+    logo.drawStringAsShapes(" ENJOY ECM ", 393,65);
+    ofTranslate(0,0,-1);
+    ofSetColor(176,196,222);
+    author.drawStringAsShapes("A MANFRED EICHER TRIBUTE", 468,90);
+    date.drawStringAsShapes("03.17.14",501, 115);
     
     
     
+    //old title and logo deprecated...actually I like this better but it doesn't look good with the red page
+    /*ofSetColor(255,0,0);
+     //logo.setLetterSpacing(1.2);
+     logo.drawStringAsShapes(" Enjoy ECM ", 393,50);
+     //ofSetColor(255,255,255);
+     ofSetColor(176,196,222);
+     author.drawStringAsShapes(" (by Tian Xu)", 500,68);*/
     
     
     ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
@@ -610,11 +746,10 @@ void testApp::draw(){
     float deg;
     int height;
     if(rownumber == 1)
-        height = -100;
-    else if (rownumber == 2)
-        height = -100;
-    else
         height = 125;
+    else if ((rownumber == 2) || (rownumber == 3))
+        height = -100;
+    
     ofColor textcolor(176,196,222);
     float translatex, translatez;
     
@@ -659,7 +794,7 @@ void testApp::draw(){
                         translatez = -20*sqrt(2)*sin(deg);
                         
                         
-                        ofTranslate(translatex,125 + 35*sqrt(2)*cos(deg/2),translatez);
+                        ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                         ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                         
                         ofSetColor(textcolor);
@@ -1050,18 +1185,23 @@ void testApp::draw(){
 	if (!bDirLight) directionalLight.disable();
 	
     material.end();
-	// turn off lighting //
-    ofDisableLighting();
     
-	ofSetColor( pointLight.getDiffuseColor() );
-	if(bPointLight) pointLight.draw();
     
-    ofSetColor(255, 255, 255);
-	ofSetColor( spotLight.getDiffuseColor() );
-	if(bSpotLight) spotLight.draw();
-	
-    ofPopMatrix();
-	ofSetColor(255, 255, 255);
+    
+    
+    /*
+     // turn off lighting //
+     ofDisableLighting();
+     
+     ofSetColor( pointLight.getDiffuseColor() );
+     if(bPointLight) pointLight.draw();
+     
+     ofSetColor(255, 255, 255);
+     ofSetColor( spotLight.getDiffuseColor() );
+     if(bSpotLight) spotLight.draw();
+     
+     ofPopMatrix();
+     ofSetColor(255, 255, 255);*/
     
 	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
      "Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
