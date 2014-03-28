@@ -122,10 +122,14 @@ public:
     int totalflips;
     int page;
     
+    int nextiteri, nextiterj;
     
     std::vector<float> mousedrag;
     bool mouse;
     bool mouseclick;
+    
+    bool draw_wall0, draw_wall1, draw_wall2, draw_wall3;
+    bool drawwalls;
     
 	float radius;
 	ofVec3f center;
@@ -142,6 +146,8 @@ public:
     bool scrollcubes;
     bool scrolltracks;
     bool playsong;
+    bool selectsong;
+    
     int cube;
     
     bool resetrotate;
