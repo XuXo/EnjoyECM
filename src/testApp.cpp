@@ -1,6 +1,5 @@
 
-
-
+//@author tian xu
 
 #include "testApp.h"
 //#include <boost/lambda/lambda.hpp>
@@ -18,7 +17,7 @@ void testApp::setup(){
     //logo.loadFont("froufrou.ttf", 32);
     logo.loadFont("type/verdana.ttf", 25, true, false, true, 0.1, 102);
     
-    logo2.loadFont("type/verdana.ttf", 7, true, false, true, 0.1, 102);
+    logo2.loadFont("type/verdana.ttf", 6, true, false, true, 0.1, 102);
     //author.loadFont("froufrou.ttf", 15);
     author.loadFont("type/verdana.ttf", 5.8, true, false, true, 0.1, 102);
     
@@ -32,19 +31,24 @@ void testApp::setup(){
     
     rownumber = 0;
     
+    songcolor = ofColor(176,196,222);
     
-    
-    fontsize = 4;
-    font.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font2.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font3.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font4.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font5.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font6.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font7.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font8.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font9.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
-    font10.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, 182);
+	/*Font has to be loaded in setup() but later on in draw() after projecting forward with oftranslate (0,0,500), the font is blown up (rightly so I guess).
+     size 5 (along whatever initial z plane projected forward would give me the right size after projection but it has pretty bad resolution.Once I translate
+     forward, it just projects each of those pixels and so loses a lot of density.  Ended up using drawStringAsShapes() but still doesn't look very sharp
+     */
+	int fontsize = 4;
+	int dpi = 182;
+    font.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font2.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font3.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font4.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font5.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font6.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font7.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font8.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font9.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+    font10.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
     
     songs.push_back(font);
     songs.push_back(font2);
@@ -69,6 +73,9 @@ void testApp::setup(){
     tracks.push_back("09. micus");
     tracks.push_back("10. sclavis");
     
+    
+	//loading the captions to be displayed when mouse scrolls over any particualr track, to do: include cover number and year produced as well..also need a better way to control the line breaks as I did
+	//theses manually based on position of the cube
     /*******************
      page 1
      *******************/
@@ -104,10 +111,10 @@ void testApp::setup(){
     descriptions.push_back("Denes Varjon\nPrecipitando\n\nDenes Varjon piano");
     
     
+    
     /*******************
      page 2
      *******************/
-    
     
     
     descriptions.push_back("Ketil Bjornstad\nTerje Rypdal\nLife in Leipzig\n\nKetil Bjornstad piano\nTerje Rypdal guitar");
@@ -147,7 +154,6 @@ void testApp::setup(){
      *******************/
     
     
-    
     descriptions.push_back("Wadada Leo Smith\nKulture Jazz\n\nWadada Leo Smith trumpet, fluegelhorn, \nkoto, mbira, harmonica, bamboo notch flute, \npercussion, vocal");
     
     descriptions.push_back("Johann Sebastian Bach\nDas Wohltemperierte Clavier\n\nAndras Schiff piano");
@@ -177,8 +183,6 @@ void testApp::setup(){
     descriptions.push_back("Valentin Silvestrov\nMetamusik\nPostludium\n\nAlexei Lubimov piano\nValentin Silvestrov\nDennis Russell Davies conductor");
     
     descriptions.push_back("Terje Rypdal\nCrime Scene\n\nTerje Rypdal electric guitar\nPalle Mikkelborg trumpet\nStale Storlokken Hammond B-3 organ\nPaolo Vinaccia drums, sampling\nBergen Big Band\nOlav Dale conductor");
-    
-    
     
     
     /*******************
@@ -260,7 +264,6 @@ void testApp::setup(){
 	center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
     
     
-    
     // Point lights emit light in all directions //
     // set the diffuse color, color reflected from the light source //
     pointLight.setDiffuseColor( ofColor(0.f, 255.f, 255.0f));
@@ -268,7 +271,6 @@ void testApp::setup(){
     // specular color, the highlight/shininess color //
 	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
 	pointLight.setPointLight();
-    
     
 	
     spotLight.setDiffuseColor( ofColor(255.f, 0.f, 0.f));
@@ -284,9 +286,6 @@ void testApp::setup(){
     // rate of falloff, illumitation decreases as the angle from the cone axis increases //
     // range 0 - 128, zero is even illumination, 128 is max falloff //
     spotLight.setSpotConcentration( 45 );
-    
-    
-    
     
 	
     // Directional Lights emit light based on their orientation, regardless of their position //
@@ -314,25 +313,21 @@ void testApp::setup(){
     
 	/*
      construction dictates that we have
-     
      cover[19] is same as cover[0]
-     
      cover[24] is same as cover[5]
-     
      cover[29] is same as cover[10]
-     
      cover[34] is same as cover[15]
-     
      cover[39] is same as cover[20]
-     
      cover[44] is same as cover[25]
-     
      cover[49] is same as cover[30]
-     
      cover[54] is same as cover[35]
-     
      cover[59] is same as cover[40]
      */
+    
+    
+	//right now there are 4 categories ( blurry/smooth, grainy, red/black, black/white) each being a 5x3 rectangular face of album covers.  The first two are textures and arguably same for black/white but the red/black
+	//is tacky almost too obvious, will probably change it later.  I do like that it adds some contrast but it's inconsistent with the theme, was thinking of something that resembles a thick watercolor brush since there
+	//are a few of those, or arranged or brushstrokes.  There are simply too many gorgeous covers to choose from and I did the best I could.
     
     //blurry and smooth
     ofLogoImage.loadImage("leipzig.jpg");
@@ -353,7 +348,7 @@ void testApp::setup(){
     ofLogoImage14.loadImage("letmego.jpg");
     ofLogoImage15.loadImage("purcor.jpg");
     
-    //red
+    //red/black
     ofLogoImage16.loadImage("schubert.jpg");
     ofLogoImage17.loadImage("monk.jpg");
     ofLogoImage18.loadImage("eleni.jpg");
@@ -372,7 +367,7 @@ void testApp::setup(){
     ofLogoImage29.loadImage("sclavis.jpg");
     ofLogoImage30.loadImage("perenyi.jpg");
     
-    //black and white
+    //black/white
 	ofLogoImage31.loadImage("smith.jpg");
     ofLogoImage32.loadImage("clavier.jpg");
     ofLogoImage33.loadImage("rio.jpg");
@@ -410,7 +405,7 @@ void testApp::setup(){
     ofLogoImage59.loadImage("bach.jpg");
     ofLogoImage60.loadImage("berg.jpg");
     
-    
+    //definitely a better way to do this but I'm not stressing right now
     ecmcovers.push_back(ofLogoImage);
 	ecmcovers.push_back(ofLogoImage2);
 	ecmcovers.push_back(ofLogoImage3);
@@ -495,7 +490,7 @@ void testApp::update() {
     ofVec2f mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());
     x = mouse.x;
     y = mouse.y;
-    
+    //cout<<"current x is "<<x<<" and current y is "<<y<<endl;      //for debugging
     
     
     //this is if the user leaves the cursor on the current album and goes to a next page, the rotation would linger unless we trigger a cleanup, this is called whenever we hit 'i' or 'u', the effects are only felt on the edges since there are infact 2 cubes, well actually that's not the real reason, real reason is that's the only part of the previous page visible to us..
@@ -516,10 +511,13 @@ void testApp::update() {
         page = 2;
     if (page == -1)
         page = 3;
-    //cout<<"we are on page "<<page<<endl;
-    //cout<<"mouse x is "<<x<<" and mouse y is "<<y<<endl;
     
     
+    //black white pages needs a more legible color for tracks
+    if(page == 1)
+        songcolor = ofColor(255,0,0);
+    else
+        songcolor = ofColor(176,196,222);
     
     
     for( int j = 0; j < 3; j++){
@@ -533,17 +531,18 @@ void testApp::update() {
              |		       |
              |_____________|
              1
-             //so take page = totalflips%4
+             //so take page = totalflips%4		with 15 cubes per page
              //0 correspond to current page		which have indices 0-14
              //1 correspond to page 2			which have indices 15-29
              //2 correspond to page 3			which have indices 30-44
              //3 correspond to page 4			which have indices 45-59
              */
 			//these are the coordinates on screen after being projected forward from depth of z=200
-			//found by trial and error...
+			//found by trial and error...ouch
             
-            //this needs to be fixed, we shifted 230 before projecting forward, so it's not really 230...
-			if((x > 95+230+ (i*160)) && (x< 95+230+(i+1)*160)&& (y > 172+(j*160)) && (y < 172+ (j+1)*160)){
+            //this needs to be fixed, we shifted 230 before projecting forward, so it's not really 230...and we shifted it down by 50 os it's not really 172 either
+            
+			if((x >= 359+ (i*157)) && (x< 359+(i+1)*157)&& (y >= 245+(j*157)) && (y < 245+ (j+1)*157)){
 				rownumber = j+1;
                 if(page == 0){
 					rotate[(j*5)+i] = true;
@@ -577,24 +576,25 @@ void testApp::update() {
     }
     
     
+	
     
     //turning page with swiping, this is a little buggy so I'm gonna leave it out for now
-    /*if(mousedrag.size() >= 2){
-     float x1 = mousedrag[0];
-     float x2 = mousedrag[1];
-     if (x1- x2 < 0){
-     nextpageleft = true;
-     numberflipsleft++;
-     resetrotate = true;
-     }
-     else{
-     nextpageright = true;
-     numberflipsright++;
-     resetrotate = true;
-     }
-     mousedrag.clear();
-     
-     }*/
+    if(mousedrag.size() >= 2){
+		float x1 = mousedrag[0];
+		float x2 = mousedrag[1];
+		if (x1- x2 < 0){
+			nextpageleft = true;
+			numberflipsleft++;
+			resetrotate = true;
+		}
+		else{
+			nextpageright = true;
+			numberflipsright++;
+			resetrotate = true;
+		}
+		mousedrag.clear();
+        
+    }
 }
 
 //deperecated since "pushing forward" out of the screen is relative to orientation, not necessarily just changing the z component
@@ -603,7 +603,6 @@ void testApp::emerge(){
 }
 //--------------------------------------------------------------
 void testApp::draw(){
-    
     
     if(togglecaption){
         
@@ -619,23 +618,49 @@ void testApp::draw(){
     ofTranslate(230,50,0);
     
     
-    
     //title and logo
+    /*ofSetColor(176,196,222,100);
+     logo2.drawStringAsShapes("ELATION              INTROSPECTION",400,20);
+     ofSetColor(51, 102, 133);
+     ofRect(400, 30, 240, 45);
+     ofTranslate(0,0,1);
+     ofSetColor(255,255,255);
+     logo.drawStringAsShapes(" ENJOY ECM ", 393,65);
+     ofTranslate(0,0,-1);
+     ofSetColor(176,196,222);
+     author.drawStringAsShapes("A MANFRED EICHER TRIBUTE", 468,90);
+     date.drawStringAsShapes("03.17.14",501, 115);
+     */
+    
+	//title and logo.
+	/*to give credit where it's due, the style for the logo and features were taken from the Miami Vice movie promo (I don't even think it works very well in that poster to be honest and the movie was just..).
+     But for some reason, I like the look.  On its own, it's clean and intrepid.  Used a slightly less saturated blue, pulled the original font for the date (or what I could make out - dinen medium, someone correct
+     me if I'm wrong), used the same sizing and in the spirit of the letterings and their meaning, I have replaced 'Colin Farrell/Jamie Foxx' with 'elation/introspection'.  kitshc? passe? conceited? ill placed?
+     what does that even mean? I'm not really sure.  Elation goes first because the E lines up nicely with the rectangle, nothing more.  'A Michael Mann Film' has been replaced with 'a Manfred Eicher tribute'
+     and the release date with his D.O.B. which I thought was a nice touch, initially, a bit saccharine perhaps.
+     
+     I tried a bunch of variations and they look like shit basically.  It'd be interesting to show this to someone and ask for their opinion without acknowledgement of my thievery.  Can't help but feel like my
+     love for everything Mann touches may have put some preponderance on its effectiveness.  It is definitely cool, but maybe a little cool almost tarnishing ECM's calmness.
+     */
+	float logox = 400;
+	float logoy = 20;
     ofSetColor(176,196,222,100);
-	logo2.drawStringAsShapes("ELATION              INTROSPECTION",400,20);
+	logo2.drawStringAsShapes("ELATION                INTROSPECTION",logox, logoy);
     ofSetColor(51, 102, 133);
-    ofRect(400, 30, 240, 45);
-    ofTranslate(0,0,1);
+    ofRect(logox, logoy+10, 240, 45);
+	ofTranslate(0,0,1);
     ofSetColor(255,255,255);
-    logo.drawStringAsShapes(" ENJOY ECM ", 393,65);
+    logo.drawStringAsShapes(" ENJOY ECM ", logox-7,logoy+45);
     ofTranslate(0,0,-1);
-    ofSetColor(176,196,222);
-    author.drawStringAsShapes("A MANFRED EICHER TRIBUTE", 468,90);
-    date.drawStringAsShapes("03.17.14",501, 115);
+	ofSetColor(176,196,222);
+	author.drawStringAsShapes("A MANFRED EICHER TRIBUTE", logox+68,logoy+70);
+    date.drawStringAsShapes("07.09.43",logox+101, logoy+95);
     
     
     
-    //old title and logo deprecated...actually I like this better but it doesn't look good with the red page
+    //old title and logo...actually I like this better but it doesn't look too good with the red/black page.  Against my better judgement true instincts, I'm deprecating this one for now and trying
+	//to make the miami vice one work.
+    
     /*ofSetColor(255,0,0);
      //logo.setLetterSpacing(1.2);
      logo.drawStringAsShapes(" Enjoy ECM ", 393,50);
@@ -693,7 +718,6 @@ void testApp::draw(){
     }
     
     
-    
     //totalflips = numberflipsleft - numberflipsright;				//this doesn't seem to be working
     if(nextpageleft){
         //cout<<"totalflips is"<<totalflips<<endl;
@@ -709,8 +733,6 @@ void testApp::draw(){
             //ofRotate(90, 0, 1, 0);
         }
     }
-    
-    
     
     
     if(nextpageright){
@@ -730,28 +752,25 @@ void testApp::draw(){
     
     
     //totalflips = numberflipsleft - numberflipsright;
-    
 	//triggered by both left and right page turns, should stay true as long as we are not in the motion of turning, this if might be redundant
     if(stayonpage){
         totalflips = numberflipsleft - numberflipsright;
         ofRotate(90*totalflips, 0, 1, 0);
     }
     
-    
     //building the first face
-    
     // grab the texture reference and bind it //
     // this will apply the texture to all drawing (vertex) calls before unbind() //
-	
     
     float deg;
     int height;
+	//depending on which row, the spinning text in staircase fashion needs to be displayed above or below the cube
     if(rownumber == 1)
         height = 125;
-    else if ((rownumber == 2) || (rownumber == 3))
+    else if ((rownumber == 2) || (rownumber == 3))	//probably need to control the helical spacing as well
         height = -100;
     
-    ofColor textcolor(176,196,222);
+    //ofColor textcolor(176,196,222);
     float translatex, translatez;
     
 	for( int i = 0; i<5; i++){
@@ -760,45 +779,32 @@ void testApp::draw(){
                 
                 ofPushMatrix();
                 ofTranslate(-200 + i*100, 300, 200);
-                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
                 if(rotate[i]){
-                    //ofTranslate(0,0,50);
-                    //emerge();
+                    
                     //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     togglecaption = true;
                     captionindex = 10+i;
                     
                     trans = 100;
-                    //emerge();
-                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     ofTranslate(0,0,enlarge);
                     
-                    
                     ofPushMatrix();
-                    //ofRotate(-60, 1,0,0);
                     ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
                     
-                    
-                    //ofSetColor(51, 102, 183);
                     for(int i = 0; i<tracks.size(); i++){
                         ofPushMatrix();
                         
-                        //deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
-                        //deg = deg * pi / 180;
                         deg = 360/tracks.size();
                         deg *= i;
                         deg = deg * pi / 180;
-                        //cout<<"angle is"<<deg;
-                        //cout<<" and x is"<<50*sqrt(2)*cos(deg)<<"and y is"<<-50*sqrt(2)*sin(deg)<<endl;
                         
                         translatex = 20*sqrt(2)*cos(deg);
                         translatez = -20*sqrt(2)*sin(deg);
                         
-                        
                         ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                         ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                         
-                        ofSetColor(textcolor);
+                        ofSetColor(songcolor);
                         songs[i].drawStringAsShapes(tracks[i], 0,0);
                         
                         ofSetColor(255,255,255);
@@ -826,47 +832,32 @@ void testApp::draw(){
                 
                 ofPushMatrix();
                 ofTranslate(-200 + i*100, 400, 200);
-                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
                 if(rotate[5+i]){
-                    //emerge();
-                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-                    //ofTranslate(0,0,enlarge);
-                    //ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
                     
+                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     togglecaption = true;
                     captionindex = 10+i;
                     
                     trans = 100;
-                    //emerge();
-                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     ofTranslate(0,0,enlarge);
                     
-                    
                     ofPushMatrix();
-                    //ofRotate(-60, 1,0,0);
-                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
+                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                     
-                    
-                    //ofSetColor(51, 102, 183);
                     for(int i = 0; i<tracks.size(); i++){
                         ofPushMatrix();
                         
-                        //deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
-                        //deg = deg * pi / 180;
                         deg = 360/tracks.size();
                         deg *= i;
                         deg = deg * pi / 180;
-                        //cout<<"angle is"<<deg;
-                        //cout<<" and x is"<<50*sqrt(2)*cos(deg)<<"and y is"<<-50*sqrt(2)*sin(deg)<<endl;
                         
                         translatex = 20*sqrt(2)*cos(deg);
                         translatez = -20*sqrt(2)*sin(deg);
                         
-                        
                         ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                         ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                         
-                        ofSetColor(textcolor);
+                        ofSetColor(songcolor);
                         songs[i].drawStringAsShapes(tracks[i], 0,0);
                         
                         ofSetColor(255,255,255);
@@ -878,7 +869,6 @@ void testApp::draw(){
                     
                     trans = 255;
                     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-                    
                 }
                 ofSetColor(255,255,255,trans);    //turn on transparency
                 
@@ -900,45 +890,32 @@ void testApp::draw(){
                 
                 ofPushMatrix();
                 ofTranslate(-200 + i*100, 500, 200);
-                //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-                
-                
                 if(rotate[10+i]){
                     
+					//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     togglecaption = true;
                     captionindex = 10+i;
                     
                     trans = 100;
-                    //emerge();
-                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     ofTranslate(0,0,enlarge);
                     
-                    
                     ofPushMatrix();
-                    //ofRotate(-60, 1,0,0);
-                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
+                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                     
-                    
-                    //ofSetColor(51, 102, 183);
                     for(int i = 0; i<tracks.size(); i++){
                         ofPushMatrix();
                         
-                        //deg = ofGetElapsedTimef()*.6 * RAD_TO_DEG;
-                        //deg = deg * pi / 180;
                         deg = 360/tracks.size();
                         deg *= i;
                         deg = deg * pi / 180;
-                        //cout<<"angle is"<<deg;
-                        //cout<<" and x is"<<50*sqrt(2)*cos(deg)<<"and y is"<<-50*sqrt(2)*sin(deg)<<endl;
                         
                         translatex = 20*sqrt(2)*cos(deg);
                         translatez = -20*sqrt(2)*sin(deg);
                         
-                        
                         ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                         ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                         
-                        ofSetColor(textcolor);
+                        ofSetColor(songcolor);
                         songs[i].drawStringAsShapes(tracks[i], 0,0);
                         
                         ofSetColor(255,255,255);
@@ -951,14 +928,11 @@ void testApp::draw(){
                     trans = 255;
                     ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
                 }
-                
-                //ofSetColor(255,255,255);
                 if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
                 ofDrawBox(0, 0, 0, 100);
                 
                 if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
                 ofPopMatrix();
-                //togglecaption = false;
             }
         }
 	}
@@ -973,20 +947,51 @@ void testApp::draw(){
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
         if( (page != 2) || (i != 0) ){
-            if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
+            
             ofPushMatrix();
             ofTranslate(-200, 300, -200+ i*100);
-            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
             if(rotate[15+i]){
-                //ofTranslate(0,0,enlarge);
-                //emerge();
+                
                 //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                togglecaption = true;
+                captionindex = 15+i;
+                
+                trans = 100;
                 ofTranslate(-enlarge,0,0);
-                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                
+                ofPushMatrix();
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                
+                for(int i = 0; i<tracks.size(); i++){
+                    ofPushMatrix();
+                    
+                    deg = 360/tracks.size();
+                    deg *= i;
+                    deg = deg * pi / 180;
+                    
+                    translatex = 20*sqrt(2)*cos(deg);
+                    translatez = -20*sqrt(2)*sin(deg);
+                    
+                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+                    ofSetColor(songcolor);
+                    songs[i].drawStringAsShapes(tracks[i], 0,0);
+                    
+                    ofSetColor(255,255,255);
+                    ofPopMatrix();
+                    
+                    trans = 100;
+                }
+                ofPopMatrix();
+                
+                trans = 255;
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
             }
+			if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
             ofDrawBox(0, 0, 0, 100);
-            ofPopMatrix();
             if(bUseTexture) ecmcovers[15+i].getTextureReference().unbind();
+			ofPopMatrix();
         }
 	}
     
@@ -994,41 +999,103 @@ void testApp::draw(){
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
         if( (page != 2) || (i != 0) ){
-            if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
+            
             ofPushMatrix();
             ofTranslate(-200, 400, -200+ i*100);
-            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
             if(rotate[20+i]){
-                //ofTranslate(0,0,enlarge);
-                //emerge();
+                
                 //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                togglecaption = true;
+				captionindex = 20+i;
+                
+				trans = 100;
                 ofTranslate(-enlarge,0,0);
+                
+				ofPushMatrix();
+				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                
+				for(int i = 0; i<tracks.size(); i++){
+					ofPushMatrix();
+                    
+					deg = 360/tracks.size();
+					deg *= i;
+					deg = deg * pi / 180;
+                    
+					translatex = 20*sqrt(2)*cos(deg);
+					translatez = -20*sqrt(2)*sin(deg);
+                    
+					ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+					ofSetColor(songcolor);
+					songs[i].drawStringAsShapes(tracks[i], 0,0);
+                    
+					ofSetColor(255,255,255);
+					ofPopMatrix();
+                    
+					trans = 100;
+				}
+				ofPopMatrix();
+                
+				trans = 255;
                 ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
             }
+			if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
             ofDrawBox(0, 0, 0, 100);
-            ofPopMatrix();
             if(bUseTexture) ecmcovers[20+i].getTextureReference().unbind();
-        }
+			ofPopMatrix();
+		}
 	}
     
 	//cover[29] is same as cover[10]
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
         if( (page != 2) || (i != 0) ){
-            if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
+            
             ofPushMatrix();
             ofTranslate(-200, 500, -200+ i*100);
-            //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
             if(rotate[25+i]){
-                //ofTranslate(0,0,enlarge);
-                //emerge();
+                
                 //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+                togglecaption = true;
+                captionindex = 25+i;
+                
+                trans = 100;
                 ofTranslate(-enlarge,0,0);
+                
+                ofPushMatrix();
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                
+                for(int i = 0; i<tracks.size(); i++){
+                    ofPushMatrix();
+                    
+                    deg = 360/tracks.size();
+                    deg *= i;
+                    deg = deg * pi / 180;
+                    
+                    translatex = 20*sqrt(2)*cos(deg);
+                    translatez = -20*sqrt(2)*sin(deg);
+                    
+                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+                    ofSetColor(songcolor);
+                    songs[i].drawStringAsShapes(tracks[i], 0,0);
+                    
+                    ofSetColor(255,255,255);
+                    ofPopMatrix();
+                    
+                    trans = 100;
+                }
+                ofPopMatrix();
+                
+                trans = 255;
                 ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
             }
+			if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
             ofDrawBox(0, 0, 0, 100);
-            ofPopMatrix();
             if(bUseTexture) ecmcovers[25+i].getTextureReference().unbind();
+			ofPopMatrix();
         }
 	}
     
@@ -1376,6 +1443,7 @@ void testApp::mouseMoved(int x, int y ){
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
     /*cout<<"dragging at location x = "<<x<<" and y = "<<y<<endl;
+     //we only care about the x component to determine a leftward or rightward swipe
      mousedrag.push_back(x);
      */
 }

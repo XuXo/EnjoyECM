@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "myThread.h"
 
 class testApp : public ofBaseApp{
 
@@ -148,7 +149,7 @@ public:
     bool playsong;
     bool selectsong;
     
-    ofSoundPlayer song;
+    ofSoundPlayer song1;
     ofSoundPlayer song2;
     ofSoundPlayer song3;
     ofSoundPlayer song4;
@@ -162,7 +163,8 @@ public:
     ofSoundPlayer song12;
     
     vector<ofSoundPlayer> listing;
-    
+    myThread thread1;
+    int currentsong;
     
     string test1;
     string test2;
