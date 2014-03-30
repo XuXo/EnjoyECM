@@ -148,6 +148,37 @@ public:
     bool playsong;
     bool selectsong;
     
+    ofSoundPlayer song;
+    ofSoundPlayer song2;
+    ofSoundPlayer song3;
+    ofSoundPlayer song4;
+    ofSoundPlayer song5;
+    ofSoundPlayer song6;
+    ofSoundPlayer song7;
+    ofSoundPlayer song8;
+    ofSoundPlayer song9;
+    ofSoundPlayer song10;
+    ofSoundPlayer song11;
+    ofSoundPlayer song12;
+    
+    vector<ofSoundPlayer> listing;
+    
+    
+    string test1;
+    string test2;
+    string test3;
+    string test4;
+    string test5;
+    string test6;
+    string test7;
+    string test8;
+    string test9;
+    string test10;
+    string test11;
+    string test12;
+    vector<string> location;
+    int songnumber;
+    
     int cube;
     
     bool resetrotate;
@@ -194,4 +225,8 @@ public:
     vector<vector<ofColor> > albumcolors;
     vector<ofColor> pagecolors;
     vector<ofColor> highlightcolors;
+    
+    
+    
+    
 };
