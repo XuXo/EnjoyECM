@@ -80,42 +80,6 @@ void testApp::setup(){
      page 1
      *******************/
     
-    descriptions.push_back("Andy Sheppard\nMichel Benita\nSebastian Rochford\nTrio Libero\n\nAndy Sheppard tenor and soprano saxophones\nMichel Benita double-bass\nSebastian Rochford drums");
-    
-    descriptions.push_back("Miroslav Vitous\nUniversal Syncopations II\n\nBob Mintzer tenor saxophone, bass clarinet\nGary Campbell soprano and tenor saxophones\nBob Malach tenor saxophone\nRandy Brecker trumpet\nDaniele di Bonaventura bandoneon\nVesna Vasko-Caceres voice\nGerald Cleaver drums\nAdam Nussbaum drums\nMiroslav Vitous double-bass");
-    
-    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, vihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, vihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
-    
-    descriptions.push_back("Food\nQuiet Inlet\nThomas Stronen drums, live-electronics\nIain Ballamy tenor- and soprano saxophones\nNils Petter Molver trumpet, electronics\nChristian Fennesz guitar, electronics\nSebastian Rochford drums");
-    
-    descriptions.push_back("Iva Bittova\n\nIva Bittova voilin, voice, kalimba");
-    
-    descriptions.push_back("Julia Hulsmann Trio\nImprint\nJulia Hulsmann piano\nMarc Muellbauer double-bass\nHeinrich Kobberling drums");
-    
-    descriptions.push_back("Bobo Stenson Trio\nIndicum\nBobo Stenson piano\nAnders Jormin double-bass\nJon Falt drums");
-    
-    descriptions.push_back("Louis Sclavis\nDans La Nuit, Music for the Silent Movie by Charles Vanel\n\nLouis Sclavis clarinets\nJean Louis Matinier accordion\nDominique Pifarely violin\nVincent Courtois cello\nFrancois Merville percussion, marimba");
-    
-    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, sound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N'Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
-    
-    descriptions.push_back("Jon Balke\nMagnetic Works 1993-2001\n\nJon Balke piano, keyboards, percussion, electronics\nJens Petter Antonsen trumpet\nPer Jorgensen trumpet, vocals\nArve Henriksen trumpet, vocals\nMorten Halle alto saxophone, flute\nTore Brunborg tenor and soprano saxophones\nGertrud Okland violin\nHenrik Hannisdal violin\nOdd Hannisdal violin\nTrond Villa viola\nMarek Konstantynowicz viola\nJonas Franke-Blom violoncello\nSvante Henryson violoncello\nMorten Hannisdal violoncello\nAnders Jormin double-bass\nMarilyn Mazur percussion\nAudun Kleive drums");
-    
-    descriptions.push_back("Jacob Young\nEvening Falls\n\nJacob Young guitar\nMathias Eick trumpet\nVidar Johansen bass clarinet\nMats Eilertsen double-bass\nJon Christensen drums");
-    
-    descriptions.push_back("John Abercrombie\nClass Trip\nJohn Abercrombie guitar\nMark Feldman violin\nMarc Johnson double-bass\nJoey Baron drums");
-    
-    descriptions.push_back("Paul Giger\nRobert Dick\nSatoshi Takeishi\nVindonissa\n\nPaul Giger violin, violino d'amore, viola d'amore, footbells\nRobert Dick c-flute, glissando flute, bass flute in c, bass flute in f, contrabass flute\nSatoshi Takeishi percussion");
-    
-    descriptions.push_back("Johann Sebastian Bach\nJohn Holloway\nThe Sonatas and Partitas\nfor violin solo\n\nJohn Holloway violin");
-    
-    descriptions.push_back("Denes Varjon\nPrecipitando\n\nDenes Varjon piano");
-    
-    
-    
-    /*******************
-     page 2
-     *******************/
-    
     
     descriptions.push_back("Ketil Bjornstad\nTerje Rypdal\nLife in Leipzig\n\nKetil Bjornstad piano\nTerje Rypdal guitar");
     
@@ -137,7 +101,7 @@ void testApp::setup(){
     
     descriptions.push_back("Trygve Seim\nFrode Haltli\nYeraz\n\nTrygve Seim soprano and tenor saxophones\nFrode Haltli accordion ");
     
-    descriptions.push_back("Jon Balke\nBatagraf\nSay And Play\nJon Balke piano, keyboards, electronics, tungone, darbouka, percussion\nHelge Andreas Norbakken sabar, gorong, djembe, talking drum, shakers, percussion\nEmilie Stoesen Christensen vocals\nErland Dahlen drums\nTorgeir Rebolledo Pedersen poetry reading");
+    descriptions.push_back("Jon Balke\nBatagraf\nSay And Play\nJon Balke piano, keyboards, electronics, tungone, \ndarbouka, percussion\nHelge Andreas Norbakken sabar, gorong, djembe, \ntalking drum, shakers, percussion\nEmilie Stoesen Christensen vocals\nErland Dahlen drums\nTorgeir Rebolledo Pedersen poetry reading");
     
     descriptions.push_back("Jon Balke\nBook of Velocities\n\nJon Balke piano");
     
@@ -146,6 +110,44 @@ void testApp::setup(){
     descriptions.push_back("Keith Jarrett\nGary Peacock\nJack DeJohnette\nAlways Let Me Go\n\nKeith Jarrett piano\nGary Peacock double-bass\nJack DeJohnette drums");
     
     descriptions.push_back("Trygve Seim\nAndreas Utnem\nPurcor\n\nTrygve Seim tenor and soprano saxophones\nAndreas Utnem piano, harmonium");
+    
+    
+    
+    /*******************
+     page 2
+     *******************/
+    
+    
+    descriptions.push_back("Franz Schubert\nFantasie C-Dur\nRondo h-Moll\nSonata A-Dur\n\nCarolin Widmann violin\nAlexander Lonquich piano");
+    
+    descriptions.push_back("Meredith Monk\nSongs of Ascension\n\nMeredith Monk and Vocal Ensemble voices\nTodd Reynolds Quartet string quartet\nThe M6 voices\nMontclair State University Singers ");
+    
+    descriptions.push_back("Eleni Karaindrou\nTrojan Women\n\nSocratis Sinopoulos Constantinople lyra, laouto\nChristos Tsiamoulis ney, suling, outi\nPanos Dimitrakopoulos kanonaki\nAndreas Katsiyiannis santouri\nMaria Bildea harp\nAndreas Papas bendir, daouli\nVeronika Iliopoulou soprano\nEleni Karaindrou\nAntonis Kontogeorgiou chorus director");
+    
+    descriptions.push_back("Carlo Gesualdo\nQuinto Libro di Madrigali\n\nThe Hilliard Ensemble\nMonika Mauch soprano\nDavid James countertenor\nDavid Gould countertenor\nRogers Covey-Crump tenor\nSteven Harrold tenor\nGordon Jones baritone");
+    
+    descriptions.push_back("Stefano Battaglia Trio\nThe River of Anyder\n\nStefano Battaglia piano\nSalvatore Maiore double-bass\nRoberto Dani drums");
+    
+    descriptions.push_back("Stephan Micus\nBold As Light\n\nStephan Micus raj nplaim, bass zither, chord zither, \nbavarian zither, nohkan, sho, \nvoice, kalimba, shakuhachi, sinding");
+    
+    descriptions.push_back("The Dowland Project\nRomaria\n\nJohn Potter tenor \nMilos Valent violin, viola\nJohn Surman soprano saxophone, \nbass clarinet, tenor and bass recorders\nStephen Stubbs baroque guitar, vihuela");
+    
+    descriptions.push_back("Heinz Holliger\nLauds and Lamentations\nMusic of Elliott Carter\nand Isang Yun\n\nHeinz Holliger oboe, English horn\nThomas Zehetmair violin\nRuth Killius viola\nThomas Demenga cello");
+    
+    descriptions.push_back("Andras Schiff\nIn Concert - Robert Schumann\n\nAndras Schiff piano");
+    
+    descriptions.push_back("Gianluigi Trovesi\nGianni Coscia\nFrere Jacques - Round about Offenbach\n\nGianluigi Trovesi piccolo and alto clarinets\nGianni Coscia accordion");
+    
+    descriptions.push_back("Savina Yannatou\nPrimavera en Salonico\nSumiglia\n\nSavina Yannatou voice\nPrimavera en Salonico\nKostas Vomvolos accordion, qanun, kalimba\nYannis Alexandris tamboura, oud, guitar\nMichalis Siganidis double-bass\nKyriakos Gouventas violin, viola\nHarris Lambrakis ney\nKostas Theodorou percussion");
+    
+    descriptions.push_back("Robin Williamson\nThe Iron Stone\n\nRobin Williamson vocals, Celtic harp, Mohan vina, \nChinese flute, whistles, tabwrdd drum\nMat Maneri viola, Hardanger fiddle\nBarre Phillips double-bass\nAle Moller mandola, accordion, clarino, \nshawm, natural flutes, drone flutes, \nwhistles, jaw harps");
+    
+    descriptions.push_back("Dino Saluzzi Group\nJuan Condori\n\nDino Saluzzi bandoneon\nFelix 'Cuchara' Saluzzi tenor and soprano saxophones, clarinet\nJose Maria Saluzzi acoustic and electric guitars\nMatias Saluzzi double-bass, bass guitar\nU. T. Gandhi drums, percussion");
+    
+    descriptions.push_back("Louis Sclavis\nLost on the Way\n\nLouis Sclavis clarinets, soprano saxophone\nMatthias Metzger soprano and alto saxophones\nMaxime Delpierre guitar\nOlivier Lete bass\nFrancois Merville drums");
+    
+    descriptions.push_back("Miklos Perenyi\nBritten Bach Ligeti\n\nMiklos Perenyi violoncello");
+    
     
     
     
@@ -190,35 +192,36 @@ void testApp::setup(){
      *******************/
     
     
-    descriptions.push_back("Franz Schubert\nFantasie C-Dur\nRondo h-Moll\nSonata A-Dur\n\nCarolin Widmann violin\nAlexander Lonquich piano");
     
-    descriptions.push_back("Meredith Monk\nSongs of Ascension\n\nMeredith Monk and Vocal Ensemble voices\nTodd Reynolds Quartet string quartet\nThe M6 voices\nMontclair State University Singers ");
+    descriptions.push_back("Andy Sheppard\nMichel Benita\nSebastian Rochford\nTrio Libero\n\nAndy Sheppard tenor and soprano saxophones\nMichel Benita double-bass\nSebastian Rochford drums");
     
-    descriptions.push_back("Eleni Karaindrou\nTrojan Women\n\nSocratis Sinopoulos Constantinople lyra, laouto\nChristos Tsiamoulis ney, suling, outi\nPanos Dimitrakopoulos kanonaki\nAndreas Katsiyiannis santouri\nMaria Bildea harp\nAndreas Papas bendir, daouli\nVeronika Iliopoulou soprano\nEleni Karaindrou\nAntonis Kontogeorgiou chorus director");
+    descriptions.push_back("Miroslav Vitous\nUniversal Syncopations II\n\nBob Mintzer tenor saxophone, bass clarinet\nGary Campbell soprano and tenor saxophones\nBob Malach tenor saxophone\nRandy Brecker trumpet\nDaniele di Bonaventura bandoneon\nVesna Vasko-Caceres voice\nGerald Cleaver drums\nAdam Nussbaum drums\nMiroslav Vitous double-bass");
     
-    descriptions.push_back("Carlo Gesualdo\nQuinto Libro di Madrigali\n\nThe Hilliard Ensemble\nMonika Mauch soprano\nDavid James countertenor\nDavid Gould countertenor\nRogers Covey-Crump tenor\nSteven Harrold tenor\nGordon Jones baritone");
+    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, vihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, vihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
     
-    descriptions.push_back("Stefano Battaglia Trio\nThe River of Anyder\n\nStefano Battaglia piano\nSalvatore Maiore double-bass\nRoberto Dani drums");
+    descriptions.push_back("Food\nQuiet Inlet\nThomas Stronen drums, live-electronics\nIain Ballamy tenor- and soprano saxophones\nNils Petter Molver trumpet, electronics\nChristian Fennesz guitar, electronics\nSebastian Rochford drums");
     
-    descriptions.push_back("Stephan Micus\nBold As Light\n\nStephan Micus raj nplaim, bass zither, chord zither, \nbavarian zither, nohkan, sho, \nvoice, kalimba, shakuhachi, sinding");
+    descriptions.push_back("Iva Bittova\n\nIva Bittova voilin, voice, kalimba");
     
-    descriptions.push_back("The Dowland Project\nRomaria\n\nJohn Potter tenor \nMilos Valent violin, viola\nJohn Surman soprano saxophone, \nbass clarinet, tenor and bass recorders\nStephen Stubbs baroque guitar, vihuela");
+    descriptions.push_back("Julia Hulsmann Trio\nImprint\nJulia Hulsmann piano\nMarc Muellbauer double-bass\nHeinrich Kobberling drums");
     
-    descriptions.push_back("Heinz Holliger\nLauds and Lamentations\nMusic of Elliott Carter\nand Isang Yun\n\nHeinz Holliger oboe, English horn\nThomas Zehetmair violin\nRuth Killius viola\nThomas Demenga cello");
+    descriptions.push_back("Bobo Stenson Trio\nIndicum\nBobo Stenson piano\nAnders Jormin double-bass\nJon Falt drums");
     
-    descriptions.push_back("Andras Schiff\nIn Concert - Robert Schumann\n\nAndras Schiff piano");
+    descriptions.push_back("Louis Sclavis\nDans La Nuit, Music for the Silent Movie by Charles Vanel\n\nLouis Sclavis clarinets\nJean Louis Matinier accordion\nDominique Pifarely violin\nVincent Courtois cello\nFrancois Merville percussion, marimba");
     
-    descriptions.push_back("Gianluigi Trovesi\nGianni Coscia\nFrere Jacques - Round about Offenbach\n\nGianluigi Trovesi piccolo and alto clarinets\nGianni Coscia accordion");
+    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, sound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N'Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
     
-    descriptions.push_back("Savina Yannatou\nPrimavera en Salonico\nSumiglia\n\nSavina Yannatou voice\nPrimavera en Salonico\nKostas Vomvolos accordion, qanun, kalimba\nYannis Alexandris tamboura, oud, guitar\nMichalis Siganidis double-bass\nKyriakos Gouventas violin, viola\nHarris Lambrakis ney\nKostas Theodorou percussion");
+    descriptions.push_back("Jon Balke\nMagnetic Works 1993-2001\n\nJon Balke piano, keyboards, percussion, electronics\nJens Petter Antonsen trumpet\nPer Jorgensen trumpet, vocals\nArve Henriksen trumpet, vocals\nMorten Halle alto saxophone, flute\nTore Brunborg tenor and soprano saxophones\nGertrud Okland violin\nHenrik Hannisdal violin\nOdd Hannisdal violin\nTrond Villa viola\nMarek Konstantynowicz viola\nJonas Franke-Blom violoncello\nSvante Henryson violoncello\nMorten Hannisdal violoncello\nAnders Jormin double-bass\nMarilyn Mazur percussion\nAudun Kleive drums");
     
-    descriptions.push_back("Robin Williamson\nThe Iron Stone\n\nRobin Williamson vocals, Celtic harp, Mohan vina, Chinese flute, whistles, tabwrdd drum\nMat Maneri viola, Hardanger fiddle\nBarre Phillips double-bass\nAle Moller mandola, accordion, clarino, shawm, natural flutes, drone flutes, whistles, jaw harps");
+    descriptions.push_back("Jacob Young\nEvening Falls\n\nJacob Young guitar\nMathias Eick trumpet\nVidar Johansen bass clarinet\nMats Eilertsen double-bass\nJon Christensen drums");
     
-    descriptions.push_back("Dino Saluzzi Group\nJuan Condori\n\nDino Saluzzi bandoneon\nFelix 'Cuchara' Saluzzi tenor and soprano saxophones, clarinet\nJose Maria Saluzzi acoustic and electric guitars\nMatias Saluzzi double-bass, bass guitar\nU. T. Gandhi drums, percussion");
+    descriptions.push_back("John Abercrombie\nClass Trip\nJohn Abercrombie guitar\nMark Feldman violin\nMarc Johnson double-bass\nJoey Baron drums");
     
-    descriptions.push_back("Louis Sclavis\nLost on the Way\n\nLouis Sclavis clarinets, soprano saxophone\nMatthias Metzger soprano and alto saxophones\nMaxime Delpierre guitar\nOlivier Lete bass\nFrancois Merville drums");
+    descriptions.push_back("Paul Giger\nRobert Dick\nSatoshi Takeishi\nVindonissa\n\nPaul Giger violin, violino d'amore, viola d'amore, footbells\nRobert Dick c-flute, glissando flute, bass flute in c, bass flute in f, contrabass flute\nSatoshi Takeishi percussion");
     
-    descriptions.push_back("Miklos Perenyi\nBritten Bach Ligeti\n\nMiklos Perenyi violoncello");
+    descriptions.push_back("Johann Sebastian Bach\nJohn Holloway\nThe Sonatas and Partitas\nfor violin solo\n\nJohn Holloway violin");
+    
+    descriptions.push_back("Denes Varjon\nPrecipitando\n\nDenes Varjon piano");
     
     
     
@@ -783,7 +786,7 @@ void testApp::draw(){
                     
                     //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     togglecaption = true;
-                    captionindex = 10+i;
+                    captionindex = i;
                     
                     trans = 100;
                     ofTranslate(0,0,enlarge);
@@ -836,7 +839,7 @@ void testApp::draw(){
                     
                     //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
                     togglecaption = true;
-                    captionindex = 10+i;
+                    captionindex = 5+i;
                     
                     trans = 100;
                     ofTranslate(0,0,enlarge);
@@ -973,7 +976,7 @@ void testApp::draw(){
                     translatez = -20*sqrt(2)*sin(deg);
                     
                     ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                     
                     ofSetColor(songcolor);
                     songs[i].drawStringAsShapes(tracks[i], 0,0);
@@ -1025,7 +1028,7 @@ void testApp::draw(){
 					translatez = -20*sqrt(2)*sin(deg);
                     
 					ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                     
 					ofSetColor(songcolor);
 					songs[i].drawStringAsShapes(tracks[i], 0,0);
@@ -1077,7 +1080,7 @@ void testApp::draw(){
                     translatez = -20*sqrt(2)*sin(deg);
                     
                     ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                     
                     ofSetColor(songcolor);
                     songs[i].drawStringAsShapes(tracks[i], 0,0);
