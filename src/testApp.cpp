@@ -1112,7 +1112,7 @@ void testApp::draw(){
     
 	for( int i = 0; i<5; i++){
         if( (page != 3) || (i != 0) ){
-            if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
+            
             ofPushMatrix();
             ofTranslate(200 - i*100, 300, -200);
             //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
@@ -1120,12 +1120,46 @@ void testApp::draw(){
                 //ofTranslate(0,0,enlarge);
                 //emerge();
                 //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                
+                togglecaption = true;
+                captionindex = 30+i;
+                
+                trans = 100;
                 ofTranslate(0,0,-enlarge);
-                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                
+                ofPushMatrix();
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                
+                for(int i = 0; i<tracks.size(); i++){
+                    ofPushMatrix();
+                    
+                    deg = 360/tracks.size();
+                    deg *= i;
+                    deg = deg * pi / 180;
+                    
+                    translatex = 20*sqrt(2)*cos(deg);
+                    translatez = -20*sqrt(2)*sin(deg);
+                    
+                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
+                    
+                    ofSetColor(songcolor);
+                    songs[i].drawStringAsShapes(tracks[i], 0,0);
+                    
+                    ofSetColor(255,255,255);
+                    ofPopMatrix();
+                    
+                    trans = 100;
+                }
+                ofPopMatrix();
+                
+                trans = 255;
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
             }
+            if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
             ofDrawBox(0, 0, 0, 100);
-            ofPopMatrix();
             if(bUseTexture) ecmcovers[30+i].getTextureReference().unbind();
+            ofPopMatrix();
         }
 	}
     
@@ -1133,7 +1167,7 @@ void testApp::draw(){
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
         if( (page != 3) || (i != 0) ){
-            if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
+            
             ofPushMatrix();
             ofTranslate(200 - i*100, 400, -200);
             //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
@@ -1141,12 +1175,46 @@ void testApp::draw(){
                 //ofTranslate(0,0,enlarge);
                 //emerge();
                 //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                
+                togglecaption = true;
+                captionindex = 35+i;
+                
+                trans = 100;
                 ofTranslate(0,0,-enlarge);
-                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                
+                ofPushMatrix();
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                
+                for(int i = 0; i<tracks.size(); i++){
+                    ofPushMatrix();
+                    
+                    deg = 360/tracks.size();
+                    deg *= i;
+                    deg = deg * pi / 180;
+                    
+                    translatex = 20*sqrt(2)*cos(deg);
+                    translatez = -20*sqrt(2)*sin(deg);
+                    
+                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
+                    
+                    ofSetColor(songcolor);
+                    songs[i].drawStringAsShapes(tracks[i], 0,0);
+                    
+                    ofSetColor(255,255,255);
+                    ofPopMatrix();
+                    
+                    trans = 100;
+                }
+                ofPopMatrix();
+                
+                trans = 255;
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
             }
+            if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
             ofDrawBox(0, 0, 0, 100);
-            ofPopMatrix();
             if(bUseTexture) ecmcovers[35+i].getTextureReference().unbind();
+            ofPopMatrix();
         }
 	}
     
@@ -1154,7 +1222,7 @@ void testApp::draw(){
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
         if( (page != 3) || (i != 0) ){
-            if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
+            
             ofPushMatrix();
             ofTranslate(200 - i*100, 500, -200);
             //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
@@ -1162,12 +1230,46 @@ void testApp::draw(){
                 //ofTranslate(0,0,enlarge);
                 //emerge();
                 //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+                
+                togglecaption = true;
+                captionindex = 40+i;
+                
+                trans = 100;
                 ofTranslate(0,0,-enlarge);
-                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+                
+                ofPushMatrix();
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                
+                for(int i = 0; i<tracks.size(); i++){
+                    ofPushMatrix();
+                    
+                    deg = 360/tracks.size();
+                    deg *= i;
+                    deg = deg * pi / 180;
+                    
+                    translatex = 20*sqrt(2)*cos(deg);
+                    translatez = -20*sqrt(2)*sin(deg);
+                    
+                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
+                    
+                    ofSetColor(songcolor);
+                    songs[i].drawStringAsShapes(tracks[i], 0,0);
+                    
+                    ofSetColor(255,255,255);
+                    ofPopMatrix();
+                    
+                    trans = 100;
+                }
+                ofPopMatrix();
+                
+                trans = 255;
+                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
             }
+            if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
             ofDrawBox(0, 0, 0, 100);
-            ofPopMatrix();
             if(bUseTexture) ecmcovers[40+i].getTextureReference().unbind();
+            ofPopMatrix();
         }
 	}
     
@@ -1180,20 +1282,54 @@ void testApp::draw(){
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
         //if( (page != 0) || (i != 0) ){
-        if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
+        
         ofPushMatrix();
         ofTranslate(200, 300, 200 - i*100);
         //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
         if(rotate[45+i]){
             //ofTranslate(0,0,enlarge);
             //emerge();
-            //originally face "east"...same idea
+            //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+            
+            togglecaption = true;
+            captionindex = 45+i;
+            
+            trans = 100;
             ofTranslate(enlarge,0,0);
-            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            
+            ofPushMatrix();
+            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+            
+            for(int i = 0; i<tracks.size(); i++){
+                ofPushMatrix();
+                
+                deg = 360/tracks.size();
+                deg *= i;
+                deg = deg * pi / 180;
+                
+                translatex = 20*sqrt(2)*cos(deg);
+                translatez = -20*sqrt(2)*sin(deg);
+                
+                ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
+                
+                ofSetColor(songcolor);
+                songs[i].drawStringAsShapes(tracks[i], 0,0);
+                
+                ofSetColor(255,255,255);
+                ofPopMatrix();
+                
+                trans = 100;
+            }
+            ofPopMatrix();
+            
+            trans = 255;
+            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
         }
+        if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
         ofDrawBox(0, 0, 0, 100);
-        ofPopMatrix();
         if(bUseTexture) ecmcovers[45+i].getTextureReference().unbind();
+        ofPopMatrix();
         //}
 	}
     
@@ -1201,20 +1337,54 @@ void testApp::draw(){
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
         //if( (page != 0) || (i != 0) ){
-        if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
+        
         ofPushMatrix();
         ofTranslate(200, 400, 200 - i*100);
         //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
         if(rotate[50+i]){
             //ofTranslate(0,0,enlarge);
             //emerge();
-            //originally face "east"...same idea
+            //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+            
+            togglecaption = true;
+            captionindex = 50+i;
+            
+            trans = 100;
             ofTranslate(enlarge,0,0);
-            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            
+            ofPushMatrix();
+            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+            
+            for(int i = 0; i<tracks.size(); i++){
+                ofPushMatrix();
+                
+                deg = 360/tracks.size();
+                deg *= i;
+                deg = deg * pi / 180;
+                
+                translatex = 20*sqrt(2)*cos(deg);
+                translatez = -20*sqrt(2)*sin(deg);
+                
+                ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
+                
+                ofSetColor(songcolor);
+                songs[i].drawStringAsShapes(tracks[i], 0,0);
+                
+                ofSetColor(255,255,255);
+                ofPopMatrix();
+                
+                trans = 100;
+            }
+            ofPopMatrix();
+            
+            trans = 255;
+            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
         }
+        if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
         ofDrawBox(0, 0, 0, 100);
-        ofPopMatrix();
         if(bUseTexture) ecmcovers[50+i].getTextureReference().unbind();
+        ofPopMatrix();
         //}
 	}
     
@@ -1222,20 +1392,54 @@ void testApp::draw(){
 	//make sure you load the same image..
 	for( int i = 0; i<5; i++){
         //if( (page != 0) || (i != 0) ){
-        if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
+        
         ofPushMatrix();
         ofTranslate(200, 500, 200 - i*100);
         //ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
         if(rotate[55+i]){
             //ofTranslate(0,0,enlarge);
             //emerge();
-            //originally face "east"...same idea
+            //aligned on the x axis but facing into the screen resulting in outward normal upon a 2 page counterclockwise turn
+            
+            togglecaption = true;
+            captionindex = 55+i;
+            
+            trans = 100;
             ofTranslate(enlarge,0,0);
-            ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+            
+            ofPushMatrix();
+            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+            
+            for(int i = 0; i<tracks.size(); i++){
+                ofPushMatrix();
+                
+                deg = 360/tracks.size();
+                deg *= i;
+                deg = deg * pi / 180;
+                
+                translatex = 20*sqrt(2)*cos(deg);
+                translatez = -20*sqrt(2)*sin(deg);
+                
+                ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+                ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
+                
+                ofSetColor(songcolor);
+                songs[i].drawStringAsShapes(tracks[i], 0,0);
+                
+                ofSetColor(255,255,255);
+                ofPopMatrix();
+                
+                trans = 100;
+            }
+            ofPopMatrix();
+            
+            trans = 255;
+            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
         }
+        if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
         ofDrawBox(0, 0, 0, 100);
-        ofPopMatrix();
         if(bUseTexture) ecmcovers[55+i].getTextureReference().unbind();
+        ofPopMatrix();
         //}
 	}
     
