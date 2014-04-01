@@ -1658,7 +1658,7 @@ void testApp::mouseDragged(int x, int y, int button){
 void testApp::mousePressed(int x, int y, int button){
     /*cout<<"pressed at location x = "<<x<<" and y = "<<y<<endl;
      mouse = true;
-     mousedrag.push_back(x);*/
+     mousedrag.push_back(x);*///
 }
 
 //--------------------------------------------------------------
