@@ -203,6 +203,7 @@ public:
     ofTrueTypeFont	font9;
     ofTrueTypeFont	font10;
     
+    ofTrueTypeFont trackfont;
     
     int trans;
     
