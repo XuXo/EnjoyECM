@@ -206,11 +206,11 @@ void testApp::setup(){
     
     
     
-    descriptions.push_back("Andy Sheppard\nMichel Benita\nSebastian Rochford\nTrio Libero\n\nAndy Sheppard tenor and soprano saxophones\nMichel Benita double-bass\nSebastian Rochford drums");
+    descriptions.push_back("Andy Sheppard\nMichel Benita\nSebastian Rochford\nTrio Libero\n\nAndy Sheppard tenor and \nsoprano saxophones\nMichel Benita double-bass\nSebastian Rochford drums");
     
     descriptions.push_back("Miroslav Vitous\nUniversal Syncopations II\n\nBob Mintzer tenor saxophone, bass clarinet\nGary Campbell soprano and tenor saxophones\nBob Malach tenor saxophone\nRandy Brecker trumpet\nDaniele di Bonaventura bandoneon\nVesna Vasko-Caceres voice\nGerald Cleaver drums\nAdam Nussbaum drums\nMiroslav Vitous double-bass");
     
-    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, vihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, vihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
+    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, \nvihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, vihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
     
     descriptions.push_back("Food\nQuiet Inlet\nThomas Stronen drums, live-electronics\nIain Ballamy tenor- and soprano saxophones\nNils Petter Molver trumpet, electronics\nChristian Fennesz guitar, electronics\nSebastian Rochford drums");
     
@@ -239,7 +239,8 @@ void testApp::setup(){
     
     
     
-    mouse =false;
+    //mouse =false;
+    swipe = false;
     
     enlarge = 100;
     nextpageleft = false;
@@ -601,10 +602,12 @@ void testApp::update() {
 	}
 	
     
-    //turning page with swiping, this is a little buggy so I'm gonna leave it out for now
-    if(mousedrag.size() >= 2){
+    //turning page with swiping, need at least 4 points to indicate a swipe and not some accidental click.  also just realized this should be tripped only after mouse is released. this is a little buggy so I'm gonna leave it out for now
+    if((swipe) && (mousedrag.size() >= 3)){
 		float x1 = mousedrag[0];
-		float x2 = mousedrag[1];
+		float x2 = mousedrag[3];		//don't use the 2nd point mousedrag[1] since [0] represents the very first click so the next point might be too close to judge
+        
+		//if x2> x1 then we are swiping left to right so a counterclockwise turn
 		if (x1- x2 < 0){
 			nextpageleft = true;
 			numberflipsleft++;
@@ -615,7 +618,9 @@ void testApp::update() {
 			numberflipsright++;
 			resetrotate = true;
 		}
-		mousedrag.clear();
+        
+		mousedrag.clear();			//mouseReleased() should clear..
+		swipe = false;
     }
 }
 
@@ -1633,16 +1638,16 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-    /*cout<<"dragging at location x = "<<x<<" and y = "<<y<<endl;
-     //we only care about the x component to determine a leftward or rightward swipe
-     mousedrag.push_back(x);
-     */
+    cout<<"dragging at location x = "<<x<<" and y = "<<y<<endl;
+    //we only care about the x component to determine a leftward or rightward swipe
+    mousedrag.push_back(x);
+    
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
     
-    //mouse = true;
-    //mousedrag.push_back(x);
+    
+    //mousedrag.push_back(x);		don't want to push points clicked only points in mouseDragged to simulate swiping, otherwise stack will get populated by bunch of junk clicks
 	int k = 60;
 	int left = 359;
 	int right = 359 + 5*157;
@@ -1695,9 +1700,10 @@ void testApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-    /*cout<<"released at location x = "<<x<<" and y = "<<y<<endl;
-     //mousedrag.clear();
-     mouse = false;*/
+	//I'm not sure if it makes sense to wipe this as soon as your finger leaves the mousepad..I'm assuming this is only called after a mousedrag, not after any mouseclick
+    cout<<"mouse released at location x = "<<x<<" and y = "<<y<<endl;
+    //mousedrag.clear();
+    swipe = true;
 }
 
 //--------------------------------------------------------------

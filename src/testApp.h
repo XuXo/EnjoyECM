@@ -206,6 +206,7 @@ public:
     ofTrueTypeFont trackfont;
     
     int trans;
+    int alpha;
     
     ofTrueTypeFont  author;
     ofTrueTypeFont  date;
