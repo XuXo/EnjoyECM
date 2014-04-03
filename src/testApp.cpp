@@ -87,6 +87,23 @@ void testApp::setup(){
     tracks.push_back("10. sclavis");
     
     
+    for(int i = 0; i<10; i++){
+        ofColor temp = ofColor(51,102,193);
+		trackcolors1.push_back(temp);
+	}
+	
+    for(int i = 0; i<10; i++){
+        ofColor temp = ofColor(176, 196, 222);
+		trackcolors2.push_back(temp);
+	}
+    
+    //so only page 1 is different
+    albumcolors.push_back(trackcolors2);
+    albumcolors.push_back(trackcolors1);
+    albumcolors.push_back(trackcolors2);
+    albumcolors.push_back(trackcolors2);
+    
+    
 	//loading the captions to be displayed when mouse scrolls over any particualr track, to do: include cover number and year produced as well..also need a better way to control the line breaks as I did
 	//theses manually based on position of the cube
     /*******************
@@ -537,12 +554,12 @@ void testApp::update() {
     
     
     //black white pages needs a more legible color for tracks
-    if(page == 1)
-        songcolor = ofColor(51, 102, 193);
-    else if (page == 2)
-		songcolor = ofColor(176,196,222);
-    else songcolor = ofColor(176,196,222);
-    
+    /*if(page == 1)
+     songcolor = ofColor(51, 102, 193);
+     else if (page == 2)
+     songcolor = ofColor(176,196,222);
+     else songcolor = ofColor(176,196,222);
+     */
     
 	if(scrollcubes){
 		for( int j = 0; j < 3; j++){
@@ -823,7 +840,7 @@ void testApp::draw(){
                         ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                         
 						//songcolor controlled by page number
-                        ofSetColor(songcolor);
+                        ofSetColor(albumcolors[page][i]);
                         songs[i].drawStringAsShapes(tracks[i], 0,0);
                         
 						//for some reason cube takes on the color of the text if not reset even though the binding of the texture happens outside of the iteration???
@@ -880,7 +897,7 @@ void testApp::draw(){
                         ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                         ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                         
-                        ofSetColor(songcolor);
+                        ofSetColor(albumcolors[page][i]);
                         songs[i].drawStringAsShapes(tracks[i], 0,0);
                         
                         ofSetColor(255,255,255);
@@ -936,7 +953,7 @@ void testApp::draw(){
                         ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                         ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                         
-                        ofSetColor(songcolor);
+                        ofSetColor(albumcolors[page][i]);
                         songs[i].drawStringAsShapes(tracks[i], 0,0);
                         
                         ofSetColor(255,255,255);
@@ -993,7 +1010,7 @@ void testApp::draw(){
                     ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                     ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                     
-                    ofSetColor(songcolor);
+                    ofSetColor(albumcolors[page][i]);
                     songs[i].drawStringAsShapes(tracks[i], 0,0);
                     
                     ofSetColor(255,255,255);
@@ -1044,7 +1061,7 @@ void testApp::draw(){
 					ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
 					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                     
-					ofSetColor(songcolor);
+					ofSetColor(albumcolors[page][i]);
 					songs[i].drawStringAsShapes(tracks[i], 0,0);
                     
 					ofSetColor(255,255,255);
@@ -1095,7 +1112,7 @@ void testApp::draw(){
                     ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                     ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                     
-                    ofSetColor(songcolor);
+                    ofSetColor(albumcolors[page][i]);
                     songs[i].drawStringAsShapes(tracks[i], 0,0);
                     
                     ofSetColor(255,255,255);
@@ -1153,7 +1170,7 @@ void testApp::draw(){
                     ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                     ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                     
-                    ofSetColor(songcolor);
+                    ofSetColor(albumcolors[page][i]);
                     songs[i].drawStringAsShapes(tracks[i], 0,0);
                     
                     ofSetColor(255,255,255);
@@ -1203,7 +1220,7 @@ void testApp::draw(){
                     ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                     ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                     
-                    ofSetColor(songcolor);
+                    ofSetColor(albumcolors[page][i]);
                     songs[i].drawStringAsShapes(tracks[i], 0,0);
                     
                     ofSetColor(255,255,255);
@@ -1253,7 +1270,7 @@ void testApp::draw(){
                     ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                     ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                     
-                    ofSetColor(songcolor);
+                    ofSetColor(albumcolors[page][i]);
                     songs[i].drawStringAsShapes(tracks[i], 0,0);
                     
                     ofSetColor(255,255,255);
@@ -1310,7 +1327,7 @@ void testApp::draw(){
                 ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                 ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                 
-                ofSetColor(songcolor);
+                ofSetColor(albumcolors[page][i]);
                 songs[i].drawStringAsShapes(tracks[i], 0,0);
                 
                 ofSetColor(255,255,255);
@@ -1361,7 +1378,7 @@ void testApp::draw(){
                 ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                 ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                 
-                ofSetColor(songcolor);
+                ofSetColor(albumcolors[page][i]);
                 songs[i].drawStringAsShapes(tracks[i], 0,0);
                 
                 ofSetColor(255,255,255);
@@ -1412,7 +1429,7 @@ void testApp::draw(){
                 ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
                 ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                 
-                ofSetColor(songcolor);
+                ofSetColor(albumcolors[page][i]);
                 songs[i].drawStringAsShapes(tracks[i], 0,0);
                 
                 ofSetColor(255,255,255);
