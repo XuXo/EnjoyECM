@@ -26,7 +26,7 @@ public:
 	ofLight directionalLight;
 	
 	ofMaterial material;
-    ofImage ofLogoImage;
+    ofImage ofLogoImage1;
     ofImage ofLogoImage2;
     ofImage ofLogoImage3;
     ofImage ofLogoImage4;

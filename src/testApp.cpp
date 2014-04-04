@@ -104,6 +104,19 @@ void testApp::setup(){
     albumcolors.push_back(trackcolors2);
     
     
+    //pagecolors should be same as albumcolors, thats what the color should revert back to when not scroll-locked
+    pagecolors.push_back(ofColor(176, 196, 222));
+    pagecolors.push_back(ofColor(51, 102, 193));
+    pagecolors.push_back(ofColor(176, 196, 222));
+    pagecolors.push_back(ofColor(176, 196, 222));
+    
+    //these are the colors for the highlighted tracks depending on the page number
+    highlightcolors.push_back(ofColor(200,0,0));
+    highlightcolors.push_back(ofColor(211,211,211));
+    highlightcolors.push_back(ofColor(0,0,120));
+    highlightcolors.push_back(ofColor(200,0,0));
+    
+    
 	//loading the captions to be displayed when mouse scrolls over any particualr track, to do: include cover number and year produced as well..also need a better way to control the line breaks as I did
 	//theses manually based on position of the cube
     /*******************
@@ -370,7 +383,7 @@ void testApp::setup(){
 	//vs oil pastels vs charcoal-like etc..  There are simply too many gorgeous covers to choose from and I did the best I could.  I own maybe 20% of these.
     
     //blurry and smooth
-    ofLogoImage.loadImage("leipzig.jpg");
+    ofLogoImage1.loadImage("leipzig.jpg");
     ofLogoImage2.loadImage("melos.jpg");
     ofLogoImage3.loadImage("gustavsen.jpg");
     ofLogoImage4.loadImage("canopee.jpg");
@@ -446,7 +459,7 @@ void testApp::setup(){
     ofLogoImage60.loadImage("berg.jpg");
     
     //definitely a better way to do this but I'm not stressing right now
-    ecmcovers.push_back(ofLogoImage);
+    ecmcovers.push_back(ofLogoImage1);
 	ecmcovers.push_back(ofLogoImage2);
 	ecmcovers.push_back(ofLogoImage3);
 	ecmcovers.push_back(ofLogoImage4);
@@ -530,7 +543,7 @@ void testApp::update() {
     ofVec2f mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());
     x = mouse.x;
     y = mouse.y;
-    //cout<<"current x is "<<x<<" and current y is "<<y<<endl;      //for debugging
+    cout<<"current x is "<<x<<" and current y is "<<y<<endl;      //for debugging
     
     
     //this is if the user leaves the cursor on the current album and goes to a next page, the rotation would linger unless we trigger a cleanup, this is called whenever we hit 'i' or 'u', the effects are only felt on the edges since there are infact 2 cubes, well actually that's not the real reason, real reason is that's the only part of the previous page visible to us..
@@ -618,6 +631,57 @@ void testApp::update() {
 		}
 	}
 	
+    
+    
+    //highlighting track from scrolling through a list
+    //ofColor highlight = ofColor(0,0,0);
+    ofColor highlight = highlightcolors[page];
+    if(scrolltracks)
+    {
+        cout<<"we are on row number " <<rownumber<<endl;
+        //as of this point of having been activated, rownumber already exists from last iteration, as does page
+        //preserve the original color since it needs to be restored when the cursor comes off..
+		ofColor original = albumcolors[page][0];
+        
+        //cout<<"original color is"<<original<<endl;
+        
+        //depending on row number, track listings have different y coordinates found by trial and error
+        /*top row 400 to 630
+         middle row 185 to 415
+         bottom row 350 to 580
+         */
+        if(rownumber == 1){
+			for(int j = 0; j< 10; j++){
+				//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
+				if((y >= 400+(j*23)) && (y < 400 + (j+1)*23))
+					albumcolors[page][9-j] = highlight;				//track turns white when highlighted, otherwise takes the default color set in setup()
+				else
+					albumcolors[page][9-j]  = pagecolors[page];
+			}
+		}
+		else if(rownumber == 2){
+			for(int j = 0; j< 10; j++){
+				//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
+				if((y >= 185+(j*23)) && (y < 185 + (j+1)*23))
+					albumcolors[page][9-j]  = highlight;
+				else
+					albumcolors[page][9-j]  = pagecolors[page];
+			}
+		}
+		else if(rownumber == 3){
+			for(int j = 0; j< 10; j++){
+				//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
+				if((y >= 350+(j*23)) && (y < 350+ (j+1)*23))
+					albumcolors[page][9-j]  = highlight;
+				else
+					albumcolors[page][9-j]  = pagecolors[page];
+			}
+		}
+    }
+    
+    
+    
+    
     
     //turning page with swiping, need at least 4 points to indicate a swipe and not some accidental click.  also just realized this should be tripped only after mouse is released. this is a little buggy so I'm gonna leave it out for now
     if((swipe) && (mousedrag.size() >= 3)){
@@ -1459,7 +1523,7 @@ void testApp::draw(){
      ofDrawBox( 0, 0, 0, 850);
      ofPopMatrix();*/
     
-    if(bUseTexture) ofLogoImage.getTextureReference().unbind();
+    if(bUseTexture) ofLogoImage1.getTextureReference().unbind();
 	
 	if (!bPointLight) pointLight.disable();
 	if (!bSpotLight) spotLight.disable();
@@ -1680,6 +1744,7 @@ void testApp::mousePressed(int x, int y, int button){
 	if((x>left) && (x<right) && (y > bottom) && (y<top)){
         //cout<<"we are in"<<endl;
 		scrollcubes = false;
+        scrolltracks = true;
 		for( int j = 0; j < 3; j++){
 			for(int i = 0; i < 5; i++){
 				if((x >= 359+ (i*157)) && (x< 359+(i+1)*157)&& (y >= 245+(j*157)) && (y < 245+ (j+1)*157)){
@@ -1710,7 +1775,7 @@ void testApp::mousePressed(int x, int y, int button){
 		//but it won't really register anything since all false by default
 		freeze[cube] = false;
 		scrollcubes = true;
-        
+        scrolltracks = false;
 		//should now kick off scrolling track listings..
 	}
 }
@@ -1718,7 +1783,7 @@ void testApp::mousePressed(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
 	//I'm not sure if it makes sense to wipe this as soon as your finger leaves the mousepad..I'm assuming this is only called after a mousedrag, not after any mouseclick
-    cout<<"mouse released at location x = "<<x<<" and y = "<<y<<endl;
+    //cout<<"mouse released at location x = "<<x<<" and y = "<<y<<endl;
     //mousedrag.clear();
     swipe = true;
 }
