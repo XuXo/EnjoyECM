@@ -753,6 +753,7 @@ void testApp::draw(){
     ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
     ofSetColor(150,0,0);
     signature.drawStringAsShapes("By Tian Xu", 1060,700);
+    signature.drawStringAsShapes("(XuXo)", 1076,712);
     
     //old title and logo...actually I like this better but it doesn't look too good with the red/black page.  Against my better judgement and true instincts, I'm deprecating this one for now and trying
 	//to make the miami vice one work.
