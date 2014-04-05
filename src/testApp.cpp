@@ -15,7 +15,9 @@
 //#include <boost/lambda/lambda.hpp>
 
 void testApp::setup(){
-    
+    nextiteri = 0;
+    nextiterj = 0;
+    drawwalls = false;
     
     trans = 255;
     togglecaption = false;
@@ -240,7 +242,7 @@ void testApp::setup(){
     
     descriptions.push_back("Miroslav Vitous\nUniversal Syncopations II\n\nBob Mintzer tenor saxophone, bass clarinet\nGary Campbell soprano and tenor saxophones\nBob Malach tenor saxophone\nRandy Brecker trumpet\nDaniele di Bonaventura bandoneon\nVesna Vasko-Caceres voice\nGerald Cleaver drums\nAdam Nussbaum drums\nMiroslav Vitous double-bass");
     
-    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, \nvihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, vihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
+    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, \nvihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, \nvihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
     
     descriptions.push_back("Food\nQuiet Inlet\nThomas Stronen drums, live-electronics\nIain Ballamy tenor- and soprano saxophones\nNils Petter Molver trumpet, electronics\nChristian Fennesz guitar, electronics\nSebastian Rochford drums");
     
@@ -252,7 +254,7 @@ void testApp::setup(){
     
     descriptions.push_back("Louis Sclavis\nDans La Nuit, Music for the Silent Movie by Charles Vanel\n\nLouis Sclavis clarinets\nJean Louis Matinier accordion\nDominique Pifarely violin\nVincent Courtois cello\nFrancois Merville percussion, marimba");
     
-    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, sound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N'Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
+    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, \nsound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N'Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
     
     descriptions.push_back("Jon Balke\nMagnetic Works 1993-2001\n\nJon Balke piano, keyboards, percussion, electronics\nJens Petter Antonsen trumpet\nPer Jorgensen trumpet, vocals\nArve Henriksen trumpet, vocals\nMorten Halle alto saxophone, flute\nTore Brunborg tenor and soprano saxophones\nGertrud Okland violin\nHenrik Hannisdal violin\nOdd Hannisdal violin\nTrond Villa viola\nMarek Konstantynowicz viola\nJonas Franke-Blom violoncello\nSvante Henryson violoncello\nMorten Hannisdal violoncello\nAnders Jormin double-bass\nMarilyn Mazur percussion\nAudun Kleive drums");
     
@@ -532,18 +534,20 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update() {
     //ofBackground(185,184,174);           true website color I pulled
-    pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x,
-						   sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y,
-						   -cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
-	
-    spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
-	spotLight.setPosition( mouseX, mouseY, 200);
+    /*pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x,
+     sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y,
+     -cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
+     
+     spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
+     spotLight.setPosition( mouseX, mouseY, 200);
+     */
+    
     
     float x, y;
     ofVec2f mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());
     x = mouse.x;
     y = mouse.y;
-    cout<<"current x is "<<x<<" and current y is "<<y<<endl;      //for debugging
+    //cout<<"current x is "<<x<<" and current y is "<<y<<endl;      //for debugging
     
     
     //this is if the user leaves the cursor on the current album and goes to a next page, the rotation would linger unless we trigger a cleanup, this is called whenever we hit 'i' or 'u', the effects are only felt on the edges since there are infact 2 cubes, well actually that's not the real reason, real reason is that's the only part of the previous page visible to us..
@@ -558,13 +562,25 @@ void testApp::update() {
     }
     
     page = totalflips % 4;
-    if (page == -3)
-        page = 1;
-    if (page == -2)
-        page = 2;
-    if (page == -1)
-        page = 3;
+    if (page == -3){
+		page = 1;}
+	else if (page == -2){
+		page = 2;}
+    else if (page == -1){
+		page = 3;}
     
+    
+	//page gives us the front wall facing the user this is the only one we should be drawing, we can definitely turn off the back wall but we might want the sides for turning animations
+	draw_wall0 = draw_wall1 = draw_wall2 = draw_wall3 = false;
+	
+	if(page == 0){
+		draw_wall0 = true;}
+	else if(page == 1){
+		draw_wall1 = true;}
+	else if(page == 2){
+		draw_wall2 = true;}
+	else if(page == 3){
+		draw_wall3 = true;}
     
     //black white pages needs a more legible color for tracks
     /*if(page == 1)
@@ -574,24 +590,66 @@ void testApp::update() {
      else songcolor = ofColor(176,196,222);
      */
     
+    
+	//instead of doing 15 iterations everytime like a for loop and testing each condition we can just find the i and j corresponding to its position
+	/*if(page == 0){
+     rotate[(nextiterj*5)+nextiteri] = true;
+     }
+     else if(page == 1){
+     rotate[(15+nextiterj*5) + nextiteri] = true;
+     }
+     else if(page == 2){
+     rotate[(30+nextiterj*5) + nextiteri] = true;
+     }
+     else if(page == 3){
+     rotate[(45+nextiterj*5) + nextiteri] = true;
+     }
+     
+     int i, j;
+     if(scrollcubes){
+     if((x-359>0) && (y-245 > 0)){
+     i = ((int)x-359)%157;
+     j = ((int)y-245)%157;
+     if((i<5) && (j<3)){
+     nextiteri = i;		//this is so that we can reset it to false on the next iteration, we can't do that here since we need to animate it in draw() before we turn it off, gotta be a better way to do this
+     nextiterj = j;
+     rownumber = j+1;
+     if(page == 0){
+     rotate[(j*5)+i] = true;
+     }
+     else if(page == 1){
+     rotate[(15+j*5) + i] = true;
+     }
+     else if(page == 2){
+     rotate[(30+j*5) + i] = true;
+     }
+     else if(page == 3){
+     rotate[(45+j*5) + i] = true;
+     }
+     }
+     }
+     }
+     */
+    
+    
 	if(scrollcubes){
 		for( int j = 0; j < 3; j++){
 			for(int i = 0; i < 5; i++){
 				//depending on what 'page' we are on, we access different cubes, we can get the page based on the total number flips
-				/*
-				 _______3_______
-				 |		       |
-				 |			   |
-				 2|			   |4
-				 |		       |
-				 |_____________|
-				 1
-				 //so take page = totalflips%4		with 15 cubes per page
-				 //0 correspond to current page		which have indices 0-14
-				 //1 correspond to page 2			which have indices 15-29
-				 //2 correspond to page 3			which have indices 30-44
-				 //3 correspond to page 4			which have indices 45-59
-				 */
+				//
+				// ________3________
+				// |		       |
+				// |			   |
+				//2|			   |4
+				// |		       |
+				// |_______________|
+				//         1
+                //so take page = totalflips%4		with 15 cubes per page
+                //0 correspond to current page		which have indices 0-14
+                //1 correspond to page 2			which have indices 15-29
+                //2 correspond to page 3			which have indices 30-44
+                //3 correspond to page 4			which have indices 45-59
+                
 				//these are the coordinates on screen after being projected forward from depth of z=200
 				//found by trial and error...ouch
                 
@@ -638,7 +696,8 @@ void testApp::update() {
     ofColor highlight = highlightcolors[page];
     if(scrolltracks)
     {
-        cout<<"we are on row number " <<rownumber<<endl;
+        //cout<<"we are on row number " <<rownumber<<endl;
+        
         //as of this point of having been activated, rownumber already exists from last iteration, as does page
         //preserve the original color since it needs to be restored when the cursor comes off..
 		ofColor original = albumcolors[page][0];
@@ -812,7 +871,11 @@ void testApp::draw(){
     
     //totalflips = numberflipsleft - numberflipsright;				//this doesn't seem to be working
     if(nextpageleft){
-        //cout<<"totalflips is"<<totalflips<<endl;
+		
+		//so we should have some trigger in here to draw the walls only if we are mid rotation, once we are done and are only exposed to the front wall, we don't really the rotatoion even
+        drawwalls= true;
+        
+		//cout<<"totalflips is"<<totalflips<<endl;
         stayonpage = false;
         startpage += .1;											//speed of rotation
         if(startpage <=1)
@@ -829,6 +892,9 @@ void testApp::draw(){
     
     if(nextpageright){
         //cout<<"totalflips is"<<totalflips<<endl;
+        
+		drawwalls= true;
+        
         stayonpage = false;
         startpage += .1;
         if(startpage <=1)
@@ -869,246 +935,537 @@ void testApp::draw(){
      ##################################*/
     
 	//building the first face
+	//to make this a bit faster, we don't have to draw all the walls since only the front is visible to us.  We definitely don't need to draw the back wall but might want the adjacent side
+	//ones for animation when we are turning page, we should only be drawing the adjacent ones if we're in mid rotation which is what drawwalls indicates
     
-	for( int i = 0; i<5; i++){
-        if( (page != 1) || (i != 0) ){
-            if( (page != 3) || (i != 4) ){
-                
-                ofPushMatrix();
-                ofTranslate(-200 + i*100, 300, 200);
-                if(rotate[i] || freeze[i]){
+    //ofRotate(20, 1,0,0);      //for debugging purposes
+	if(draw_wall0 || drawwalls){
+        //cout<<"drawing wall 0"<<endl;
+		for( int i = 0; i<5; i++){
+			if( (page != 1) || (i != 0) ){
+				if( (page != 3) || (i != 4) ){
                     
-                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-                    togglecaption = true;
-                    captionindex = i;
+					ofPushMatrix();
+					ofTranslate(-200 + i*100, 300, 200);
+					if(rotate[i] || freeze[i]){
+                        
+						//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+						togglecaption = true;
+						captionindex = i;
+                        
+						trans = 100;
+						ofTranslate(0,0,enlarge);
+                        
+						ofPushMatrix();
+						ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
+                        
+						for(int i = 0; i<tracks.size(); i++){
+							ofPushMatrix();
+                            
+							//spread the tracks out evenly across the circumference of the circle
+							deg = 360/tracks.size();
+							deg *= i;
+							deg = deg * pi / 180;
+                            
+							//20 controls the radius, trial and error to make sure the text doesn't sink into the cube behind it causing it to disappear
+							translatex = 20*sqrt(2)*cos(deg);
+							translatez = -20*sqrt(2)*sin(deg);
+                            
+							//the y component gives us the helical shape so the user can see all the track listings and has the ability to select, 35 gives the right spacing
+							ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+							ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                            
+							//songcolor controlled by page number
+							ofSetColor(albumcolors[page][i]);
+							songs[i].drawStringAsShapes(tracks[i], 0,0);
+                            
+							//for some reason cube takes on the color of the text if not reset even though the binding of the texture happens outside of the iteration???
+							ofSetColor(255,255,255);
+							ofPopMatrix();
+                            
+							trans = 100;
+						}
+						ofPopMatrix();
+                        
+						//original plan was to fade out the rest of the cube for legibility when the selected album is brought to foreground but seems unnecessary now, left it here as an option
+						trans = 255;
+						ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+					}
+					ofSetColor(255,255,255,trans);    //turn on transparency
                     
-                    trans = 100;
-                    ofTranslate(0,0,enlarge);
+					// grab the texture reference and bind it, putting this anywhere but here will cause trouble//
+					if(bUseTexture) ecmcovers[i].getTextureReference().bind();
+					ofDrawBox(0, 0, 0, 100);
+					ofPopMatrix();
+					if(bUseTexture) ecmcovers[i].getTextureReference().unbind();
+				}
+			}
+		}
+        
+		for( int i = 0; i<5; i++){
+			if( (page != 1) || (i != 0) ){
+				if( (page != 3) || (i != 4) ){
                     
-                    ofPushMatrix();
-                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
+					ofPushMatrix();
+					ofTranslate(-200 + i*100, 400, 200);
+					if(rotate[5+i] || freeze[5+i]){
+                        
+						//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+						togglecaption = true;
+						captionindex = 5+i;
+                        
+						trans = 100;
+						ofTranslate(0,0,enlarge);
+                        
+						ofPushMatrix();
+						ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                        
+						for(int i = 0; i<tracks.size(); i++){
+							ofPushMatrix();
+                            
+							deg = 360/tracks.size();
+							deg *= i;
+							deg = deg * pi / 180;
+                            
+							translatex = 20*sqrt(2)*cos(deg);
+							translatez = -20*sqrt(2)*sin(deg);
+                            
+							ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+							ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                            
+							ofSetColor(albumcolors[page][i]);
+							songs[i].drawStringAsShapes(tracks[i], 0,0);
+                            
+							ofSetColor(255,255,255);
+							ofPopMatrix();
+                            
+							trans = 100;
+						}
+						ofPopMatrix();
+                        
+						trans = 255;
+						ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+					}
+					ofSetColor(255,255,255,trans);
                     
-                    for(int i = 0; i<tracks.size(); i++){
-                        ofPushMatrix();
-                        
-						//spread the tracks out evenly across the circumference of the circle
-                        deg = 360/tracks.size();
-                        deg *= i;
-                        deg = deg * pi / 180;
-                        
-						//20 controls the radius, trial and error to make sure the text doesn't sink into the cube behind it causing it to disappear
-                        translatex = 20*sqrt(2)*cos(deg);
-                        translatez = -20*sqrt(2)*sin(deg);
-                        
-						//the y component gives us the helical shape so the user can see all the track listings and has the ability to select, 35 gives the right spacing
-                        ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                        ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                        
-						//songcolor controlled by page number
-                        ofSetColor(albumcolors[page][i]);
-                        songs[i].drawStringAsShapes(tracks[i], 0,0);
-                        
-						//for some reason cube takes on the color of the text if not reset even though the binding of the texture happens outside of the iteration???
-                        ofSetColor(255,255,255);
-                        ofPopMatrix();
-                        
-                        trans = 100;
-                    }
-                    ofPopMatrix();
+					if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
+					ofDrawBox(0, 0, 0, 100);
+					if(bUseTexture) ecmcovers[5+i].getTextureReference().unbind();
+					ofPopMatrix();
+				}
+			}
+		}
+        
+        
+		ofColor blue = ofColor(51, 102, 183);
+		for( int i = 0; i < 5; i++) {
+			if( (page != 1) || (i != 0) ){
+				if( (page != 3) || (i != 4) ){
                     
-					//original plan was to fade out the rest of the cube for legibility when the selected album is brought to foreground but seems unnecessary now, left it here as an option
-                    trans = 255;
-                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-                }
-                ofSetColor(255,255,255,trans);    //turn on transparency
-                
-				// grab the texture reference and bind it, putting this anywhere but here will cause trouble//
-                if(bUseTexture) ecmcovers[i].getTextureReference().bind();
-                ofDrawBox(0, 0, 0, 100);
-                ofPopMatrix();
-                if(bUseTexture) ecmcovers[i].getTextureReference().unbind();
-            }
-        }
+					ofPushMatrix();
+					ofTranslate(-200 + i*100, 500, 200);
+					if(rotate[10+i] || freeze[10+i]){
+                        
+						//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
+						togglecaption = true;
+						captionindex = 10+i;
+                        
+						trans = 100;
+						ofTranslate(0,0,enlarge);
+                        
+						ofPushMatrix();
+						ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                        
+						for(int i = 0; i<tracks.size(); i++){
+							ofPushMatrix();
+                            
+							deg = 360/tracks.size();
+							deg *= i;
+							deg = deg * pi / 180;
+                            
+							translatex = 20*sqrt(2)*cos(deg);
+							translatez = -20*sqrt(2)*sin(deg);
+                            
+							ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+							ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                            
+							ofSetColor(albumcolors[page][i]);
+							songs[i].drawStringAsShapes(tracks[i], 0,0);
+                            
+							ofSetColor(255,255,255);
+							ofPopMatrix();
+                            
+							trans = 100;
+						}
+						ofPopMatrix();
+                        
+						trans = 255;
+						ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+					}
+                    ofSetColor(255,255,255,trans);
+                    
+					if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
+					ofDrawBox(0, 0, 0, 100);
+					if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
+					ofPopMatrix();
+				}
+			}
+		}
 	}
     
-    for( int i = 0; i<5; i++){
-        if( (page != 1) || (i != 0) ){
-            if( (page != 3) || (i != 4) ){
-                
-                ofPushMatrix();
-                ofTranslate(-200 + i*100, 400, 200);
-                if(rotate[5+i] || freeze[5+i]){
-                    
-                    //aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-                    togglecaption = true;
-                    captionindex = 5+i;
-                    
-                    trans = 100;
-                    ofTranslate(0,0,enlarge);
-                    
-                    ofPushMatrix();
-                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                    
-                    for(int i = 0; i<tracks.size(); i++){
-                        ofPushMatrix();
-                        
-                        deg = 360/tracks.size();
-                        deg *= i;
-                        deg = deg * pi / 180;
-                        
-                        translatex = 20*sqrt(2)*cos(deg);
-                        translatez = -20*sqrt(2)*sin(deg);
-                        
-                        ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                        ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                        
-                        ofSetColor(albumcolors[page][i]);
-                        songs[i].drawStringAsShapes(tracks[i], 0,0);
-                        
-                        ofSetColor(255,255,255);
-                        ofPopMatrix();
-                        
-                        trans = 100;
-                    }
-                    ofPopMatrix();
-                    
-                    trans = 255;
-                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-                }
-                ofSetColor(255,255,255,trans);
-                
-                if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
-                ofDrawBox(0, 0, 0, 100);
-                if(bUseTexture) ecmcovers[5+i].getTextureReference().unbind();
-                ofPopMatrix();
-            }
-        }
-	}
-    
-    
-    ofColor blue = ofColor(51, 102, 183);
-    for( int i = 0; i < 5; i++) {
-        if( (page != 1) || (i != 0) ){
-            if( (page != 3) || (i != 4) ){
-                
-                ofPushMatrix();
-                ofTranslate(-200 + i*100, 500, 200);
-                if(rotate[10+i] || freeze[10+i]){
-                    
-					//aligned on the x axis and no rotation required, so "pushing out" is increasing z natually
-                    togglecaption = true;
-                    captionindex = 10+i;
-                    
-                    trans = 100;
-                    ofTranslate(0,0,enlarge);
-                    
-                    ofPushMatrix();
-                    ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                    
-                    for(int i = 0; i<tracks.size(); i++){
-                        ofPushMatrix();
-                        
-                        deg = 360/tracks.size();
-                        deg *= i;
-                        deg = deg * pi / 180;
-                        
-                        translatex = 20*sqrt(2)*cos(deg);
-                        translatez = -20*sqrt(2)*sin(deg);
-                        
-                        ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                        ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                        
-                        ofSetColor(albumcolors[page][i]);
-                        songs[i].drawStringAsShapes(tracks[i], 0,0);
-                        
-                        ofSetColor(255,255,255);
-                        ofPopMatrix();
-                        
-                        trans = 100;
-                    }
-                    ofPopMatrix();
-                    
-                    trans = 255;
-                    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-                }
-                if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
-                ofDrawBox(0, 0, 0, 100);
-                
-                if(bUseTexture) ecmcovers[10+i].getTextureReference().unbind();
-                ofPopMatrix();
-            }
-        }
-	}
-	
     /*##################################
      2nd WALL
      ##################################*/
     
 	//building the second face (left wall) from back to front, top to bottom like the front face had it been rotated
-	for( int i = 0; i<5; i++){
-        if( (page != 2) || (i != 0) ){
-            
-            ofPushMatrix();
-            ofTranslate(-200, 300, -200+ i*100);
-            if(rotate[15+i] || freeze[15+i]){
+	if(draw_wall1 || drawwalls){
+        //cout<<"drawing wall 1"<<endl;
+		for( int i = 0; i<5; i++){
+			if( (page != 2) || (i != 0) ){
                 
-                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-                togglecaption = true;
-                captionindex = 15+i;
+				ofPushMatrix();
+				ofTranslate(-200, 300, -200+ i*100);
+				if(rotate[15+i] || freeze[15+i]){
+                    
+					//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+					togglecaption = true;
+					captionindex = 15+i;
+                    
+					trans = 100;
+					ofTranslate(-enlarge,0,0);
+                    
+					ofPushMatrix();
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+					for(int i = 0; i<tracks.size(); i++){
+						ofPushMatrix();
+                        
+						deg = 360/tracks.size();
+						deg *= i;
+						deg = deg * pi / 180;
+                        
+						translatex = 20*sqrt(2)*cos(deg);
+						translatez = -20*sqrt(2)*sin(deg);
+                        
+						ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
+                        
+						ofSetColor(albumcolors[page][i]);
+						songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+						ofSetColor(255,255,255);
+						ofPopMatrix();
+                        
+						trans = 100;
+					}
+					ofPopMatrix();
+                    
+					trans = 255;
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+				}
+                ofSetColor(255,255,255,trans);
                 
-                trans = 100;
-                ofTranslate(-enlarge,0,0);
+				if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
+				ofDrawBox(0, 0, 0, 100);
+				if(bUseTexture) ecmcovers[15+i].getTextureReference().unbind();
+				ofPopMatrix();
+			}
+		}
+        
+        
+		for( int i = 0; i<5; i++){
+			if( (page != 2) || (i != 0) ){
                 
-                ofPushMatrix();
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+				ofPushMatrix();
+				ofTranslate(-200, 400, -200+ i*100);
+				if(rotate[20+i] || freeze[20+i]){
+                    
+					//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+					togglecaption = true;
+					captionindex = 20+i;
+                    
+					trans = 100;
+					ofTranslate(-enlarge,0,0);
+                    
+					ofPushMatrix();
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+					for(int i = 0; i<tracks.size(); i++){
+						ofPushMatrix();
+                        
+						deg = 360/tracks.size();
+						deg *= i;
+						deg = deg * pi / 180;
+                        
+						translatex = 20*sqrt(2)*cos(deg);
+						translatez = -20*sqrt(2)*sin(deg);
+                        
+						ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
+                        
+						ofSetColor(albumcolors[page][i]);
+						songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+						ofSetColor(255,255,255);
+						ofPopMatrix();
+                        
+						trans = 100;
+					}
+					ofPopMatrix();
+                    
+					trans = 255;
+					ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+				}
+                ofSetColor(255,255,255,trans);
                 
-                for(int i = 0; i<tracks.size(); i++){
-                    ofPushMatrix();
-                    
-                    deg = 360/tracks.size();
-                    deg *= i;
-                    deg = deg * pi / 180;
-                    
-                    translatex = 20*sqrt(2)*cos(deg);
-                    translatez = -20*sqrt(2)*sin(deg);
-                    
-                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
-                    
-                    ofSetColor(albumcolors[page][i]);
-                    songs[i].drawStringAsShapes(tracks[i], 0,0);
-                    
-                    ofSetColor(255,255,255);
-                    ofPopMatrix();
-                    
-                    trans = 100;
-                }
-                ofPopMatrix();
+				if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
+				ofDrawBox(0, 0, 0, 100);
+				if(bUseTexture) ecmcovers[20+i].getTextureReference().unbind();
+				ofPopMatrix();
+			}
+		}
+        
+        
+		for( int i = 0; i<5; i++){
+			if( (page != 2) || (i != 0) ){
                 
-                trans = 255;
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-            }
-			if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
-            ofDrawBox(0, 0, 0, 100);
-            if(bUseTexture) ecmcovers[15+i].getTextureReference().unbind();
-			ofPopMatrix();
-        }
+				ofPushMatrix();
+				ofTranslate(-200, 500, -200+ i*100);
+				if(rotate[25+i] || freeze[25+i]){
+                    
+					//prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
+					togglecaption = true;
+					captionindex = 25+i;
+                    
+					trans = 100;
+					ofTranslate(-enlarge,0,0);
+                    
+					ofPushMatrix();
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+					for(int i = 0; i<tracks.size(); i++){
+						ofPushMatrix();
+                        
+						deg = 360/tracks.size();
+						deg *= i;
+						deg = deg * pi / 180;
+                        
+						translatex = 20*sqrt(2)*cos(deg);
+						translatez = -20*sqrt(2)*sin(deg);
+                        
+						ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
+                        
+						ofSetColor(albumcolors[page][i]);
+						songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+						ofSetColor(255,255,255);
+						ofPopMatrix();
+                        
+						trans = 100;
+					}
+					ofPopMatrix();
+                    
+					trans = 255;
+					ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+				}
+                ofSetColor(255,255,255,trans);
+                
+				if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
+				ofDrawBox(0, 0, 0, 100);
+				if(bUseTexture) ecmcovers[25+i].getTextureReference().unbind();
+				ofPopMatrix();
+			}
+		}
+	}
+	
+    /*##################################
+     3rd WALL
+     ##################################*/
+    
+	//building the back wall such that had you rotate it, it'd be left to right top to bottom same construction
+	//so really its right to left top to bottom here
+    
+	if(draw_wall2 | drawwalls){
+        //cout<<"drawing wall 2"<<endl;
+		for( int i = 0; i<5; i++){
+			if( (page != 3) || (i != 0) ){
+                
+				ofPushMatrix();
+				ofTranslate(200 - i*100, 300, -200);
+                
+				if(rotate[30+i] || freeze[30+i]){
+                    
+					togglecaption = true;
+					captionindex = 30+i;
+                    
+					trans = 100;
+					ofTranslate(0,0,-enlarge);
+                    
+					ofPushMatrix();
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+					for(int i = 0; i<tracks.size(); i++){
+						ofPushMatrix();
+                        
+						deg = 360/tracks.size();
+						deg *= i;
+						deg = deg * pi / 180;
+                        
+						translatex = 20*sqrt(2)*cos(deg);
+						translatez = -20*sqrt(2)*sin(deg);
+                        
+						ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
+                        
+						ofSetColor(albumcolors[page][i]);
+						songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+						ofSetColor(255,255,255);
+						ofPopMatrix();
+                        
+						trans = 100;
+					}
+					ofPopMatrix();
+                    
+					trans = 255;
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+				}
+                ofSetColor(255,255,255,trans);
+                
+				if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
+				ofDrawBox(0, 0, 0, 100);
+				if(bUseTexture) ecmcovers[30+i].getTextureReference().unbind();
+				ofPopMatrix();
+			}
+		}
+        
+		for( int i = 0; i<5; i++){
+			if( (page != 3) || (i != 0) ){
+                
+				ofPushMatrix();
+				ofTranslate(200 - i*100, 400, -200);
+                
+				if(rotate[35+i] || freeze[35+i]){
+                    
+					togglecaption = true;
+					captionindex = 35+i;
+                    
+					trans = 100;
+					ofTranslate(0,0,-enlarge);
+                    
+					ofPushMatrix();
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+					for(int i = 0; i<tracks.size(); i++){
+						ofPushMatrix();
+                        
+						deg = 360/tracks.size();
+						deg *= i;
+						deg = deg * pi / 180;
+                        
+						translatex = 20*sqrt(2)*cos(deg);
+						translatez = -20*sqrt(2)*sin(deg);
+                        
+						ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
+                        
+						ofSetColor(albumcolors[page][i]);
+						songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+						ofSetColor(255,255,255);
+						ofPopMatrix();
+                        
+						trans = 100;
+					}
+					ofPopMatrix();
+                    
+					trans = 255;
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+				}
+                ofSetColor(255,255,255,trans);
+                
+				if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
+				ofDrawBox(0, 0, 0, 100);
+				if(bUseTexture) ecmcovers[35+i].getTextureReference().unbind();
+				ofPopMatrix();
+			}
+		}
+        
+		for( int i = 0; i<5; i++){
+			if( (page != 3) || (i != 0) ){
+                
+				ofPushMatrix();
+				ofTranslate(200 - i*100, 500, -200);
+                
+				if(rotate[40+i] || freeze[40+i]){
+                    
+					togglecaption = true;
+					captionindex = 40+i;
+                    
+					trans = 100;
+					ofTranslate(0,0,-enlarge);
+                    
+					ofPushMatrix();
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                    
+					for(int i = 0; i<tracks.size(); i++){
+						ofPushMatrix();
+                        
+						deg = 360/tracks.size();
+						deg *= i;
+						deg = deg * pi / 180;
+                        
+						translatex = 20*sqrt(2)*cos(deg);
+						translatez = -20*sqrt(2)*sin(deg);
+                        
+						ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
+                        
+						ofSetColor(albumcolors[page][i]);
+						songs[i].drawStringAsShapes(tracks[i], 0,0);
+                        
+						ofSetColor(255,255,255);
+						ofPopMatrix();
+                        
+						trans = 100;
+					}
+					ofPopMatrix();
+                    
+					trans = 255;
+					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+				}
+                ofSetColor(255,255,255,trans);
+                
+				if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
+				ofDrawBox(0, 0, 0, 100);
+				if(bUseTexture) ecmcovers[40+i].getTextureReference().unbind();
+				ofPopMatrix();
+			}
+		}
 	}
     
-	
-	for( int i = 0; i<5; i++){
-        if( (page != 2) || (i != 0) ){
+    
+    /*##################################
+     4th WALL
+     ##################################*/
+    
+	//building the final right wall from front to back top to bottom
+	if(draw_wall3 || drawwalls){
+        //cout<<"drawing wall 3"<<endl;
+		for( int i = 0; i<5; i++){
+			//if( (page != 0) || (i != 0) ){
             
-            ofPushMatrix();
-            ofTranslate(-200, 400, -200+ i*100);
-            if(rotate[20+i] || freeze[20+i]){
+			ofPushMatrix();
+			ofTranslate(200, 300, 200 - i*100);
+            
+			if(rotate[45+i] || freeze[45+i]){
                 
-                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-                togglecaption = true;
-				captionindex = 20+i;
+				togglecaption = true;
+				captionindex = 45+i;
                 
 				trans = 100;
-                ofTranslate(-enlarge,0,0);
+				ofTranslate(enlarge,0,0);
                 
 				ofPushMatrix();
 				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
@@ -1124,7 +1481,7 @@ void testApp::draw(){
 					translatez = -20*sqrt(2)*sin(deg);
                     
 					ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
+					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                     
 					ofSetColor(albumcolors[page][i]);
 					songs[i].drawStringAsShapes(tracks[i], 0,0);
@@ -1137,385 +1494,125 @@ void testApp::draw(){
 				ofPopMatrix();
                 
 				trans = 255;
-                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-            }
-			if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
-            ofDrawBox(0, 0, 0, 100);
-            if(bUseTexture) ecmcovers[20+i].getTextureReference().unbind();
+				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+			}
+            ofSetColor(255,255,255,trans);
+            
+			if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
+			ofDrawBox(0, 0, 0, 100);
+			if(bUseTexture) ecmcovers[45+i].getTextureReference().unbind();
 			ofPopMatrix();
+			//}
+		}
+        
+        
+		for( int i = 0; i<5; i++){
+			//if( (page != 0) || (i != 0) ){
+            
+			ofPushMatrix();
+			ofTranslate(200, 400, 200 - i*100);
+            
+			if(rotate[50+i] || freeze[50+i]){
+                
+				togglecaption = true;
+				captionindex = 50+i;
+                
+				trans = 100;
+				ofTranslate(enlarge,0,0);
+                
+				ofPushMatrix();
+				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                
+				for(int i = 0; i<tracks.size(); i++){
+					ofPushMatrix();
+                    
+					deg = 360/tracks.size();
+					deg *= i;
+					deg = deg * pi / 180;
+                    
+					translatex = 20*sqrt(2)*cos(deg);
+					translatez = -20*sqrt(2)*sin(deg);
+                    
+					ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
+                    
+					ofSetColor(albumcolors[page][i]);
+					songs[i].drawStringAsShapes(tracks[i], 0,0);
+                    
+					ofSetColor(255,255,255);
+					ofPopMatrix();
+                    
+					trans = 100;
+				}
+				ofPopMatrix();
+                
+				trans = 255;
+				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+			}
+            ofSetColor(255,255,255,trans);
+            
+			if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
+			ofDrawBox(0, 0, 0, 100);
+			if(bUseTexture) ecmcovers[50+i].getTextureReference().unbind();
+			ofPopMatrix();
+			//}
+		}
+        
+        
+		for( int i = 0; i<5; i++){
+			//if( (page != 0) || (i != 0) ){
+            
+			ofPushMatrix();
+			ofTranslate(200, 500, 200 - i*100);
+            
+			if(rotate[55+i] || freeze[55+i]){
+                
+				togglecaption = true;
+				captionindex = 55+i;
+                
+				trans = 100;
+				ofTranslate(enlarge,0,0);
+                
+				ofPushMatrix();
+				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+                
+				for(int i = 0; i<tracks.size(); i++){
+					ofPushMatrix();
+                    
+					deg = 360/tracks.size();
+					deg *= i;
+					deg = deg * pi / 180;
+                    
+					translatex = 20*sqrt(2)*cos(deg);
+					translatez = -20*sqrt(2)*sin(deg);
+                    
+					ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
+					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
+                    
+					ofSetColor(albumcolors[page][i]);
+					songs[i].drawStringAsShapes(tracks[i], 0,0);
+                    
+					ofSetColor(255,255,255);
+					ofPopMatrix();
+                    
+					trans = 100;
+				}
+				ofPopMatrix();
+                
+				trans = 255;
+				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
+			}
+            ofSetColor(255,255,255,trans);
+            
+			if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
+			ofDrawBox(0, 0, 0, 100);
+			if(bUseTexture) ecmcovers[55+i].getTextureReference().unbind();
+			ofPopMatrix();
+			//}
 		}
 	}
     
-    
-	for( int i = 0; i<5; i++){
-        if( (page != 2) || (i != 0) ){
-            
-            ofPushMatrix();
-            ofTranslate(-200, 500, -200+ i*100);
-            if(rotate[25+i] || freeze[25+i]){
-                
-                //prior to rotation these are aligned on the z axis and facing "west" so to speak causing it to point out of screen with a counterclockwise turn
-                togglecaption = true;
-                captionindex = 25+i;
-                
-                trans = 100;
-                ofTranslate(-enlarge,0,0);
-                
-                ofPushMatrix();
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                
-                for(int i = 0; i<tracks.size(); i++){
-                    ofPushMatrix();
-                    
-                    deg = 360/tracks.size();
-                    deg *= i;
-                    deg = deg * pi / 180;
-                    
-                    translatex = 20*sqrt(2)*cos(deg);
-                    translatez = -20*sqrt(2)*sin(deg);
-                    
-                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
-                    
-                    ofSetColor(albumcolors[page][i]);
-                    songs[i].drawStringAsShapes(tracks[i], 0,0);
-                    
-                    ofSetColor(255,255,255);
-                    ofPopMatrix();
-                    
-                    trans = 100;
-                }
-                ofPopMatrix();
-                
-                trans = 255;
-                ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-            }
-			if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
-            ofDrawBox(0, 0, 0, 100);
-            if(bUseTexture) ecmcovers[25+i].getTextureReference().unbind();
-			ofPopMatrix();
-        }
-	}
-    
-	
-    /*##################################
-     3rd WALL
-     ##################################*/
-    
-	//building the back wall such that had you rotate it, it'd be left to right top to bottom same construction
-	//so really its right to left top to bottom here
-    
-	for( int i = 0; i<5; i++){
-        if( (page != 3) || (i != 0) ){
-            
-            ofPushMatrix();
-            ofTranslate(200 - i*100, 300, -200);
-            
-            if(rotate[30+i] || freeze[30+i]){
-                
-                togglecaption = true;
-                captionindex = 30+i;
-                
-                trans = 100;
-                ofTranslate(0,0,-enlarge);
-                
-                ofPushMatrix();
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                
-                for(int i = 0; i<tracks.size(); i++){
-                    ofPushMatrix();
-                    
-                    deg = 360/tracks.size();
-                    deg *= i;
-                    deg = deg * pi / 180;
-                    
-                    translatex = 20*sqrt(2)*cos(deg);
-                    translatez = -20*sqrt(2)*sin(deg);
-                    
-                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
-                    
-                    ofSetColor(albumcolors[page][i]);
-                    songs[i].drawStringAsShapes(tracks[i], 0,0);
-                    
-                    ofSetColor(255,255,255);
-                    ofPopMatrix();
-                    
-                    trans = 100;
-                }
-                ofPopMatrix();
-                
-                trans = 255;
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-            }
-            if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
-            ofDrawBox(0, 0, 0, 100);
-            if(bUseTexture) ecmcovers[30+i].getTextureReference().unbind();
-            ofPopMatrix();
-        }
-	}
-    
-	for( int i = 0; i<5; i++){
-        if( (page != 3) || (i != 0) ){
-            
-            ofPushMatrix();
-            ofTranslate(200 - i*100, 400, -200);
-            
-            if(rotate[35+i] || freeze[35+i]){
-                
-                togglecaption = true;
-                captionindex = 35+i;
-                
-                trans = 100;
-                ofTranslate(0,0,-enlarge);
-                
-                ofPushMatrix();
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                
-                for(int i = 0; i<tracks.size(); i++){
-                    ofPushMatrix();
-                    
-                    deg = 360/tracks.size();
-                    deg *= i;
-                    deg = deg * pi / 180;
-                    
-                    translatex = 20*sqrt(2)*cos(deg);
-                    translatez = -20*sqrt(2)*sin(deg);
-                    
-                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
-                    
-                    ofSetColor(albumcolors[page][i]);
-                    songs[i].drawStringAsShapes(tracks[i], 0,0);
-                    
-                    ofSetColor(255,255,255);
-                    ofPopMatrix();
-                    
-                    trans = 100;
-                }
-                ofPopMatrix();
-                
-                trans = 255;
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-            }
-            if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
-            ofDrawBox(0, 0, 0, 100);
-            if(bUseTexture) ecmcovers[35+i].getTextureReference().unbind();
-            ofPopMatrix();
-        }
-	}
-    
-	for( int i = 0; i<5; i++){
-        if( (page != 3) || (i != 0) ){
-            
-            ofPushMatrix();
-            ofTranslate(200 - i*100, 500, -200);
-            
-            if(rotate[40+i] || freeze[40+i]){
-                
-                togglecaption = true;
-                captionindex = 40+i;
-                
-                trans = 100;
-                ofTranslate(0,0,-enlarge);
-                
-                ofPushMatrix();
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-                
-                for(int i = 0; i<tracks.size(); i++){
-                    ofPushMatrix();
-                    
-                    deg = 360/tracks.size();
-                    deg *= i;
-                    deg = deg * pi / 180;
-                    
-                    translatex = 20*sqrt(2)*cos(deg);
-                    translatez = -20*sqrt(2)*sin(deg);
-                    
-                    ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                    ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
-                    
-                    ofSetColor(albumcolors[page][i]);
-                    songs[i].drawStringAsShapes(tracks[i], 0,0);
-                    
-                    ofSetColor(255,255,255);
-                    ofPopMatrix();
-                    
-                    trans = 100;
-                }
-                ofPopMatrix();
-                
-                trans = 255;
-                ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-            }
-            if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
-            ofDrawBox(0, 0, 0, 100);
-            if(bUseTexture) ecmcovers[40+i].getTextureReference().unbind();
-            ofPopMatrix();
-        }
-	}
-    
-    
-    
-    /*##################################
-     4th WALL
-     ##################################*/
-    
-	//building the final right wall from front to back top to bottom
-	for( int i = 0; i<5; i++){
-        //if( (page != 0) || (i != 0) ){
-        
-        ofPushMatrix();
-        ofTranslate(200, 300, 200 - i*100);
-        
-        if(rotate[45+i] || freeze[45+i]){
-            
-            togglecaption = true;
-            captionindex = 45+i;
-            
-            trans = 100;
-            ofTranslate(enlarge,0,0);
-            
-            ofPushMatrix();
-            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-            
-            for(int i = 0; i<tracks.size(); i++){
-                ofPushMatrix();
-                
-                deg = 360/tracks.size();
-                deg *= i;
-                deg = deg * pi / 180;
-                
-                translatex = 20*sqrt(2)*cos(deg);
-                translatez = -20*sqrt(2)*sin(deg);
-                
-                ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
-                
-                ofSetColor(albumcolors[page][i]);
-                songs[i].drawStringAsShapes(tracks[i], 0,0);
-                
-                ofSetColor(255,255,255);
-                ofPopMatrix();
-                
-                trans = 100;
-            }
-            ofPopMatrix();
-            
-            trans = 255;
-            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-        }
-        if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
-        ofDrawBox(0, 0, 0, 100);
-        if(bUseTexture) ecmcovers[45+i].getTextureReference().unbind();
-        ofPopMatrix();
-        //}
-	}
-    
-    
-	for( int i = 0; i<5; i++){
-        //if( (page != 0) || (i != 0) ){
-        
-        ofPushMatrix();
-        ofTranslate(200, 400, 200 - i*100);
-        
-        if(rotate[50+i] || freeze[50+i]){
-            
-            togglecaption = true;
-            captionindex = 50+i;
-            
-            trans = 100;
-            ofTranslate(enlarge,0,0);
-            
-            ofPushMatrix();
-            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-            
-            for(int i = 0; i<tracks.size(); i++){
-                ofPushMatrix();
-                
-                deg = 360/tracks.size();
-                deg *= i;
-                deg = deg * pi / 180;
-                
-                translatex = 20*sqrt(2)*cos(deg);
-                translatez = -20*sqrt(2)*sin(deg);
-                
-                ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
-                
-                ofSetColor(albumcolors[page][i]);
-                songs[i].drawStringAsShapes(tracks[i], 0,0);
-                
-                ofSetColor(255,255,255);
-                ofPopMatrix();
-                
-                trans = 100;
-            }
-            ofPopMatrix();
-            
-            trans = 255;
-            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-        }
-        if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
-        ofDrawBox(0, 0, 0, 100);
-        if(bUseTexture) ecmcovers[50+i].getTextureReference().unbind();
-        ofPopMatrix();
-        //}
-	}
-    
-    
-	for( int i = 0; i<5; i++){
-        //if( (page != 0) || (i != 0) ){
-        
-        ofPushMatrix();
-        ofTranslate(200, 500, 200 - i*100);
-        
-        if(rotate[55+i] || freeze[55+i]){
-            
-            togglecaption = true;
-            captionindex = 55+i;
-            
-            trans = 100;
-            ofTranslate(enlarge,0,0);
-            
-            ofPushMatrix();
-            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-            
-            for(int i = 0; i<tracks.size(); i++){
-                ofPushMatrix();
-                
-                deg = 360/tracks.size();
-                deg *= i;
-                deg = deg * pi / 180;
-                
-                translatex = 20*sqrt(2)*cos(deg);
-                translatez = -20*sqrt(2)*sin(deg);
-                
-                ofTranslate(translatex,height + 35*sqrt(2)*cos(deg/2),translatez);
-                ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
-                
-                ofSetColor(albumcolors[page][i]);
-                songs[i].drawStringAsShapes(tracks[i], 0,0);
-                
-                ofSetColor(255,255,255);
-                ofPopMatrix();
-                
-                trans = 100;
-            }
-            ofPopMatrix();
-            
-            trans = 255;
-            ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
-        }
-        if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
-        ofDrawBox(0, 0, 0, 100);
-        if(bUseTexture) ecmcovers[55+i].getTextureReference().unbind();
-        ofPopMatrix();
-        //}
-	}
-    
-    
-    
+    drawwalls = false;		//to be reset to true only by turning a page
     
 	/*
      ofPushMatrix();
