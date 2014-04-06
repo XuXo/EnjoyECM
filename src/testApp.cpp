@@ -1,4 +1,17 @@
 
+
+/*not sure how to load all the songs...ideally we should dynamically load all the songs for a particular album once we click on it and the track listings are up for display, then we can play whichever
+ one we want on the fly.  But this would be a one time thing triggered by a mouse click so probably not in update() or draw(), in mousePressed() maybe and should kick off a separate thread.  data structure
+ wise, maybe a vector of pointers to sound files or a map<string name, pointer> so we can designate it like track1.play(), track2.play() etc..
+ 
+ vector<>  listing;
+ for(int i = 0; i<10; i++){
+ track.loadSong(tracknames[i]);
+ listing.push_back(track);
+ }
+ */
+
+
 //@author tian xu
 
 /*A simple music player for my favorite music label ECM.  It was really to showcase the gorgeous album covers so the music playing functionality
@@ -18,17 +31,19 @@ void testApp::setup(){
     nextiteri = 0;
     nextiterj = 0;
     drawwalls = false;
+    songnumber = 0;
+    
     
     trans = 255;
     togglecaption = false;
     captionindex = 0;
     ofSetWindowShape(1400,1000);
     
-    //logo.loadFont("froufrou.ttf", 32);
+    
     logo.loadFont("type/verdana.ttf", 22, true, false, true, 0.1, 102);
     
     logo2.loadFont("type/verdana.ttf", 6, true, false, true, 0.1, 102);
-    //author.loadFont("froufrou.ttf", 15);
+    
     author.loadFont("type/verdana.ttf", 5.8, true, false, true, 0.1, 102);
     
     signature.loadFont("type/verdana.ttf", 6, true, false, true, 0.1, 102);
@@ -36,7 +51,6 @@ void testApp::setup(){
     date.setLetterSpacing(1.3);
     date.loadFont("type/dinen.ttf", 10, true, false, true, 0.1, 102);
     
-    //caption.loadFont("type/verdana.ttf", 8, true, false, true, 0.1, 102);
     caption.loadFont("verdana.ttf", 8, true, true);
 	caption.setLineHeight(14.0f);
 	caption.setLetterSpacing(1.035);
@@ -45,7 +59,6 @@ void testApp::setup(){
     
     songcolor = ofColor(176,196,222);
     
-    
     cube = 0;
 	/*Font has to be loaded in setup() but later on in draw() after projecting forward with oftranslate (0,0,500), the font is blown up (rightly so I guess).
      size 5 (along whatever initial z plane projected forward would give me the right size after projection but it has pretty bad resolution.Once I translate
@@ -53,16 +66,17 @@ void testApp::setup(){
      */
 	int fontsize = 4;
 	int dpi = 182;
-    font.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font2.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font3.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font4.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font5.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font6.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font7.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font8.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font9.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
-    font10.loadFont("type/verdana.ttf", fontsize, true, false, true, 0.05, dpi);
+	float alias = 0.05;
+    font.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font2.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font3.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font4.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font5.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font6.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font7.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font8.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font9.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+    font10.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
     
     songs.push_back(font);
     songs.push_back(font2);
@@ -74,7 +88,6 @@ void testApp::setup(){
     songs.push_back(font8);
     songs.push_back(font9);
     songs.push_back(font10);
-    
     
 	//junk data for testing
     tracks.push_back("01. eick");
@@ -88,15 +101,66 @@ void testApp::setup(){
     tracks.push_back("09. micus");
     tracks.push_back("10. sclavis");
     
+    test1 ="songs/01 Barcarole.mp3";
+    test2 ="songs/03 Au Lait.mp3";
+    test3 ="songs/04 Eighteen.mp3";
+    test4 ="songs/01 Barcarole.mp3";
+    test5 ="songs/03 Au Lait.mp3";
+    test6 ="songs/04 Eighteen.mp3";
+    test7 ="songs/01 Barcarole.mp3";
+    test8 ="songs/03 Au Lait.mp3";
+    test9 ="songs/04 Eighteen.mp3";
+    test10 ="songs/01 Barcarole.mp3";
+    test11 ="songs/03 Au Lait.mp3";
+    test12 ="songs/04 Eighteen.mp3";
+    location.push_back(test1);
+    location.push_back(test2);
+    location.push_back(test3);
+    location.push_back(test4);
+    location.push_back(test5);
+    location.push_back(test6);
+    location.push_back(test7);
+    location.push_back(test8);
+    location.push_back(test9);
+    location.push_back(test10);
+    location.push_back(test11);
+    location.push_back(test12);
     
+    /*song.loadSound("songs/01 Barcarole.mp3");
+     listing.push_back(song);
+     song2.loadSound("songs/01 Barcarole.mp3");
+     listing.push_back(song2);
+     song3.loadSound("songs/03 Au Lait.mp3");
+     listing.push_back(song3);
+     song4.loadSound("songs/04 Eighteen.mp3");
+     listing.push_back(song4);
+     song5.loadSound("songs/05 Offramp.mp3");
+     listing.push_back(song5);
+     song6.loadSound("songs/06 James.mp3");
+     listing.push_back(song6);
+     song7.loadSound("songs/07 The Bat, Part 2.mp3");
+     listing.push_back(song7);
+     song8.loadSound("songs/03 Au Lait.mp3");
+     listing.push_back(song8);
+     song9.loadSound("songs/03 Au Lait.mp3");
+     listing.push_back(song9);
+     song10.loadSound("songs/03 Au Lait.mp3");
+     listing.push_back(song10);
+     song11.loadSound("songs/03 Au Lait.mp3");
+     listing.push_back(song11);
+     song12.loadSound("songs/03 Au Lait.mp3");
+     listing.push_back(song12);
+     */
+    
+    
+	ofColor bckgrnd1 = ofColor(51,102,193);
     for(int i = 0; i<10; i++){
-        ofColor temp = ofColor(51,102,193);
-		trackcolors1.push_back(temp);
+		trackcolors1.push_back(bckgrnd1);
 	}
 	
+	ofColor bckgrnd2 = ofColor(176, 196, 222);
     for(int i = 0; i<10; i++){
-        ofColor temp = ofColor(176, 196, 222);
-		trackcolors2.push_back(temp);
+		trackcolors2.push_back(bckgrnd2);
 	}
     
     //so only page 1 is different
@@ -120,7 +184,7 @@ void testApp::setup(){
     
     
 	//loading the captions to be displayed when mouse scrolls over any particualr track, to do: include cover number and year produced as well..also need a better way to control the line breaks as I did
-	//theses manually based on position of the cube
+	//these manually based on the position of the cube
     /*******************
      page 1
      *******************/
@@ -242,7 +306,7 @@ void testApp::setup(){
     
     descriptions.push_back("Miroslav Vitous\nUniversal Syncopations II\n\nBob Mintzer tenor saxophone, bass clarinet\nGary Campbell soprano and tenor saxophones\nBob Malach tenor saxophone\nRandy Brecker trumpet\nDaniele di Bonaventura bandoneon\nVesna Vasko-Caceres voice\nGerald Cleaver drums\nAdam Nussbaum drums\nMiroslav Vitous double-bass");
     
-    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, \nvihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, \nvihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
+    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, \nvihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, vihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
     
     descriptions.push_back("Food\nQuiet Inlet\nThomas Stronen drums, live-electronics\nIain Ballamy tenor- and soprano saxophones\nNils Petter Molver trumpet, electronics\nChristian Fennesz guitar, electronics\nSebastian Rochford drums");
     
@@ -254,7 +318,7 @@ void testApp::setup(){
     
     descriptions.push_back("Louis Sclavis\nDans La Nuit, Music for the Silent Movie by Charles Vanel\n\nLouis Sclavis clarinets\nJean Louis Matinier accordion\nDominique Pifarely violin\nVincent Courtois cello\nFrancois Merville percussion, marimba");
     
-    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, \nsound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N'Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
+    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, sound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N'Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
     
     descriptions.push_back("Jon Balke\nMagnetic Works 1993-2001\n\nJon Balke piano, keyboards, percussion, electronics\nJens Petter Antonsen trumpet\nPer Jorgensen trumpet, vocals\nArve Henriksen trumpet, vocals\nMorten Halle alto saxophone, flute\nTore Brunborg tenor and soprano saxophones\nGertrud Okland violin\nHenrik Hannisdal violin\nOdd Hannisdal violin\nTrond Villa viola\nMarek Konstantynowicz viola\nJonas Franke-Blom violoncello\nSvante Henryson violoncello\nMorten Hannisdal violoncello\nAnders Jormin double-bass\nMarilyn Mazur percussion\nAudun Kleive drums");
     
@@ -271,7 +335,6 @@ void testApp::setup(){
     
     
     
-    //mouse =false;
     swipe = false;
     
     enlarge = 100;
@@ -310,14 +373,16 @@ void testApp::setup(){
     bSmoothLighting     = true;
     ofSetSmoothLighting(true);
     
-    // lets make a high-res sphere //
-    // default is 20 //
-    ofSetSphereResolution(128);
-	
-    // radius of the sphere //
-	radius		= 180.f;
-	center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
     
+    /*
+     // lets make a high-res sphere //
+     // default is 20 //
+     ofSetSphereResolution(128);
+     
+     // radius of the sphere //
+     radius		= 180.f;
+     center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
+     */
     
     // Point lights emit light in all directions //
     // set the diffuse color, color reflected from the light source //
@@ -385,7 +450,8 @@ void testApp::setup(){
 	//vs oil pastels vs charcoal-like etc..  There are simply too many gorgeous covers to choose from and I did the best I could.  I own maybe 20% of these.
     
     //blurry and smooth
-    ofLogoImage1.loadImage("leipzig.jpg");
+	//these are loaded one row at a time, should be all automatic
+    ofLogoImage.loadImage1("leipzig.jpg");
     ofLogoImage2.loadImage("melos.jpg");
     ofLogoImage3.loadImage("gustavsen.jpg");
     ofLogoImage4.loadImage("canopee.jpg");
@@ -460,7 +526,7 @@ void testApp::setup(){
     ofLogoImage59.loadImage("bach.jpg");
     ofLogoImage60.loadImage("berg.jpg");
     
-    //definitely a better way to do this but I'm not stressing right now
+    //uhh definitely a better way to do this
     ecmcovers.push_back(ofLogoImage1);
 	ecmcovers.push_back(ofLogoImage2);
 	ecmcovers.push_back(ofLogoImage3);
@@ -551,9 +617,7 @@ void testApp::update() {
     
     
     //this is if the user leaves the cursor on the current album and goes to a next page, the rotation would linger unless we trigger a cleanup, this is called whenever we hit 'i' or 'u', the effects are only felt on the edges since there are infact 2 cubes, well actually that's not the real reason, real reason is that's the only part of the previous page visible to us..
-    
     if(resetrotate){
-        //cout<<"resetting!!"<<endl;
         for(int i = 0; i < rotate.size(); i++)
             rotate[i] = false;
         //I'm not sure why it doesn't work with the following in place I would think you only need to do this once before it's reactivated on the next page swipe, probably an issue with the application framerate and how update is called after a keyboard event..
@@ -561,6 +625,7 @@ void testApp::update() {
         
     }
     
+	//page determines colors, dimensions, orientation basically very important to keep track, totalflips is kept by mousePressed()
     page = totalflips % 4;
     if (page == -3){
 		page = 1;}
@@ -570,7 +635,8 @@ void testApp::update() {
 		page = 3;}
     
     
-	//page gives us the front wall facing the user this is the only one we should be drawing, we can definitely turn off the back wall but we might want the sides for turning animations
+	//page gives us the front wall facing the user this is the only one we should be drawing, we can definitely turn off the back wall but we might want the sides for turning animations, turns out we can deanimate
+	//the side walls as only, only draw them while we are turning pages
 	draw_wall0 = draw_wall1 = draw_wall2 = draw_wall3 = false;
 	
 	if(page == 0){
@@ -582,13 +648,6 @@ void testApp::update() {
 	else if(page == 3){
 		draw_wall3 = true;}
     
-    //black white pages needs a more legible color for tracks
-    /*if(page == 1)
-     songcolor = ofColor(51, 102, 193);
-     else if (page == 2)
-     songcolor = ofColor(176,196,222);
-     else songcolor = ofColor(176,196,222);
-     */
     
     
 	//instead of doing 15 iterations everytime like a for loop and testing each condition we can just find the i and j corresponding to its position
@@ -631,7 +690,7 @@ void testApp::update() {
      }
      */
     
-    
+    //scrollcubes controlled by mousePressed(), deactivated once we've selected an album cover with track listings for selection
 	if(scrollcubes){
 		for( int j = 0; j < 3; j++){
 			for(int i = 0; i < 5; i++){
@@ -651,17 +710,13 @@ void testApp::update() {
                 //3 correspond to page 4			which have indices 45-59
                 
 				//these are the coordinates on screen after being projected forward from depth of z=200
-				//found by trial and error...ouch
-                
-				//this needs to be fixed, we shifted 230 before projecting forward, so it's not really 230...and we shifted it down by 50 os it's not really 172 either
-                
+				//found by trial and error...
 				if((x >= 359+ (i*157)) && (x< 359+(i+1)*157)&& (y >= 245+(j*157)) && (y < 245+ (j+1)*157)){
 					rownumber = j+1;
 					if(page == 0){
 						rotate[(j*5)+i] = true;
 					}
 					else if(page == 1){
-						//cout<<"actually we're in here and j is "<<j<<"and i is "<<i<<endl;
 						rotate[(15+j*5) + i] = true;
 					}
 					else if(page == 2){
@@ -692,11 +747,9 @@ void testApp::update() {
     
     
     //highlighting track from scrolling through a list
-    //ofColor highlight = ofColor(0,0,0);
     ofColor highlight = highlightcolors[page];
     if(scrolltracks)
     {
-        //cout<<"we are on row number " <<rownumber<<endl;
         
         //as of this point of having been activated, rownumber already exists from last iteration, as does page
         //preserve the original color since it needs to be restored when the cursor comes off..
@@ -704,8 +757,8 @@ void testApp::update() {
         
         //cout<<"original color is"<<original<<endl;
         
-        //depending on row number, track listings have different y coordinates found by trial and error
-        /*top row 400 to 630
+        /*depending on row number, track listings have different y coordinates found by trial and error
+         top row 400 to 630
          middle row 185 to 415
          bottom row 350 to 580
          */
@@ -720,7 +773,6 @@ void testApp::update() {
 		}
 		else if(rownumber == 2){
 			for(int j = 0; j< 10; j++){
-				//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
 				if((y >= 185+(j*23)) && (y < 185 + (j+1)*23))
 					albumcolors[page][9-j]  = highlight;
 				else
@@ -729,7 +781,6 @@ void testApp::update() {
 		}
 		else if(rownumber == 3){
 			for(int j = 0; j< 10; j++){
-				//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
 				if((y >= 350+(j*23)) && (y < 350+ (j+1)*23))
 					albumcolors[page][9-j]  = highlight;
 				else
@@ -747,7 +798,7 @@ void testApp::update() {
 		float x1 = mousedrag[0];
 		float x2 = mousedrag[3];		//don't use the 2nd point mousedrag[1] since [0] represents the very first click so the next point might be too close to judge
         
-		//if x2> x1 then we are swiping left to right so a counterclockwise turn
+		//if x2 > x1 then we are swiping left to right so a counterclockwise turn
 		if (x1- x2 < 0){
 			nextpageleft = true;
 			numberflipsleft++;
@@ -764,26 +815,23 @@ void testApp::update() {
     }
 }
 
-//deperecated since "pushing forward" out of the screen is relative to orientation, not necessarily just changing the z component
+//deperecated since "pushing forward" out of the screen is relative to orientation, not necessarily just changing the z-component
 void testApp::emerge(){
     ofTranslate(0,0,enlarge);
 }
+
 //--------------------------------------------------------------
 void testApp::draw(){
     
     if(togglecaption){
         
         ofSetColor(51, 102, 133);
-        //ofSetColor(205,92,92);
-        //ofSetColor(255,0,0);
         caption.drawString(descriptions[captionindex],20, 170);
         
-        //ofDrawBitmapString(descriptions[captionindex], 20,170);        //seems to look much better also does not get eclipsed by anything
         togglecaption = false;
     }
     
     ofTranslate(230,50,0);
-    
     
     
 	//title and logo.
@@ -829,21 +877,19 @@ void testApp::draw(){
 	material.begin();
     
     
-    
-    /*ofPushMatrix();
+    //some lighting effects I took from an example project multiLight, actually makes this look too busy, left out for now
+    /*
+	 ofPushMatrix();
      ofTranslate(0, 0, 500);
      //font.drawString("test", ofGetWidth()/2 - 20, ofGetHeight()/2);
      font.drawStringAsShapes("what is wrong with this track", ofGetWidth()/2 + 20, ofGetHeight()/2);
      ofPopMatrix();*/
-    
-    
     
     //cout<<"we are currently on page # "<<page<<endl;
     // activate the lights //
 	//if (bPointLight) pointLight.enable();
 	//if (bSpotLight) spotLight.enable();
 	//if (bDirLight) directionalLight.enable();
-    
     
 	/*ofSetColor(255, 255, 255, 255);
      ofPushMatrix();
@@ -869,13 +915,10 @@ void testApp::draw(){
     }
     
     
-    //totalflips = numberflipsleft - numberflipsright;				//this doesn't seem to be working
     if(nextpageleft){
 		
 		//so we should have some trigger in here to draw the walls only if we are mid rotation, once we are done and are only exposed to the front wall, we don't really the rotatoion even
         drawwalls= true;
-        
-		//cout<<"totalflips is"<<totalflips<<endl;
         stayonpage = false;
         startpage += .1;											//speed of rotation
         if(startpage <=1)
@@ -885,13 +928,11 @@ void testApp::draw(){
             startpage = 0;
             nextpageleft = false;									//deactivate as to only turn when called upon
             stayonpage = true;
-            //ofRotate(90, 0, 1, 0);
         }
     }
     
     
     if(nextpageright){
-        //cout<<"totalflips is"<<totalflips<<endl;
         
 		drawwalls= true;
         
@@ -904,30 +945,28 @@ void testApp::draw(){
             startpage = 0;
             nextpageright = false;
             stayonpage = true;
-            //ofRotate(90, 0, 1, 0);
         }
     }
     
     
-    //totalflips = numberflipsleft - numberflipsright;
 	//triggered by both left and right page turns, should stay true as long as we are not in the motion of turning, this if might be redundant
     if(stayonpage){
         totalflips = numberflipsleft - numberflipsright;
         ofRotate(90*totalflips, 0, 1, 0);
     }
     
-	//this is where the cube and all the internals are constructed, need to be refactored at some point
-    float deg;
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	//DRAWING CUBE -- this is where the cube and all the internals are constructed, need to be refactored at some point
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	float deg;
     int height;
+    float translatex, translatez;
     
 	//depending on which row, the spinning text in staircase fashion needs to be displayed above or below the cube
     if(rownumber == 1)
         height = 125;
     else if ((rownumber == 2) || (rownumber == 3))	//probably need to control the helical spacing as well
         height = -100;
-    
-    //ofColor textcolor(176,196,222);
-    float translatex, translatez;
     
     
     /*##################################
@@ -954,7 +993,7 @@ void testApp::draw(){
 						captionindex = i;
                         
 						trans = 100;
-						ofTranslate(0,0,enlarge);
+						ofTranslate(0,0,enlarge);										//poject it forward
                         
 						ofPushMatrix();
 						ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);         //this is 180/pi
@@ -1056,7 +1095,6 @@ void testApp::draw(){
 			}
 		}
         
-        
 		ofColor blue = ofColor(51, 102, 183);
 		for( int i = 0; i < 5; i++) {
 			if( (page != 1) || (i != 0) ){
@@ -1102,7 +1140,7 @@ void testApp::draw(){
 						trans = 255;
 						ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 					}
-                    ofSetColor(255,255,255,trans);
+					ofSetColor(255,255,255,trans);
                     
 					if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
 					ofDrawBox(0, 0, 0, 100);
@@ -1163,7 +1201,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 				}
-                ofSetColor(255,255,255,trans);
+				ofSetColor(255,255,255,trans);
                 
 				if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1216,7 +1254,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 				}
-                ofSetColor(255,255,255,trans);
+				ofSetColor(255,255,255,trans);
                 
 				if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1224,7 +1262,6 @@ void testApp::draw(){
 				ofPopMatrix();
 			}
 		}
-        
         
 		for( int i = 0; i<5; i++){
 			if( (page != 2) || (i != 0) ){
@@ -1269,7 +1306,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 				}
-                ofSetColor(255,255,255,trans);
+				ofSetColor(255,255,255,trans);
                 
 				if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1331,7 +1368,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 				}
-                ofSetColor(255,255,255,trans);
+				ofSetColor(255,255,255,trans);
                 
 				if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1383,7 +1420,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 				}
-                ofSetColor(255,255,255,trans);
+				ofSetColor(255,255,255,trans);
                 
 				if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1435,7 +1472,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 				}
-                ofSetColor(255,255,255,trans);
+				ofSetColor(255,255,255,trans);
                 
 				if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1496,13 +1533,12 @@ void testApp::draw(){
 				trans = 255;
 				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 			}
-            ofSetColor(255,255,255,trans);
+			ofSetColor(255,255,255,trans);
             
 			if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
 			ofDrawBox(0, 0, 0, 100);
 			if(bUseTexture) ecmcovers[45+i].getTextureReference().unbind();
 			ofPopMatrix();
-			//}
 		}
         
         
@@ -1549,13 +1585,12 @@ void testApp::draw(){
 				trans = 255;
 				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 			}
-            ofSetColor(255,255,255,trans);
+			ofSetColor(255,255,255,trans);
             
 			if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
 			ofDrawBox(0, 0, 0, 100);
 			if(bUseTexture) ecmcovers[50+i].getTextureReference().unbind();
 			ofPopMatrix();
-			//}
 		}
         
         
@@ -1602,13 +1637,12 @@ void testApp::draw(){
 				trans = 255;
 				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 			}
-            ofSetColor(255,255,255,trans);
+			ofSetColor(255,255,255,trans);
             
 			if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
 			ofDrawBox(0, 0, 0, 100);
 			if(bUseTexture) ecmcovers[55+i].getTextureReference().unbind();
 			ofPopMatrix();
-			//}
 		}
 	}
     
@@ -1825,7 +1859,6 @@ void testApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
     
-    
     //mousedrag.push_back(x);		don't want to push points clicked only points in mouseDragged to simulate swiping, otherwise stack will get populated by bunch of junk clicks
 	int k = 60;
 	int left = 359;
@@ -1833,48 +1866,104 @@ void testApp::mousePressed(int x, int y, int button){
 	int bottom  = 245;
 	int top = 245 + 3*157;
     
-	//keep track of which cube is activated through index cube
     
     
-	//activating cube, also need to make sure we disable all other cubes as we scroll over the track listings..so we can disable the
-	//part in update() where we search for which cube to bring forth and animate.  Won't be a problem since the animation in draw()
-	//will still get tripped by the freeze[]
-	if((x>left) && (x<right) && (y > bottom) && (y<top)){
-        //cout<<"we are in"<<endl;
-		scrollcubes = false;
-        scrolltracks = true;
-		for( int j = 0; j < 3; j++){
-			for(int i = 0; i < 5; i++){
-				if((x >= 359+ (i*157)) && (x< 359+(i+1)*157)&& (y >= 245+(j*157)) && (y < 245+ (j+1)*157)){
-					rownumber = j+1;
-					if(page == 0){
-						freeze[(j*5)+i] = true;
-						cube = (j*5)+i;
-					}
-					else if(page == 1){
-						freeze[(15+j*5) + i] = true;
-						cube = (15+j*5) + i;
-					}
-					else if(page == 2){
-						freeze[(30+j*5) + i] = true;
-						cube = (30+j*5) + i;
-					}
-					else if(page == 3){
-						freeze[(45+j*5) + i] = true;
-						cube = (45+j*5) + i;
+    
+	//selectsong controls playability, initialized as false; this if{} chain is actually set off by the if{} below this block, this should stay active as in user can hop around between as many songs as he wants until he clicks
+	//outside of the "panel"
+	if(selectsong){
+		if(rownumber == 1){
+			if((y>400) && (y<630)){
+				for(int j = 0; j< 10; j++){
+					//how do I toggle text color without creating a unique color for each track..yea that's not really possible..so I did just that
+					if((y >= 400+(j*23)) && (y < 400 + (j+1)*23)){
+						//listing[j].play();
+                        cout<<"song is loading"<<endl;
+                        song.loadSound(location[j]);
+                        song.play();
+                    }
+				}
+			}
+			else
+				//so once you leave the horizantal strip of tracks, you gotta start over
+				selectsong = false;
+		}
+		else if(rownumber == 2){
+			if((y>185) && (y<415)){
+				for(int j = 0; j< 10; j++){
+					//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
+					if((y >= 185+(j*23)) && (y < 185 + (j+1)*23)){
+						//listing[j].play();
+                        cout<<"song is loading"<<endl;
+                        song.loadSound(location[j]);
+                        song.play();
+                    }
+				}
+			}
+			else
+				selectsong = false;
+		}
+		else if(rownumber == 3){
+			if((y>350) && (y<580)){
+				for(int j = 0; j< 10; j++){
+					//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
+					if((y >= 350+(j*23)) && (y < 350+ (j+1)*23)){
+						//listing[j].play();
+                        cout<<"song is loading"<<endl;
+                        song.loadSound(location[j]);
+                        song.play();
+                    }
+				}
+			}
+			else
+				selectsong = false;
+		}
+	}
+	else
+	{
+		//keep track of which cube is activated through index cube
+        
+		//activating cube, also need to make sure we disable all other cubes as we scroll over the track listings..so we can disable the
+		//part in update() where we search for which cube to bring forth and animate.  Won't be a problem since the animation in draw()
+		//will still get tripped by the freeze[]
+		if((x>left) && (x<right) && (y > bottom) && (y<top)){
+			//cout<<"we are in"<<endl;
+			scrollcubes = false;
+			scrolltracks = true;
+			selectsong = true;		//maybe this should be activated only by scrolltracks in update(), and notice this is the key above whose negation controls whether this block gets executed, kind of confusing
+			for( int j = 0; j < 3; j++){
+				for(int i = 0; i < 5; i++){
+					if((x >= 359+ (i*157)) && (x< 359+(i+1)*157)&& (y >= 245+(j*157)) && (y < 245+ (j+1)*157)){
+						rownumber = j+1;
+						if(page == 0){
+							freeze[(j*5)+i] = true;
+							cube = (j*5)+i;
+						}
+						else if(page == 1){
+							freeze[(15+j*5) + i] = true;
+							cube = (15+j*5) + i;
+						}
+						else if(page == 2){
+							freeze[(30+j*5) + i] = true;
+							cube = (30+j*5) + i;
+						}
+						else if(page == 3){
+							freeze[(45+j*5) + i] = true;
+							cube = (45+j*5) + i;
+						}
 					}
 				}
 			}
+			//cout<<"this is cube number"<<cube<<endl;
 		}
-        //cout<<"this is cube number"<<cube<<endl;
-	}
-	else{
-		//so we only deactivate the last clickable one. any random click outside of the click will trigger this
-		//but it won't really register anything since all false by default
-		freeze[cube] = false;
-		scrollcubes = true;
-        scrolltracks = false;
-		//should now kick off scrolling track listings..
+		else{
+			//so we only deactivate the last clickable one. any random click outside of the click will trigger this
+			//but it won't really register anything since all false by default
+			freeze[cube] = false;
+			scrollcubes = true;
+			scrolltracks = false;
+			//should now kick off scrolling track listings..
+		}
 	}
 }
 
