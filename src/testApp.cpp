@@ -33,6 +33,7 @@ void testApp::setup(){
     drawwalls = false;
     songnumber = 0;
     
+    currentsong = 0;
     
     trans = 255;
     togglecaption = false;
@@ -102,11 +103,11 @@ void testApp::setup(){
     tracks.push_back("10. sclavis");
     
     test1 ="songs/01 Barcarole.mp3";
-    test2 ="songs/03 Au Lait.mp3";
-    test3 ="songs/04 Eighteen.mp3";
-    test4 ="songs/01 Barcarole.mp3";
-    test5 ="songs/03 Au Lait.mp3";
-    test6 ="songs/04 Eighteen.mp3";
+    test2 ="songs/02 Are You Going With Me_.mp3";
+    test3 ="songs/03 Au Lait.mp3";
+    test4 ="songs/04 Eighteen.mp3";
+    test5 ="songs/05 Offramp.mp3";
+    test6 ="songs/06 James.mp3";
     test7 ="songs/01 Barcarole.mp3";
     test8 ="songs/03 Au Lait.mp3";
     test9 ="songs/04 Eighteen.mp3";
@@ -126,6 +127,25 @@ void testApp::setup(){
     location.push_back(test11);
     location.push_back(test12);
     
+    
+    
+    listing.push_back(song1);
+    listing.push_back(song2);
+    listing.push_back(song3);
+    listing.push_back(song4);
+    listing.push_back(song5);
+    listing.push_back(song6);
+    listing.push_back(song7);
+    listing.push_back(song8);
+    listing.push_back(song9);
+    listing.push_back(song10);
+    listing.push_back(song11);
+    listing.push_back(song12);
+    
+    
+    for (int i =0; i<location.size(); i++){
+        thread1.load(location[i],listing[i]);
+    }
     /*song.loadSound("songs/01 Barcarole.mp3");
      listing.push_back(song);
      song2.loadSound("songs/01 Barcarole.mp3");
@@ -451,7 +471,7 @@ void testApp::setup(){
     
     //blurry and smooth
 	//these are loaded one row at a time, should be all automatic
-    ofLogoImage.loadImage1("leipzig.jpg");
+    ofLogoImage1.loadImage("leipzig.jpg");
     ofLogoImage2.loadImage("melos.jpg");
     ofLogoImage3.loadImage("gustavsen.jpg");
     ofLogoImage4.loadImage("canopee.jpg");
@@ -1877,10 +1897,9 @@ void testApp::mousePressed(int x, int y, int button){
 				for(int j = 0; j< 10; j++){
 					//how do I toggle text color without creating a unique color for each track..yea that's not really possible..so I did just that
 					if((y >= 400+(j*23)) && (y < 400 + (j+1)*23)){
-						//listing[j].play();
-                        cout<<"song is loading"<<endl;
-                        song.loadSound(location[j]);
-                        song.play();
+						listing[currentsong].stop();
+                        listing[j].play();
+                        currentsong =  j;
                     }
 				}
 			}
@@ -1893,10 +1912,9 @@ void testApp::mousePressed(int x, int y, int button){
 				for(int j = 0; j< 10; j++){
 					//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
 					if((y >= 185+(j*23)) && (y < 185 + (j+1)*23)){
-						//listing[j].play();
-                        cout<<"song is loading"<<endl;
-                        song.loadSound(location[j]);
-                        song.play();
+                        listing[currentsong].stop();
+						listing[j].play();
+                        currentsong =  j;
                     }
 				}
 			}
@@ -1908,10 +1926,9 @@ void testApp::mousePressed(int x, int y, int button){
 				for(int j = 0; j< 10; j++){
 					//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
 					if((y >= 350+(j*23)) && (y < 350+ (j+1)*23)){
-						//listing[j].play();
-                        cout<<"song is loading"<<endl;
-                        song.loadSound(location[j]);
-                        song.play();
+                        listing[currentsong].stop();
+						listing[j].play();
+                        currentsong =  j;
                     }
 				}
 			}
