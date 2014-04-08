@@ -1,16 +1,4 @@
-
-
-/*not sure how to load all the songs...ideally we should dynamically load all the songs for a particular album once we click on it and the track listings are up for display, then we can play whichever
- one we want on the fly.  But this would be a one time thing triggered by a mouse click so probably not in update() or draw(), in mousePressed() maybe and should kick off a separate thread.  data structure
- wise, maybe a vector of pointers to sound files or a map<string name, pointer> so we can designate it like track1.play(), track2.play() etc..
- 
- vector<>  listing;
- for(int i = 0; i<10; i++){
- track.loadSong(tracknames[i]);
- listing.push_back(track);
- }
- */
-
+//Double click outside of cube to reset
 
 //@author tian xu
 
@@ -28,11 +16,9 @@
 //#include <boost/lambda/lambda.hpp>
 
 void testApp::setup(){
-    nextiteri = 0;
-    nextiterj = 0;
+    
     drawwalls = false;
     songnumber = 0;
-    
     currentsong = 0;
     
     trans = 255;
@@ -40,27 +26,23 @@ void testApp::setup(){
     captionindex = 0;
     ofSetWindowShape(1400,1000);
     
-    
     logo.loadFont("type/verdana.ttf", 22, true, false, true, 0.1, 102);
-    
     logo2.loadFont("type/verdana.ttf", 6, true, false, true, 0.1, 102);
-    
     author.loadFont("type/verdana.ttf", 5.8, true, false, true, 0.1, 102);
-    
     signature.loadFont("type/verdana.ttf", 6, true, false, true, 0.1, 102);
-    
-    date.setLetterSpacing(1.3);
     date.loadFont("type/dinen.ttf", 10, true, false, true, 0.1, 102);
+    date.setLetterSpacing(1.3);
     
     caption.loadFont("verdana.ttf", 8, true, true);
 	caption.setLineHeight(14.0f);
 	caption.setLetterSpacing(1.035);
     
     rownumber = 0;
-    
     songcolor = ofColor(176,196,222);
     
     cube = 0;
+    
+    
 	/*Font has to be loaded in setup() but later on in draw() after projecting forward with oftranslate (0,0,500), the font is blown up (rightly so I guess).
      size 5 (along whatever initial z plane projected forward would give me the right size after projection but it has pretty bad resolution.Once I translate
      forward, it just projects each of those pixels and so loses a lot of density.  Ended up using drawStringAsShapes() but still doesn't look very sharp
@@ -68,40 +50,48 @@ void testApp::setup(){
 	int fontsize = 4;
 	int dpi = 182;
 	float alias = 0.05;
-    font.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font2.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font3.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font4.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font5.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font6.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font7.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font8.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font9.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
-    font10.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
     
-    songs.push_back(font);
-    songs.push_back(font2);
-    songs.push_back(font3);
-    songs.push_back(font4);
-    songs.push_back(font5);
-    songs.push_back(font6);
-    songs.push_back(font7);
-    songs.push_back(font8);
-    songs.push_back(font9);
-    songs.push_back(font10);
+	
+	//don't need individual fonts for each song...
+	trackfont.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
     
-	//junk data for testing
-    tracks.push_back("01. eick");
-    tracks.push_back("02. matheny");
-    tracks.push_back("03. gustavsen");
-    tracks.push_back("04. holland");
-    tracks.push_back("05. motian");
-    tracks.push_back("06. rypdal");
-    tracks.push_back("07. negros");
+	/*font.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font2.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font3.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font4.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font5.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font6.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font7.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font8.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font9.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     font10.loadFont("type/verdana.ttf", fontsize, true, false, true, alias, dpi);
+     
+     songs.push_back(font);
+     songs.push_back(font2);
+     songs.push_back(font3);
+     songs.push_back(font4);
+     songs.push_back(font5);
+     songs.push_back(font6);
+     songs.push_back(font7);
+     songs.push_back(font8);
+     songs.push_back(font9);
+     songs.push_back(font10);
+     */
+    
+    
+	//actual track names to be displayed
+    tracks.push_back("01. Barcarole");
+    tracks.push_back("02. Are You Going With Me");
+    tracks.push_back("03. Au Lait");
+    tracks.push_back("04. Eighteen");
+    tracks.push_back("05. Offramp");
+    tracks.push_back("06. James");
+    tracks.push_back("07. The Bat, Part 2");
     tracks.push_back("08. condori");
     tracks.push_back("09. micus");
     tracks.push_back("10. sclavis");
     
+	//actual location and song names in directory
     test1 ="songs/01 Barcarole.mp3";
     test2 ="songs/02 Are You Going With Me_.mp3";
     test3 ="songs/03 Au Lait.mp3";
@@ -112,8 +102,7 @@ void testApp::setup(){
     test8 ="songs/03 Au Lait.mp3";
     test9 ="songs/04 Eighteen.mp3";
     test10 ="songs/01 Barcarole.mp3";
-    test11 ="songs/03 Au Lait.mp3";
-    test12 ="songs/04 Eighteen.mp3";
+    
     location.push_back(test1);
     location.push_back(test2);
     location.push_back(test3);
@@ -127,8 +116,7 @@ void testApp::setup(){
     location.push_back(test11);
     location.push_back(test12);
     
-    
-    
+    //these are just soundstreams so empty right now
     listing.push_back(song1);
     listing.push_back(song2);
     listing.push_back(song3);
@@ -142,44 +130,19 @@ void testApp::setup(){
     listing.push_back(song11);
     listing.push_back(song12);
     
-    
+    //load each track in a separate thread even though this is uncompletely unnecessary it seems
     for (int i =0; i<location.size(); i++){
         thread1.load(location[i],listing[i]);
     }
-    /*song.loadSound("songs/01 Barcarole.mp3");
-     listing.push_back(song);
-     song2.loadSound("songs/01 Barcarole.mp3");
-     listing.push_back(song2);
-     song3.loadSound("songs/03 Au Lait.mp3");
-     listing.push_back(song3);
-     song4.loadSound("songs/04 Eighteen.mp3");
-     listing.push_back(song4);
-     song5.loadSound("songs/05 Offramp.mp3");
-     listing.push_back(song5);
-     song6.loadSound("songs/06 James.mp3");
-     listing.push_back(song6);
-     song7.loadSound("songs/07 The Bat, Part 2.mp3");
-     listing.push_back(song7);
-     song8.loadSound("songs/03 Au Lait.mp3");
-     listing.push_back(song8);
-     song9.loadSound("songs/03 Au Lait.mp3");
-     listing.push_back(song9);
-     song10.loadSound("songs/03 Au Lait.mp3");
-     listing.push_back(song10);
-     song11.loadSound("songs/03 Au Lait.mp3");
-     listing.push_back(song11);
-     song12.loadSound("songs/03 Au Lait.mp3");
-     listing.push_back(song12);
-     */
     
-    
+	//color for track listings
 	ofColor bckgrnd1 = ofColor(51,102,193);
-    for(int i = 0; i<10; i++){
+    for(int i = 0; i<tracks.size(); i++){
 		trackcolors1.push_back(bckgrnd1);
 	}
 	
 	ofColor bckgrnd2 = ofColor(176, 196, 222);
-    for(int i = 0; i<10; i++){
+    for(int i = 0; i<tracks.size(); i++){
 		trackcolors2.push_back(bckgrnd2);
 	}
     
@@ -188,7 +151,6 @@ void testApp::setup(){
     albumcolors.push_back(trackcolors1);
     albumcolors.push_back(trackcolors2);
     albumcolors.push_back(trackcolors2);
-    
     
     //pagecolors should be same as albumcolors, thats what the color should revert back to when not scroll-locked
     pagecolors.push_back(ofColor(176, 196, 222));
@@ -384,25 +346,15 @@ void testApp::setup(){
     }
     
     ofSetVerticalSync(true);
-	//do your best!
-	ofSetFrameRate(60);
+	ofSetFrameRate(60);					//do your best!
 	ofBackground(10, 10, 10);
 	ofEnableDepthTest();
     
     // turn on smooth lighting //
-    bSmoothLighting     = true;
+    bSmoothLighting = true;
     ofSetSmoothLighting(true);
     
     
-    /*
-     // lets make a high-res sphere //
-     // default is 20 //
-     ofSetSphereResolution(128);
-     
-     // radius of the sphere //
-     radius		= 180.f;
-     center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
-     */
     
     // Point lights emit light in all directions //
     // set the diffuse color, color reflected from the light source //
@@ -427,7 +379,6 @@ void testApp::setup(){
     // range 0 - 128, zero is even illumination, 128 is max falloff //
     spotLight.setSpotConcentration( 45 );
     
-	
     // Directional Lights emit light based on their orientation, regardless of their position //
 	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 255.f));
 	directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
@@ -671,6 +622,7 @@ void testApp::update() {
     
     
 	//instead of doing 15 iterations everytime like a for loop and testing each condition we can just find the i and j corresponding to its position
+	//actually its fast enough already and I don't think this would make much difference
 	/*if(page == 0){
      rotate[(nextiterj*5)+nextiteri] = true;
      }
@@ -783,7 +735,7 @@ void testApp::update() {
          bottom row 350 to 580
          */
         if(rownumber == 1){
-			for(int j = 0; j< 10; j++){
+			for(int j = 0; j< tracks.size(); j++){
 				//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
 				if((y >= 400+(j*23)) && (y < 400 + (j+1)*23))
 					albumcolors[page][9-j] = highlight;				//track turns white when highlighted, otherwise takes the default color set in setup()
@@ -792,7 +744,7 @@ void testApp::update() {
 			}
 		}
 		else if(rownumber == 2){
-			for(int j = 0; j< 10; j++){
+			for(int j = 0; j< tracks.size(); j++){
 				if((y >= 185+(j*23)) && (y < 185 + (j+1)*23))
 					albumcolors[page][9-j]  = highlight;
 				else
@@ -800,7 +752,7 @@ void testApp::update() {
 			}
 		}
 		else if(rownumber == 3){
-			for(int j = 0; j< 10; j++){
+			for(int j = 0; j< tracks.size(); j++){
 				if((y >= 350+(j*23)) && (y < 350+ (j+1)*23))
 					albumcolors[page][9-j]  = highlight;
 				else
@@ -999,7 +951,8 @@ void testApp::draw(){
     
     //ofRotate(20, 1,0,0);      //for debugging purposes
 	if(draw_wall0 || drawwalls){
-        //cout<<"drawing wall 0"<<endl;
+        
+		//row1
 		for( int i = 0; i<5; i++){
 			if( (page != 1) || (i != 0) ){
 				if( (page != 3) || (i != 4) ){
@@ -1036,7 +989,7 @@ void testApp::draw(){
                             
 							//songcolor controlled by page number
 							ofSetColor(albumcolors[page][i]);
-							songs[i].drawStringAsShapes(tracks[i], 0,0);
+							trackfont.drawStringAsShapes(tracks[i], 0,0);
                             
 							//for some reason cube takes on the color of the text if not reset even though the binding of the texture happens outside of the iteration???
 							ofSetColor(255,255,255);
@@ -1061,6 +1014,7 @@ void testApp::draw(){
 			}
 		}
         
+		//row2
 		for( int i = 0; i<5; i++){
 			if( (page != 1) || (i != 0) ){
 				if( (page != 3) || (i != 4) ){
@@ -1093,7 +1047,7 @@ void testApp::draw(){
 							ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                             
 							ofSetColor(albumcolors[page][i]);
-							songs[i].drawStringAsShapes(tracks[i], 0,0);
+							trackfont.drawStringAsShapes(tracks[i], 0,0);
                             
 							ofSetColor(255,255,255);
 							ofPopMatrix();
@@ -1115,6 +1069,7 @@ void testApp::draw(){
 			}
 		}
         
+        //row3
 		ofColor blue = ofColor(51, 102, 183);
 		for( int i = 0; i < 5; i++) {
 			if( (page != 1) || (i != 0) ){
@@ -1148,7 +1103,7 @@ void testApp::draw(){
 							ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                             
 							ofSetColor(albumcolors[page][i]);
-							songs[i].drawStringAsShapes(tracks[i], 0,0);
+							trackfont.drawStringAsShapes(tracks[i], 0,0);
                             
 							ofSetColor(255,255,255);
 							ofPopMatrix();
@@ -1177,7 +1132,8 @@ void testApp::draw(){
     
 	//building the second face (left wall) from back to front, top to bottom like the front face had it been rotated
 	if(draw_wall1 || drawwalls){
-        //cout<<"drawing wall 1"<<endl;
+        
+		//row1
 		for( int i = 0; i<5; i++){
 			if( (page != 2) || (i != 0) ){
                 
@@ -1209,7 +1165,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						songs[i].drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
 						ofSetColor(255,255,255);
 						ofPopMatrix();
@@ -1230,7 +1186,7 @@ void testApp::draw(){
 			}
 		}
         
-        
+        //row2
 		for( int i = 0; i<5; i++){
 			if( (page != 2) || (i != 0) ){
                 
@@ -1262,7 +1218,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						songs[i].drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
 						ofSetColor(255,255,255);
 						ofPopMatrix();
@@ -1283,6 +1239,7 @@ void testApp::draw(){
 			}
 		}
         
+		//row3
 		for( int i = 0; i<5; i++){
 			if( (page != 2) || (i != 0) ){
                 
@@ -1314,7 +1271,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						songs[i].drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
 						ofSetColor(255,255,255);
 						ofPopMatrix();
@@ -1344,7 +1301,8 @@ void testApp::draw(){
 	//so really its right to left top to bottom here
     
 	if(draw_wall2 | drawwalls){
-        //cout<<"drawing wall 2"<<endl;
+        
+		//row1
 		for( int i = 0; i<5; i++){
 			if( (page != 3) || (i != 0) ){
                 
@@ -1376,7 +1334,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						songs[i].drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
 						ofSetColor(255,255,255);
 						ofPopMatrix();
@@ -1397,6 +1355,7 @@ void testApp::draw(){
 			}
 		}
         
+		//row2
 		for( int i = 0; i<5; i++){
 			if( (page != 3) || (i != 0) ){
                 
@@ -1428,7 +1387,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						songs[i].drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
 						ofSetColor(255,255,255);
 						ofPopMatrix();
@@ -1449,6 +1408,7 @@ void testApp::draw(){
 			}
 		}
         
+		//row3
 		for( int i = 0; i<5; i++){
 			if( (page != 3) || (i != 0) ){
                 
@@ -1480,7 +1440,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						songs[i].drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
 						ofSetColor(255,255,255);
 						ofPopMatrix();
@@ -1509,7 +1469,8 @@ void testApp::draw(){
     
 	//building the final right wall from front to back top to bottom
 	if(draw_wall3 || drawwalls){
-        //cout<<"drawing wall 3"<<endl;
+        
+		//row1
 		for( int i = 0; i<5; i++){
 			//if( (page != 0) || (i != 0) ){
             
@@ -1541,7 +1502,7 @@ void testApp::draw(){
 					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                     
 					ofSetColor(albumcolors[page][i]);
-					songs[i].drawStringAsShapes(tracks[i], 0,0);
+					trackfont.drawStringAsShapes(tracks[i], 0,0);
                     
 					ofSetColor(255,255,255);
 					ofPopMatrix();
@@ -1561,7 +1522,7 @@ void testApp::draw(){
 			ofPopMatrix();
 		}
         
-        
+        //row2
 		for( int i = 0; i<5; i++){
 			//if( (page != 0) || (i != 0) ){
             
@@ -1593,7 +1554,7 @@ void testApp::draw(){
 					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                     
 					ofSetColor(albumcolors[page][i]);
-					songs[i].drawStringAsShapes(tracks[i], 0,0);
+					trackfont.drawStringAsShapes(tracks[i], 0,0);
                     
 					ofSetColor(255,255,255);
 					ofPopMatrix();
@@ -1613,7 +1574,7 @@ void testApp::draw(){
 			ofPopMatrix();
 		}
         
-        
+        //row3
 		for( int i = 0; i<5; i++){
 			//if( (page != 0) || (i != 0) ){
             
@@ -1645,7 +1606,7 @@ void testApp::draw(){
 					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                     
 					ofSetColor(albumcolors[page][i]);
-					songs[i].drawStringAsShapes(tracks[i], 0,0);
+					trackfont.drawStringAsShapes(tracks[i], 0,0);
                     
 					ofSetColor(255,255,255);
 					ofPopMatrix();
@@ -1665,7 +1626,6 @@ void testApp::draw(){
 			ofPopMatrix();
 		}
 	}
-    
     drawwalls = false;		//to be reset to true only by turning a page
     
 	/*
@@ -1682,8 +1642,6 @@ void testApp::draw(){
 	if (!bDirLight) directionalLight.disable();
 	
     material.end();
-    
-    
     
     
     /*
@@ -1758,41 +1716,6 @@ void testApp::draw(){
      ofRectRounded( myRect, 2 );
      */
     
-    
-    
-    
-    /*
-     ofTranslate(-50, 350, 450);
-     ofSetColor(176,196,222,100);
-     ofRect(0,0,100,10);
-     
-     ofSetColor(119,136,153,100);
-     ofRect(0,10,100,10);
-     
-     ofSetColor(176,196,222,100);
-     ofRect(0,20,100,10);
-     
-     ofSetColor(119,136,153,100);
-     ofRect(0,30,100,10);
-     
-     ofSetColor(176,196,222,100);
-     ofRect(0,40,100,10);
-     
-     ofSetColor(119,136,153,100);
-     ofRect(0,50,100,10);
-     
-     ofSetColor(176,196,222,100);
-     ofRect(0,60,100,10);
-     
-     ofSetColor(119,136,153,100);
-     ofRect(0,70,100,10);
-     
-     ofSetColor(176,196,222,100);
-     ofRect(0,80,100,10);
-     
-     ofSetColor(119,136,153,100);
-     ofRect(0,90,100,10);
-     */
     
     ofSetColor(255,255,255);
 }
@@ -1886,15 +1809,12 @@ void testApp::mousePressed(int x, int y, int button){
 	int bottom  = 245;
 	int top = 245 + 3*157;
     
-    
-    
-    
 	//selectsong controls playability, initialized as false; this if{} chain is actually set off by the if{} below this block, this should stay active as in user can hop around between as many songs as he wants until he clicks
 	//outside of the "panel"
 	if(selectsong){
 		if(rownumber == 1){
 			if((y>400) && (y<630)){
-				for(int j = 0; j< 10; j++){
+				for(int j = 0; j< tracks.size(); j++){
 					//how do I toggle text color without creating a unique color for each track..yea that's not really possible..so I did just that
 					if((y >= 400+(j*23)) && (y < 400 + (j+1)*23)){
 						listing[currentsong].stop();
@@ -1909,7 +1829,7 @@ void testApp::mousePressed(int x, int y, int button){
 		}
 		else if(rownumber == 2){
 			if((y>185) && (y<415)){
-				for(int j = 0; j< 10; j++){
+				for(int j = 0; j< tracks.size(); j++){
 					//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
 					if((y >= 185+(j*23)) && (y < 185 + (j+1)*23)){
                         listing[currentsong].stop();
@@ -1923,7 +1843,7 @@ void testApp::mousePressed(int x, int y, int button){
 		}
 		else if(rownumber == 3){
 			if((y>350) && (y<580)){
-				for(int j = 0; j< 10; j++){
+				for(int j = 0; j< tracks.size(); j++){
 					//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
 					if((y >= 350+(j*23)) && (y < 350+ (j+1)*23)){
                         listing[currentsong].stop();
