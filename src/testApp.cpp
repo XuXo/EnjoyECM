@@ -1,3 +1,5 @@
+
+
 //Double click outside of cube to reset
 
 //@author tian xu
@@ -12,10 +14,17 @@
  I care about is the aesthetics, looking slick without crushing fps would be good.
  */
 
+
 #include "testApp.h"
 //#include <boost/lambda/lambda.hpp>
 
 void testApp::setup(){
+    
+    alpha = 255;
+    
+	//starttime = 0;
+	//endtime = 0;
+	timeelapsed = 0;
     
     drawwalls = false;
     songnumber = 0;
@@ -329,7 +338,7 @@ void testApp::setup(){
     totalflips = 0;
     page = 0;
     
-    timeelapsed = 0;
+    
     timeexit = 0;
     startpage = 0;
     stayonpage = false;
@@ -795,6 +804,7 @@ void testApp::emerge(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
+	ofEnableAlphaBlending();
     if(togglecaption){
         
         ofSetColor(51, 102, 133);
@@ -820,19 +830,36 @@ void testApp::draw(){
 	float logoy = 20;
     ofSetColor(176,196,222,100);
 	logo2.drawStringAsShapes("ELATION                INTROSPECTION",logox, logoy);
-    ofSetColor(51, 102, 133);
+    ofSetColor(51, 102, 133, alpha);
     ofRect(logox, logoy+10, 240, 45);
 	ofTranslate(0,0,1);
-    ofSetColor(255,255,255);
+    ofSetColor(255,255,255, alpha);
     logo.drawStringAsShapes(" ENJOY ECM ", logox+7,logoy+45);
     ofTranslate(0,0,-1);
-	ofSetColor(176,196,222);
+	ofSetColor(176,196,222, alpha);
 	author.drawStringAsShapes("A MANFRED EICHER TRIBUTE", logox+68,logoy+70);
     date.drawStringAsShapes("07.09.43",logox+101, logoy+95);
     ofDrawBitmapString(ofToString(ofGetFrameRate())+"fps", 10, 15);
-    ofSetColor(150,0,0);
+    ofSetColor(150,0,0, alpha);
     signature.drawStringAsShapes("By Tian Xu", 1060,700);
     signature.drawStringAsShapes("(XuXo)", 1076,712);
+    
+    
+    
+	//draw the playback buttons, only 3 basic features
+	ofSetColor(150,0,0, alpha);
+	float leftx = 467, lefty = 700;
+	ofFill();
+	ofTriangle(leftx, lefty, leftx+5, lefty-5, leftx+5, lefty+5);
+	ofTriangle(leftx+6, lefty, leftx+11, lefty-5, leftx+11, lefty+5);
+	ofRect(leftx-4, lefty-5,2,10);
+    
+	ofRect(leftx + 45, lefty-5, 10,10);
+    
+	float rightx = leftx+100, righty = 700;
+	ofTriangle(rightx, righty, rightx-5, righty-5, rightx-5, righty+5);
+	ofTriangle(rightx-6, righty, rightx-11, righty-5, rightx-11, righty+5);
+	ofRect(rightx+2, lefty-5,2,10);
     
     //old title and logo...actually I like this better but it doesn't look too good with the red/black page.  Against my better judgement and true instincts, I'm deprecating this one for now and trying
 	//to make the miami vice one work.
@@ -873,7 +900,8 @@ void testApp::draw(){
     
     ofTranslate(500,00,00);
     
-	//I seriously can't remember what this is used for...
+	//rotating continuously on display
+    //I seriously can't remember what this is used for...
     if (axisrotate){
         ofRotate((ofGetElapsedTimef())*.8 * RAD_TO_DEG, 0, 1, 0);
         timeelapsed = ofGetElapsedTimef();
@@ -992,7 +1020,7 @@ void testApp::draw(){
 							trackfont.drawStringAsShapes(tracks[i], 0,0);
                             
 							//for some reason cube takes on the color of the text if not reset even though the binding of the texture happens outside of the iteration???
-							ofSetColor(255,255,255);
+							ofSetColor(255,255,255,alpha);
 							ofPopMatrix();
                             
 							trans = 100;
@@ -1003,7 +1031,7 @@ void testApp::draw(){
 						trans = 255;
 						ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 					}
-					ofSetColor(255,255,255,trans);    //turn on transparency
+					ofSetColor(255,255,255,alpha);    //turn on transparency
                     
 					// grab the texture reference and bind it, putting this anywhere but here will cause trouble//
 					if(bUseTexture) ecmcovers[i].getTextureReference().bind();
@@ -1049,7 +1077,7 @@ void testApp::draw(){
 							ofSetColor(albumcolors[page][i]);
 							trackfont.drawStringAsShapes(tracks[i], 0,0);
                             
-							ofSetColor(255,255,255);
+							ofSetColor(255,255,255, alpha);
 							ofPopMatrix();
                             
 							trans = 100;
@@ -1059,7 +1087,7 @@ void testApp::draw(){
 						trans = 255;
 						ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 					}
-					ofSetColor(255,255,255,trans);
+					ofSetColor(255,255,255,alpha);
                     
 					if(bUseTexture) ecmcovers[5+i].getTextureReference().bind();
 					ofDrawBox(0, 0, 0, 100);
@@ -1105,7 +1133,7 @@ void testApp::draw(){
 							ofSetColor(albumcolors[page][i]);
 							trackfont.drawStringAsShapes(tracks[i], 0,0);
                             
-							ofSetColor(255,255,255);
+							ofSetColor(255, 255, 255, alpha);
 							ofPopMatrix();
                             
 							trans = 100;
@@ -1115,7 +1143,7 @@ void testApp::draw(){
 						trans = 255;
 						ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 					}
-					ofSetColor(255,255,255,trans);
+					ofSetColor(255, 255, 255, alpha);
                     
 					if(bUseTexture) ecmcovers[10+i].getTextureReference().bind();
 					ofDrawBox(0, 0, 0, 100);
@@ -1165,9 +1193,9 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						trackfont.drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[i], 0, 0);
                         
-						ofSetColor(255,255,255);
+						ofSetColor(255, 255, 255, alpha);
 						ofPopMatrix();
                         
 						trans = 100;
@@ -1177,7 +1205,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 				}
-				ofSetColor(255,255,255,trans);
+				ofSetColor(255, 255, 255, alpha);
                 
 				if(bUseTexture) ecmcovers[15+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1220,7 +1248,7 @@ void testApp::draw(){
 						ofSetColor(albumcolors[page][i]);
 						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
-						ofSetColor(255,255,255);
+						ofSetColor(255,255,255, alpha);
 						ofPopMatrix();
                         
 						trans = 100;
@@ -1230,7 +1258,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 				}
-				ofSetColor(255,255,255,trans);
+				ofSetColor(255, 255,255,alpha);
                 
 				if(bUseTexture) ecmcovers[20+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1273,7 +1301,7 @@ void testApp::draw(){
 						ofSetColor(albumcolors[page][i]);
 						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
-						ofSetColor(255,255,255);
+						ofSetColor(255, 255, 255, alpha);
 						ofPopMatrix();
                         
 						trans = 100;
@@ -1283,7 +1311,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 				}
-				ofSetColor(255,255,255,trans);
+				ofSetColor(255, 255, 255, alpha);
                 
 				if(bUseTexture) ecmcovers[25+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1336,7 +1364,7 @@ void testApp::draw(){
 						ofSetColor(albumcolors[page][i]);
 						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
-						ofSetColor(255,255,255);
+						ofSetColor(255, 255, 255, alpha);
 						ofPopMatrix();
                         
 						trans = 100;
@@ -1346,7 +1374,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 				}
-				ofSetColor(255,255,255,trans);
+				ofSetColor(255,255,255,alpha);
                 
 				if(bUseTexture) ecmcovers[30+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1389,7 +1417,7 @@ void testApp::draw(){
 						ofSetColor(albumcolors[page][i]);
 						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
-						ofSetColor(255,255,255);
+						ofSetColor(255 ,255, 255, alpha);
 						ofPopMatrix();
                         
 						trans = 100;
@@ -1399,7 +1427,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 				}
-				ofSetColor(255,255,255,trans);
+				ofSetColor(255, 255, 255, alpha);
                 
 				if(bUseTexture) ecmcovers[35+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1442,7 +1470,7 @@ void testApp::draw(){
 						ofSetColor(albumcolors[page][i]);
 						trackfont.drawStringAsShapes(tracks[i], 0,0);
                         
-						ofSetColor(255,255,255);
+						ofSetColor(255 ,255,255, alpha);
 						ofPopMatrix();
                         
 						trans = 100;
@@ -1452,7 +1480,7 @@ void testApp::draw(){
 					trans = 255;
 					ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 				}
-				ofSetColor(255,255,255,trans);
+				ofSetColor(255, 255, 255, alpha);
                 
 				if(bUseTexture) ecmcovers[40+i].getTextureReference().bind();
 				ofDrawBox(0, 0, 0, 100);
@@ -1504,7 +1532,7 @@ void testApp::draw(){
 					ofSetColor(albumcolors[page][i]);
 					trackfont.drawStringAsShapes(tracks[i], 0,0);
                     
-					ofSetColor(255,255,255);
+					ofSetColor(255, 255, 255, alpha);
 					ofPopMatrix();
                     
 					trans = 100;
@@ -1514,7 +1542,7 @@ void testApp::draw(){
 				trans = 255;
 				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 			}
-			ofSetColor(255,255,255,trans);
+			ofSetColor(255, 255, 255, trans);
             
 			if(bUseTexture) ecmcovers[45+i].getTextureReference().bind();
 			ofDrawBox(0, 0, 0, 100);
@@ -1556,7 +1584,7 @@ void testApp::draw(){
 					ofSetColor(albumcolors[page][i]);
 					trackfont.drawStringAsShapes(tracks[i], 0,0);
                     
-					ofSetColor(255,255,255);
+					ofSetColor(255,255,255, alpha);
 					ofPopMatrix();
                     
 					trans = 100;
@@ -1566,7 +1594,7 @@ void testApp::draw(){
 				trans = 255;
 				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 			}
-			ofSetColor(255,255,255,trans);
+			ofSetColor(255, 255, 255, alpha);
             
 			if(bUseTexture) ecmcovers[50+i].getTextureReference().bind();
 			ofDrawBox(0, 0, 0, 100);
@@ -1608,7 +1636,7 @@ void testApp::draw(){
 					ofSetColor(albumcolors[page][i]);
 					trackfont.drawStringAsShapes(tracks[i], 0,0);
                     
-					ofSetColor(255,255,255);
+					ofSetColor(255, 255, 255, alpha);
 					ofPopMatrix();
                     
 					trans = 100;
@@ -1618,7 +1646,7 @@ void testApp::draw(){
 				trans = 255;
 				ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
 			}
-			ofSetColor(255,255,255,trans);
+			ofSetColor(255, 255, 255, alpha);
             
 			if(bUseTexture) ecmcovers[55+i].getTextureReference().bind();
 			ofDrawBox(0, 0, 0, 100);
@@ -1902,6 +1930,29 @@ void testApp::mousePressed(int x, int y, int button){
 			//should now kick off scrolling track listings..
 		}
 	}
+    
+	//this area for song selection is always off limits no matter what mode you're in
+	/*if((x>=700) && (x<=720) && (y>=695) && (y<=705)){
+     listing[currentsong].stop();
+     if currentsong+1<=tracks.size()-1){
+     listing[currentsong+1].play();
+     currentsong++;
+     }
+     else
+     listing[currentsong].play();
+     }
+     else if((x>=700) && (x<=720) && (y>=695) && (y<=705)){
+     listing[currentsong].stop();
+     if(currentsong - 1 >=0){
+     listing[currentsong-1].play();
+     currentsong--;
+     }
+     else
+     listing[currentsong].play();
+     }
+     else if((x>=700) && (x<=720) && (y>=695) && (y<=705)){
+     listing[currentsong].stop();
+     }*/
 }
 
 //--------------------------------------------------------------
