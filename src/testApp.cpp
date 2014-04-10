@@ -1829,7 +1829,7 @@ void testApp::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-    
+    //cout<<"x is "<<x<<"and y is"<<y<<endl;
     //mousedrag.push_back(x);		don't want to push points clicked only points in mouseDragged to simulate swiping, otherwise stack will get populated by bunch of junk clicks
 	int k = 60;
 	int left = 359;
@@ -1932,27 +1932,27 @@ void testApp::mousePressed(int x, int y, int button){
 	}
     
 	//this area for song selection is always off limits no matter what mode you're in
-	/*if((x>=700) && (x<=720) && (y>=695) && (y<=705)){
-     listing[currentsong].stop();
-     if currentsong+1<=tracks.size()-1){
-     listing[currentsong+1].play();
-     currentsong++;
-     }
-     else
-     listing[currentsong].play();
-     }
-     else if((x>=700) && (x<=720) && (y>=695) && (y<=705)){
-     listing[currentsong].stop();
-     if(currentsong - 1 >=0){
-     listing[currentsong-1].play();
-     currentsong--;
-     }
-     else
-     listing[currentsong].play();
-     }
-     else if((x>=700) && (x<=720) && (y>=695) && (y<=705)){
-     listing[currentsong].stop();
-     }*/
+	if((x>=694) && (x<=710) && (y>=748) && (y<=758)){
+        listing[currentsong].stop();
+        if (currentsong+1<=tracks.size()-1){
+            listing[currentsong+1].play();
+            currentsong++;
+        }
+        else
+            listing[currentsong].play();
+    }
+    else if((x>=786) && (x<=802) && (y>=748) && (y<=758)){
+        listing[currentsong].stop();
+        if(currentsong - 1 >=0){
+            listing[currentsong-1].play();
+            currentsong--;
+        }
+        else
+            listing[currentsong].play();
+    }
+    else if((x>=742) && (x<=752) && (y>=748) && (y<=758)){
+        listing[currentsong].stop();
+    }
 }
 
 //--------------------------------------------------------------
