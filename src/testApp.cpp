@@ -1,7 +1,4 @@
 
-
-//Double click outside of cube to reset
-
 //@author tian xu
 
 /*A simple music player for my favorite music label ECM.  It was really to showcase the gorgeous album covers so the music playing functionality
@@ -10,15 +7,23 @@
  was a bit too busy and opted for a more stoic look.  few colors, simple fonts, squared edges, minimal interplay of light and shadows.  The title
  comes from "Enjoy Incubus" which I always really liked.
  
- One thing real quick, this probably doesn't fit the bill for good coding standards.  I will definitely refactor it at some point but right now all
+ This code is not robust, I will definitely refactor it at some point but right now all
  I care about is the aesthetics, looking slick without crushing fps would be good.
  */
 
+bool toggleprevious, togglenext, togglestop;
+bool shrink;
 
 #include "testApp.h"
 //#include <boost/lambda/lambda.hpp>
 
 void testApp::setup(){
+    
+	toggleprevious = false;
+	togglenext = false;
+	togglestop = false;
+    
+	shrink = false;
     
     alpha = 255;
     
@@ -619,6 +624,7 @@ void testApp::update() {
 	//the side walls as only, only draw them while we are turning pages
 	draw_wall0 = draw_wall1 = draw_wall2 = draw_wall3 = false;
 	
+    
 	if(page == 0){
 		draw_wall0 = true;}
 	else if(page == 1){
@@ -725,6 +731,23 @@ void testApp::update() {
 		}
 	}
 	
+    
+    
+	//animation for playback control
+	if((x>=685) && (x<=710) && (y>=748) && (y<=788)){
+        toggleprevious = true;
+    }
+    else if((x>=786) && (x<=812) && (y>=748) && (y<=788)){
+        togglenext = true;
+    }
+    else if((x>=735) && (x<=757) && (y>=748) && (y<=788)){
+        togglestop = true;
+    }
+    
+    
+    
+    
+    
     
     
     //highlighting track from scrolling through a list
@@ -846,20 +869,65 @@ void testApp::draw(){
     
     
     
-	//draw the playback buttons, only 3 basic features
-	ofSetColor(150,0,0, alpha);
+	//draw the playback buttons, only 3 basic features keeping it simple
+	ofColor red = ofColor(200,0,0);
+	ofColor dim = ofColor(60,0,0);
+    
+    
+	ofSetColor(red);
 	float leftx = 467, lefty = 700;
 	ofFill();
 	ofTriangle(leftx, lefty, leftx+5, lefty-5, leftx+5, lefty+5);
 	ofTriangle(leftx+6, lefty, leftx+11, lefty-5, leftx+11, lefty+5);
 	ofRect(leftx-4, lefty-5,2,10);
     
+	if(toggleprevious){
+		ofTranslate(0,0,1);
+		ofSetColor(dim);
+		float sleftx = leftx+2, slefty = lefty+2;
+		ofFill();
+		ofTriangle(sleftx, slefty, sleftx+5, slefty-5, sleftx+5, slefty+5);
+		ofTriangle(sleftx+6, slefty, sleftx+11, slefty-5, sleftx+11, lefty+5);
+		ofRect(sleftx-4, slefty-5,2,10);
+		ofTranslate(0,0,-1);
+	}
+	toggleprevious = false;
+    
+    
+	ofSetColor(red);
 	ofRect(leftx + 45, lefty-5, 10,10);
     
+	if(togglestop){
+		ofTranslate(0,0,1);
+		ofSetColor(dim);
+		ofRect(leftx + 44, lefty-2, 12,10);
+		ofTranslate(0,0,-1);
+	}
+	togglestop = false;
+    
+    
+	ofSetColor(red);
 	float rightx = leftx+100, righty = 700;
 	ofTriangle(rightx, righty, rightx-5, righty-5, rightx-5, righty+5);
 	ofTriangle(rightx-6, righty, rightx-11, righty-5, rightx-11, righty+5);
-	ofRect(rightx+2, lefty-5,2,10);
+	ofRect(rightx+2, righty-5,2,10);
+    
+	if(togglenext){
+		ofTranslate(0,0,1);
+		ofSetColor(dim);
+		float srightx = rightx-2, srighty = righty +2;
+		ofFill();
+		ofTriangle(srightx, srighty, srightx-5, srighty-5, srightx-5, srighty+5);
+		ofTriangle(srightx-6, srighty, srightx-11, srighty-5, srightx-11, srighty+5);
+		ofRect(srightx+2, righty-5,2,10);
+		ofTranslate(0,0,-1);
+	}
+    togglenext = false;
+    
+	
+    
+	
+    
     
     //old title and logo...actually I like this better but it doesn't look too good with the red/black page.  Against my better judgement and true instincts, I'm deprecating this one for now and trying
 	//to make the miami vice one work.
@@ -978,6 +1046,13 @@ void testApp::draw(){
 	//ones for animation when we are turning page, we should only be drawing the adjacent ones if we're in mid rotation which is what drawwalls indicates
     
     //ofRotate(20, 1,0,0);      //for debugging purposes
+    
+    
+	ofPushMatrix();
+	//this is for displaying an album cover in its original size front and center, we will push the entire cube back and to the right but still visible and create a projection effect.
+	if(shrink){
+		ofTranslate(1800,-500,-2000);
+	}
 	if(draw_wall0 || drawwalls){
         
 		//row1
@@ -1655,7 +1730,7 @@ void testApp::draw(){
 		}
 	}
     drawwalls = false;		//to be reset to true only by turning a page
-    
+    ofPopMatrix();			//matches the one before the drawing of the first wall
 	/*
      ofPushMatrix();
      ofTranslate(center.x, center.y, -900);
@@ -1932,7 +2007,7 @@ void testApp::mousePressed(int x, int y, int button){
 	}
     
 	//this area for song selection is always off limits no matter what mode you're in
-	if((x>=694) && (x<=710) && (y>=748) && (y<=758)){
+	if((x>=694) && (x<=710) && (y>=748) && (y<=788)){
         listing[currentsong].stop();
         if (currentsong+1<=tracks.size()-1){
             listing[currentsong+1].play();
@@ -1941,7 +2016,7 @@ void testApp::mousePressed(int x, int y, int button){
         else
             listing[currentsong].play();
     }
-    else if((x>=786) && (x<=802) && (y>=748) && (y<=758)){
+    else if((x>=786) && (x<=802) && (y>=748) && (y<=788)){
         listing[currentsong].stop();
         if(currentsong - 1 >=0){
             listing[currentsong-1].play();
@@ -1950,7 +2025,7 @@ void testApp::mousePressed(int x, int y, int button){
         else
             listing[currentsong].play();
     }
-    else if((x>=742) && (x<=752) && (y>=748) && (y<=758)){
+    else if((x>=742) && (x<=752) && (y>=748) && (y<=788)){
         listing[currentsong].stop();
     }
 }
