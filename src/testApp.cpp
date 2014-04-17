@@ -13,17 +13,41 @@
 
 bool toggleprevious, togglenext, togglestop;
 bool shrink;
+int coverindex;
+float leftx, lefty, sleftx, slefty, rightx, righty, srightx, srighty;
+int enlargecounter;
+
+float projx, projy, forecolor, rotcolor;
+bool enlargeanimate;
+bool enlargecover;
+
+
+bool rotateanimate;
+bool rotatecover;
+
+bool ignore;
 
 #include "testApp.h"
 //#include <boost/lambda/lambda.hpp>
 
 void testApp::setup(){
     
+    enlargeanimate = false;
+    enlargecover = false;
+    
+	rotateanimate = false;
+	rotatecover = false;
+    
 	toggleprevious = false;
 	togglenext = false;
 	togglestop = false;
     
 	shrink = false;
+    enlargecounter = 0;
+    
+    
+	ignore = false;
+    
     
     alpha = 255;
     
@@ -106,16 +130,16 @@ void testApp::setup(){
     tracks.push_back("10. sclavis");
     
 	//actual location and song names in directory
-    test1 ="songs/01 Barcarole.mp3";
-    test2 ="songs/02 Are You Going With Me_.mp3";
-    test3 ="songs/03 Au Lait.mp3";
-    test4 ="songs/04 Eighteen.mp3";
-    test5 ="songs/05 Offramp.mp3";
-    test6 ="songs/06 James.mp3";
-    test7 ="songs/01 Barcarole.mp3";
-    test8 ="songs/03 Au Lait.mp3";
-    test9 ="songs/04 Eighteen.mp3";
-    test10 ="songs/01 Barcarole.mp3";
+    test1 = "songs/01 Barcarole.mp3";
+    test2 = "songs/02 Are You Going With Me_.mp3";
+    test3 = "songs/03 Au Lait.mp3";
+    test4 = "songs/04 Eighteen.mp3";
+    test5 = "songs/05 Offramp.mp3";
+    test6 = "songs/06 James.mp3";
+    test7 = "songs/01 Barcarole.mp3";
+    test8 = "songs/03 Au Lait.mp3";
+    test9 = "songs/04 Eighteen.mp3";
+    test10 = "songs/01 Barcarole.mp3";
     
     location.push_back(test1);
     location.push_back(test2);
@@ -302,7 +326,7 @@ void testApp::setup(){
     
     descriptions.push_back("Miroslav Vitous\nUniversal Syncopations II\n\nBob Mintzer tenor saxophone, bass clarinet\nGary Campbell soprano and tenor saxophones\nBob Malach tenor saxophone\nRandy Brecker trumpet\nDaniele di Bonaventura bandoneon\nVesna Vasko-Caceres voice\nGerald Cleaver drums\nAdam Nussbaum drums\nMiroslav Vitous double-bass");
     
-    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, \nvihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, vihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
+    descriptions.push_back("Rolf Lislevand\nDiminuito\n\nRolf Lislevand lutes, \nvihuela de mano\nLinn Andrea Fuglseth voice\nAnna Maria Friman voice\nGiovanna Pessi triple harp\nMarco Ambrosini nyckelharpa\nThor-Harald Johnsen chitarra battente, \nvihuela de mano, lutes\nMichael Behringer clavichord, organ\nBjorn Kjellemyr colascione\nDavid Mayoral percussion");
     
     descriptions.push_back("Food\nQuiet Inlet\nThomas Stronen drums, live-electronics\nIain Ballamy tenor- and soprano saxophones\nNils Petter Molver trumpet, electronics\nChristian Fennesz guitar, electronics\nSebastian Rochford drums");
     
@@ -314,15 +338,15 @@ void testApp::setup(){
     
     descriptions.push_back("Louis Sclavis\nDans La Nuit, Music for the Silent Movie by Charles Vanel\n\nLouis Sclavis clarinets\nJean Louis Matinier accordion\nDominique Pifarely violin\nVincent Courtois cello\nFrancois Merville percussion, marimba");
     
-    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, sound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N'Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
+    descriptions.push_back("Batagraf\nJon Balke\nStatements\n\nFrode Nymo alto saxophone\nKenneth Ekornes percussion\nHarald Skullerud percussion\nHelge Andreas Norbakken percussion\nIngar Zach percussion\nJon Balke keyboards, percussion, vocals, \nsound processing\nArve Henriksen trumpet\nSidsel Endresen text recitals in English\nMiki N'Doye text recital in\nJocely Sete Camara Silva voice\nJennifer Myskja Balke voice");
     
-    descriptions.push_back("Jon Balke\nMagnetic Works 1993-2001\n\nJon Balke piano, keyboards, percussion, electronics\nJens Petter Antonsen trumpet\nPer Jorgensen trumpet, vocals\nArve Henriksen trumpet, vocals\nMorten Halle alto saxophone, flute\nTore Brunborg tenor and soprano saxophones\nGertrud Okland violin\nHenrik Hannisdal violin\nOdd Hannisdal violin\nTrond Villa viola\nMarek Konstantynowicz viola\nJonas Franke-Blom violoncello\nSvante Henryson violoncello\nMorten Hannisdal violoncello\nAnders Jormin double-bass\nMarilyn Mazur percussion\nAudun Kleive drums");
+    descriptions.push_back("Jon Balke\nMagnetic Works 1993-2001\n\nJon Balke piano, keyboards, percussion, \nelectronics\nJens Petter Antonsen trumpet\nPer Jorgensen trumpet, vocals\nArve Henriksen trumpet, vocals\nMorten Halle alto saxophone, flute\nTore Brunborg tenor and soprano saxophones\nGertrud Okland violin\nHenrik Hannisdal violin\nOdd Hannisdal violin\nTrond Villa viola\nMarek Konstantynowicz viola\nJonas Franke-Blom violoncello\nSvante Henryson violoncello\nMorten Hannisdal violoncello\nAnders Jormin double-bass\nMarilyn Mazur percussion\nAudun Kleive drums");
     
     descriptions.push_back("Jacob Young\nEvening Falls\n\nJacob Young guitar\nMathias Eick trumpet\nVidar Johansen bass clarinet\nMats Eilertsen double-bass\nJon Christensen drums");
     
     descriptions.push_back("John Abercrombie\nClass Trip\nJohn Abercrombie guitar\nMark Feldman violin\nMarc Johnson double-bass\nJoey Baron drums");
     
-    descriptions.push_back("Paul Giger\nRobert Dick\nSatoshi Takeishi\nVindonissa\n\nPaul Giger violin, violino d'amore, viola d'amore, footbells\nRobert Dick c-flute, glissando flute, bass flute in c, bass flute in f, contrabass flute\nSatoshi Takeishi percussion");
+    descriptions.push_back("Paul Giger\nRobert Dick\nSatoshi Takeishi\nVindonissa\n\nPaul Giger violin, violino d'amore, viola d'amore, footbells\nRobert Dick c-flute, glissando flute, bass flute in c, \nbass flute in f, contrabass flute\nSatoshi Takeishi percussion");
     
     descriptions.push_back("Johann Sebastian Bach\nJohn Holloway\nThe Sonatas and Partitas\nfor violin solo\n\nJohn Holloway violin");
     
@@ -636,6 +660,8 @@ void testApp::update() {
     
     
     
+    
+    
 	//instead of doing 15 iterations everytime like a for loop and testing each condition we can just find the i and j corresponding to its position
 	//actually its fast enough already and I don't think this would make much difference
 	/*if(page == 0){
@@ -768,7 +794,7 @@ void testApp::update() {
          */
         if(rownumber == 1){
 			for(int j = 0; j< tracks.size(); j++){
-				//how do I toggle text color without creating a unique color for each track..yea that's not possible..so I did just that
+				//how do I toggle text color without creating a unique color foreach track..yea that's not possible..so I did just that
 				if((y >= 400+(j*23)) && (y < 400 + (j+1)*23))
 					albumcolors[page][9-j] = highlight;				//track turns white when highlighted, otherwise takes the default color set in setup()
 				else
@@ -867,6 +893,31 @@ void testApp::draw(){
     signature.drawStringAsShapes("By Tian Xu", 1060,700);
     signature.drawStringAsShapes("(XuXo)", 1076,712);
     
+    //old title and logo...actually I like this better but it doesn't look too good with the red/black page.  Against my better judgement and true instincts, I'm deprecating this one for now and trying
+	//to make the miami vice one work.
+    
+    /*ofSetColor(255,0,0);
+     //logo.setLetterSpacing(1.2);
+     logo.drawStringAsShapes(" Enjoy ECM ", 393,50);
+     //ofSetColor(255,255,255);
+     ofSetColor(176,196,222);*/
+    
+    
+    
+    
+    
+    
+    //control display mode, main cube vs shrunken one
+    if(shrink){
+		//should not flip shrink here, it should persist till the user clicks the rotate button
+        ofPushMatrix();
+        ofTranslate(215,150,0);
+        ofSetColor(255,255,255);
+        ecmcovers[coverindex].resize(600,600);
+        ecmcovers[coverindex].draw(0,0,10);
+        ofPopMatrix();
+    }
+    
     
     
 	//draw the playback buttons, only 3 basic features keeping it simple
@@ -875,7 +926,7 @@ void testApp::draw(){
     
     
 	ofSetColor(red);
-	float leftx = 467, lefty = 700;
+	leftx = 467, lefty = 700;
 	ofFill();
 	ofTriangle(leftx, lefty, leftx+5, lefty-5, leftx+5, lefty+5);
 	ofTriangle(leftx+6, lefty, leftx+11, lefty-5, leftx+11, lefty+5);
@@ -907,7 +958,7 @@ void testApp::draw(){
     
     
 	ofSetColor(red);
-	float rightx = leftx+100, righty = 700;
+	rightx = leftx+100, righty = 700;
 	ofTriangle(rightx, righty, rightx-5, righty-5, rightx-5, righty+5);
 	ofTriangle(rightx-6, righty, rightx-11, righty-5, rightx-11, righty+5);
 	ofRect(rightx+2, righty-5,2,10);
@@ -915,7 +966,7 @@ void testApp::draw(){
 	if(togglenext){
 		ofTranslate(0,0,1);
 		ofSetColor(dim);
-		float srightx = rightx-2, srighty = righty +2;
+		srightx = rightx-2, srighty = righty +2;
 		ofFill();
 		ofTriangle(srightx, srighty, srightx-5, srighty-5, srightx-5, srighty+5);
 		ofTriangle(srightx-6, srighty, srightx-11, srighty-5, srightx-11, srighty+5);
@@ -928,15 +979,81 @@ void testApp::draw(){
     
 	
     
+	//drawing the enlarge button
+	if(enlargecover){
+		forecolor = 100;
+	}
+	else{
+		forecolor = 50;
+	}
     
-    //old title and logo...actually I like this better but it doesn't look too good with the red/black page.  Against my better judgement and true instincts, I'm deprecating this one for now and trying
-	//to make the miami vice one work.
+	if(!enlargeanimate){
+		projx = 205, projy = 50;
+	}
+	else{
+		projx = 210, projy = 60;
+		enlargeanimate = false;				//turn this off immediately
+	}
+    ofPushMatrix();
+    ofTranslate(projx, projy);
+    ofPushMatrix();
     
-    /*ofSetColor(255,0,0);
-     //logo.setLetterSpacing(1.2);
-     logo.drawStringAsShapes(" Enjoy ECM ", 393,50);
-     //ofSetColor(255,255,255);
-     ofSetColor(176,196,222);*/
+    ofRotate(40,0,1,0);
+	ofSetColor(forecolor, 0, 0);
+	ofRect(0,0, 25,25);
+    
+    ofTranslate(0,0,-1);
+	ofSetColor(forecolor-30, 0, 0);
+	ofRect(20, -5, 15,15);
+    
+	ofSetColor(forecolor-50, 0, 0);
+	ofRect(35, -9, 7, 7);
+    
+    
+    ofPopMatrix();
+    ofPopMatrix();
+    
+    
+    
+    //maybe draw a rotating button as well for deactivating the display basically
+    if(rotatecover){
+		rotcolor = 100;
+	}
+	else{
+		rotcolor = 40;
+	}
+    
+	float speedrotate;
+	if(!rotateanimate){
+		speedrotate = .8;
+	}
+	else{
+		speedrotate = 10;
+		rotateanimate = false;						//turn this off immediately
+	}
+    
+	float size = 10;
+	ofPushMatrix();
+    ofTranslate(projx+100,projy);
+    ofPushMatrix();
+    ofTranslate(size,size);
+    ofRotate(90,1,0,0);
+    ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 0, 1);
+    
+    ofPushMatrix();
+    ofTranslate(-size,-size);			//orientation has changed, so z and y are switched basically, x is the same, so it might be ofTranslate(-size, 0, -size);
+    ofSetColor(rotcolor,0,0);
+    ofRect(0,0,2*size,2*size);
+    ofPopMatrix();
+    ofPopMatrix();
+	ofPopMatrix();
+    
+    
+    
+    
+    
+    
+    
     
     // enable lighting //
     //ofEnableLighting();
@@ -1048,10 +1165,13 @@ void testApp::draw(){
     //ofRotate(20, 1,0,0);      //for debugging purposes
     
     
+    
+    
+    
 	ofPushMatrix();
 	//this is for displaying an album cover in its original size front and center, we will push the entire cube back and to the right but still visible and create a projection effect.
 	if(shrink){
-		ofTranslate(1800,-500,-2000);
+		ofTranslate(2000,-500,-2000);
 	}
 	if(draw_wall0 || drawwalls){
         
@@ -1922,7 +2042,7 @@ void testApp::mousePressed(int x, int y, int button){
 					if((y >= 400+(j*23)) && (y < 400 + (j+1)*23)){
 						listing[currentsong].stop();
                         listing[j].play();
-                        currentsong =  j;
+                        currentsong = j;
                     }
 				}
 			}
@@ -1937,7 +2057,7 @@ void testApp::mousePressed(int x, int y, int button){
 					if((y >= 185+(j*23)) && (y < 185 + (j+1)*23)){
                         listing[currentsong].stop();
 						listing[j].play();
-                        currentsong =  j;
+                        currentsong = j;
                     }
 				}
 			}
@@ -1951,7 +2071,7 @@ void testApp::mousePressed(int x, int y, int button){
 					if((y >= 350+(j*23)) && (y < 350+ (j+1)*23)){
                         listing[currentsong].stop();
 						listing[j].play();
-                        currentsong =  j;
+                        currentsong = j;
                     }
 				}
 			}
@@ -1978,19 +2098,27 @@ void testApp::mousePressed(int x, int y, int button){
 						if(page == 0){
 							freeze[(j*5)+i] = true;
 							cube = (j*5)+i;
+							//this is to determine which cover to bring to foreground, should only be an optional once it has been selected, probably correct to put here
+							coverindex = j*5+i;
 						}
 						else if(page == 1){
 							freeze[(15+j*5) + i] = true;
 							cube = (15+j*5) + i;
+							coverindex = 15*j+5;
 						}
 						else if(page == 2){
 							freeze[(30+j*5) + i] = true;
 							cube = (30+j*5) + i;
+							coverindex = 30*j+5;
 						}
 						else if(page == 3){
 							freeze[(45+j*5) + i] = true;
 							cube = (45+j*5) + i;
+							coverindex = 45*j+5;
 						}
+                        
+						//activate draw cover option
+						enlargecover = true;
 					}
 				}
 			}
@@ -2002,11 +2130,12 @@ void testApp::mousePressed(int x, int y, int button){
 			freeze[cube] = false;
 			scrollcubes = true;
 			scrolltracks = false;
-			//should now kick off scrolling track listings..
+			if(!ignore)				//i dont think we need to set enlargecover to false ever, its false by default, could just stay true, only time its false is when its already on
+				enlargecover = false;
 		}
 	}
     
-	//this area for song selection is always off limits no matter what mode you're in
+	//playback control, this area is always tested.
 	if((x>=694) && (x<=710) && (y>=748) && (y<=788)){
         listing[currentsong].stop();
         if (currentsong+1<=tracks.size()-1){
@@ -2028,6 +2157,47 @@ void testApp::mousePressed(int x, int y, int button){
     else if((x>=742) && (x<=752) && (y>=748) && (y<=788)){
         listing[currentsong].stop();
     }
+    
+    
+	
+    
+    
+	//enlarge cover, only tested if boolean enlarge is true
+	if(enlargecover){
+		if((x>=436) && (x<=473) && (y>=95) && (y<=135)){
+			//turn itself off immediately since it's a toggle
+			enlargecover = false;
+            
+			//shrink cube and display cover, this happens in draw()
+			shrink = true;
+            
+			//animate the click enlarge button effect which is only 1 frame
+			enlargeanimate = true;
+			
+			//allow clickable rotate button
+			rotatecover = true;
+		}
+	}
+    
+    
+	if(rotatecover){
+		if((x>=530) && (x<=564) && (y>=95) && (y<=135)){
+			//enlarge cube back to normal which is controlled by shrink
+			shrink = false;
+            
+			//animate the click rotate button effect which is only 1 frame
+			rotateanimate = true;
+            
+			//now turn itself off so we can't click it again activate the other button since we should be able to pull up the cover without having to select the same album again possibly
+			rotatecover = false;
+			enlargecover = true;
+            
+			//so here's a unique situation, once we are here after we've clicked on the rotate button and things are back to normal, we should have the option to toggle back again and zoom
+			//in on the cover, but if we click on the enlarge button (now on another iteration) it will be outside of the cube and the else{} will have set enlargecover to false, so we need
+			//a way to circumvent this
+			ignore = true;		//actually we might not need this check at all
+		}
+	}
 }
 
 //--------------------------------------------------------------

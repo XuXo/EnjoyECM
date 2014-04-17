@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "myThread.h"
+#include "ofxVideoRecorder.h"
 
 class testApp : public ofBaseApp{
 
@@ -232,5 +233,12 @@ public:
     
     
     
-    
+    ofVideoGrabber      vidGrabber;
+    ofxVideoRecorder    vidRecorder;
+    ofSoundStream       soundStream;
+    bool bRecording;
+    int sampleRate;
+    int channels;
+    string fileName;
+    string fileExt;
 };
