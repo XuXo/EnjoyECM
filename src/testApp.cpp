@@ -125,9 +125,9 @@ void testApp::setup(){
     tracks.push_back("05. Offramp");
     tracks.push_back("06. James");
     tracks.push_back("07. The Bat, Part 2");
-    tracks.push_back("08. condori");
-    tracks.push_back("09. micus");
-    tracks.push_back("10. sclavis");
+    tracks.push_back("08. The First Circle");
+    tracks.push_back("09. If I could");
+    tracks.push_back("10. End of the Game");
     
 	//actual location and song names in directory
     test1 = "songs/01 Barcarole.mp3";
@@ -136,10 +136,10 @@ void testApp::setup(){
     test4 = "songs/04 Eighteen.mp3";
     test5 = "songs/05 Offramp.mp3";
     test6 = "songs/06 James.mp3";
-    test7 = "songs/01 Barcarole.mp3";
-    test8 = "songs/03 Au Lait.mp3";
-    test9 = "songs/04 Eighteen.mp3";
-    test10 = "songs/01 Barcarole.mp3";
+    test7 = "songs/07 The Bat, Part 2.mp3";
+    test8 = "songs/08 The First Circle.mp3";
+    test9 = "songs/09 If I Could.mp3";
+    test10 = "songs/10 End of the Game.mp3";
     
     location.push_back(test1);
     location.push_back(test2);
@@ -1212,7 +1212,7 @@ void testApp::draw(){
                             
 							//songcolor controlled by page number
 							ofSetColor(albumcolors[page][i]);
-							trackfont.drawStringAsShapes(tracks[i], 0,0);
+							trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                             
 							//for some reason cube takes on the color of the text if not reset even though the binding of the texture happens outside of the iteration???
 							ofSetColor(255,255,255,alpha);
@@ -1270,7 +1270,7 @@ void testApp::draw(){
 							ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                             
 							ofSetColor(albumcolors[page][i]);
-							trackfont.drawStringAsShapes(tracks[i], 0,0);
+							trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                             
 							ofSetColor(255,255,255, alpha);
 							ofPopMatrix();
@@ -1326,7 +1326,7 @@ void testApp::draw(){
 							ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG, 0, 1, 0);
                             
 							ofSetColor(albumcolors[page][i]);
-							trackfont.drawStringAsShapes(tracks[i], 0,0);
+							trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                             
 							ofSetColor(255, 255, 255, alpha);
 							ofPopMatrix();
@@ -1388,7 +1388,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						trackfont.drawStringAsShapes(tracks[i], 0, 0);
+						trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0, 0);
                         
 						ofSetColor(255, 255, 255, alpha);
 						ofPopMatrix();
@@ -1441,7 +1441,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						trackfont.drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                         
 						ofSetColor(255,255,255, alpha);
 						ofPopMatrix();
@@ -1494,7 +1494,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-90, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						trackfont.drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                         
 						ofSetColor(255, 255, 255, alpha);
 						ofPopMatrix();
@@ -1557,7 +1557,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						trackfont.drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                         
 						ofSetColor(255, 255, 255, alpha);
 						ofPopMatrix();
@@ -1610,7 +1610,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						trackfont.drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                         
 						ofSetColor(255 ,255, 255, alpha);
 						ofPopMatrix();
@@ -1663,7 +1663,7 @@ void testApp::draw(){
 						ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-180, 0, 1, 0);
                         
 						ofSetColor(albumcolors[page][i]);
-						trackfont.drawStringAsShapes(tracks[i], 0,0);
+						trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                         
 						ofSetColor(255 ,255,255, alpha);
 						ofPopMatrix();
@@ -1725,7 +1725,7 @@ void testApp::draw(){
 					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                     
 					ofSetColor(albumcolors[page][i]);
-					trackfont.drawStringAsShapes(tracks[i], 0,0);
+					trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                     
 					ofSetColor(255, 255, 255, alpha);
 					ofPopMatrix();
@@ -1777,7 +1777,7 @@ void testApp::draw(){
 					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                     
 					ofSetColor(albumcolors[page][i]);
-					trackfont.drawStringAsShapes(tracks[i], 0,0);
+					trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                     
 					ofSetColor(255,255,255, alpha);
 					ofPopMatrix();
@@ -1829,7 +1829,7 @@ void testApp::draw(){
 					ofRotate(-ofGetElapsedTimef()*.6 * RAD_TO_DEG-270, 0, 1, 0);
                     
 					ofSetColor(albumcolors[page][i]);
-					trackfont.drawStringAsShapes(tracks[i], 0,0);
+					trackfont.drawStringAsShapes(tracks[tracks.size()-i-1], 0,0);
                     
 					ofSetColor(255, 255, 255, alpha);
 					ofPopMatrix();
@@ -2017,7 +2017,7 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-    cout<<"dragging at location x = "<<x<<" and y = "<<y<<endl;
+    //cout<<"dragging at location x = "<<x<<" and y = "<<y<<endl;
     //we only care about the x component to determine a leftward or rightward swipe
     mousedrag.push_back(x);
     
@@ -2104,17 +2104,17 @@ void testApp::mousePressed(int x, int y, int button){
 						else if(page == 1){
 							freeze[(15+j*5) + i] = true;
 							cube = (15+j*5) + i;
-							coverindex = 15*j+5;
+							coverindex = 15+j*5 + i;
 						}
 						else if(page == 2){
 							freeze[(30+j*5) + i] = true;
 							cube = (30+j*5) + i;
-							coverindex = 30*j+5;
+							coverindex = 30+j*5 + i;
 						}
 						else if(page == 3){
 							freeze[(45+j*5) + i] = true;
 							cube = (45+j*5) + i;
-							coverindex = 45*j+5;
+							coverindex = 45+j*5 + i;
 						}
                         
 						//activate draw cover option
